@@ -44,7 +44,6 @@ namespace varausjarjestelma.Database
                 Debug.WriteLine(ex.Message);
                 return false;
             }
-
         }
 
         public async Task<List<AlueData>> GetAllAlueDataAsync()
@@ -65,10 +64,8 @@ namespace varausjarjestelma.Database
                             AlueId = reader.GetInt32("alue_id"),
                             Nimi = reader.GetString("nimi")
                         };
-
                         alueDataList.Add(alueData);
                     }
-
                     return alueDataList;
                 }
             }

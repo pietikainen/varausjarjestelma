@@ -6,7 +6,6 @@ namespace varausjarjestelma
 {
     public partial class MainPage : ContentPage
     {
-
         public MainPage()
         {
             InitializeComponent();
@@ -18,7 +17,6 @@ namespace varausjarjestelma
             {
                 var helper = new Database.MySqlHelper();
                 var isConnected = await helper.TestConnectionAsync();
-
                 MySqlTestLabel.Text = isConnected ? "Connected successfully" : "Connection failed";
             }
             catch (AggregateException ae)
@@ -40,7 +38,6 @@ namespace varausjarjestelma
             {
                 var helper = new Database.MySqlHelper();
                 var alueDataList = await helper.GetAllAlueDataAsync();
-
                 MySqlTestLabel.Text = $"Found {alueDataList.Count} rows";
             }
             catch (AggregateException ae)
@@ -49,15 +46,11 @@ namespace varausjarjestelma
                 {
                     Debug.WriteLine($"Inner Exception: {innerException.Message}");
                 }
-
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"An error occurred: {ex.Message}");
-
             }
         }
-
     }
-
 }
