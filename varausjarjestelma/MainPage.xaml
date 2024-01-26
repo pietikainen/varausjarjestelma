@@ -34,6 +34,23 @@
                 Text="Click to read MySQL data from table 'alue'"
                 VerticalOptions="Center" />
 
+            <Button
+                x:Name="PopulateListViewBtn"
+                Clicked="OnPopulateListViewButtonClicked"
+                HorizontalOptions="Center"
+                Text="Populate listview"
+                VerticalOptions="Center" />
+
+            <ListView
+                x:Name="MySqlListView"
+                ItemsSource="{Binding Alueet}"
+                VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Nimi}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </VerticalStackLayout>
     </ScrollView>
 

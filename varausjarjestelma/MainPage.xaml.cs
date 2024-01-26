@@ -52,5 +52,26 @@ namespace varausjarjestelma
                 Debug.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
+        private async void OnPopulateListViewButtonClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var helper = new Database.MySqlHelper();
+                var alueDataList = await helper.GetAllAlueDataAsync();
+                MySqlListView.ItemsSource = alueDataList;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.InnerExceptions)
+                {
+                    Debug.WriteLine($"Inner Exception: {innerException.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }   
     }
 }
