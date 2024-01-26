@@ -34,14 +34,14 @@
                 x:Name="MySqlTestBtn"
                 Clicked="OnDatabaseTestButtonClicked"
                 HorizontalOptions="Center"
-                Text="Click to test MySQL Database! (freezes, do not use)"
+                Text="Click to test MySQL Database!"
                 VerticalOptions="Center" />
 
             <Button
                 x:Name="MySqlReadBtn"
                 Clicked="OnDatabaseReadButtonClicked"
                 HorizontalOptions="Center"
-                Text="Click to read MySQL data from 'alue'"
+                Text="Click to read MySQL data from table 'alue'"
                 VerticalOptions="Center" />
 
             <Label
