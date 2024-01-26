@@ -1,4 +1,7 @@
-﻿namespace varausjarjestelma
+﻿using Mysqlx;
+using Org.BouncyCastle.Tls;
+
+namespace varausjarjestelma
 {
     public partial class MainPage : ContentPage
     {
@@ -19,6 +22,14 @@
                 CounterBtn.Text = $"Clicked {count} times";
 
             SemanticScreenReader.Announce(CounterBtn.Text);
+        }
+
+        private void OnDatabaseTestButtonClicked(object sender, EventArgs e)
+        {
+            var helper = new Database.MySqlHelper();
+            var isConnected = helper.TestConnection();
+
+            MySqlTestLabel.Text = isConnected ? "Connected successfully" : "Connection failed"; 
         }
     }
 
