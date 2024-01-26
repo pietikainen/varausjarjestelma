@@ -36,12 +36,22 @@
                 HorizontalOptions="Center"
                 Text="Click to test MySQL Database! (freezes, do not use)"
                 VerticalOptions="Center" />
+
+            <Button
+                x:Name="MySqlReadBtn"
+                Clicked="OnDatabaseReadButtonClicked"
+                HorizontalOptions="Center"
+                Text="Click to read MySQL data from 'alue'"
+                VerticalOptions="Center" />
+
             <Label
                 x:Name="MySqlTestLabel"
                 FontSize="18"
                 HorizontalOptions="Center"
                 Text=""
                 VerticalOptions="Center" />
+
+
 
         </VerticalStackLayout>
     </ScrollView>
