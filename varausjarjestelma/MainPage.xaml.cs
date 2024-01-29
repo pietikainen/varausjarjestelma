@@ -52,5 +52,10 @@ namespace varausjarjestelma
                 Debug.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
+        async void NavigateToManagementButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Management());
+        }
     }
 }

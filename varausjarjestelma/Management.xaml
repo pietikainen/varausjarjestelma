@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="varausjarjestelma.Management"
+             Title="Management">
+    <VerticalStackLayout>
+        <Label HorizontalOptions="Start"   Text="Area management!" VerticalOptions="Center" />
+        <Label />
+
+        <Label Text="Area" />
+        <Entry x:Name="AddEntry" Text="Add Area" WidthRequest="300" BackgroundColor="LightGray" HorizontalOptions="Start"  />
+            
+        
+            <!-- Upper Buttons-->
+        <HorizontalStackLayout>
+            <Button x:Name="AddButton" Text="Add" Clicked="AddButtonClicked" />
+            <Button x:Name="RemoveButton" Text="Remove" Clicked="RemoveButtonClicked" />
+        </HorizontalStackLayout>
+        <!-- ListView Components-->
+        <HorizontalStackLayout>
+            <Frame Padding="0" CornerRadius="10" HeightRequest="500">
+                <ListView x:Name="AreaListView" ItemTapped="AreaListViewItemTapped" BackgroundColor="SteelBlue" MinimumWidthRequest="500" Margin="0,0,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding FullDescription}" Margin="10,5,0,5" />
+                                </HorizontalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -33,6 +33,10 @@
                 HorizontalOptions="Center"
                 Text="Click to read MySQL data from table 'alue'"
                 VerticalOptions="Center" />
+            
+                <!-- nappijoka suorittaa navigoinnin -->
+            <Button Text="Siirry Management-sivulle" Clicked="NavigateToManagementButtonClicked" />
+
 
         </VerticalStackLayout>
     </ScrollView>
