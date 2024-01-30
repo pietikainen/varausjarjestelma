@@ -120,4 +120,32 @@ public partial class AreaManagement : ContentPage
         PopupFrame.IsVisible = true;
         MainMenuButton.IsVisible = false;
     }
+
+    private void AddCitybutton_Clicked(object sender, EventArgs e)
+    {
+        LodgingAndService.IsVisible=false;
+        MainMenuButton.IsVisible = false;
+        AddCitybutton.IsVisible = true;
+        AddCityEntry.IsVisible = true;
+        CancelAddingCityButton.IsVisible = true;
+        
+    }
+
+    private void AddNewCityButton_Clicked(object sender, EventArgs e)
+    {
+        MainMenuButton.IsVisible = true;
+        
+        AddCityEntry.IsVisible = false;
+        CancelAddingCityButton.IsVisible = false;
+        LodgingAndService.IsVisible = true;
+    }
+
+    private void CancelAddingCityButton_Clicked(object sender, EventArgs e)
+    {
+        MainMenuButton.IsVisible = true;
+        
+        AddCityEntry.IsVisible = false;
+        CancelAddingCityButton.IsVisible = false;
+        LodgingAndService.IsVisible = true;
+    }
 }

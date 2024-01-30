@@ -19,12 +19,13 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="Lodges" Grid.Column="0" FontSize="Header" HorizontalOptions="Center"/>
-                    <Label Text="Services" Grid.Column="1" FontSize="Header" HorizontalOptions="Center" />
+                    <Label Text="Manege Lodges And Services" Grid.Column="0" FontSize="Header" HorizontalOptions="Start"/>
+                    
                 </Grid>
 
                 <HorizontalStackLayout >
                     <!-- Majoitus -->
+                    
                     <Border
     x:Name="LodgingListViewFrame"
     Margin="1" 
@@ -107,6 +108,17 @@
                             BorderWidth="1"
                         MinimumWidthRequest="140"/>
                 </HorizontalStackLayout>
+                <Button
+                    x:Name="AddCitybutton"
+                    Clicked="AddCitybutton_Clicked"
+                    Text="Add City" 
+                    WidthRequest="1007"  
+                    Margin="3,3,3,3" 
+                    BorderColor="Black" 
+                    BorderWidth="1"
+                    MinimumWidthRequest="140" 
+                    HorizontalOptions="Start"/>
+               
                 <Button     x:Name="ChooseCityButton"
                             Clicked="ChooseCityButton_Clicked"
                             Text="Choose City" WidthRequest="1007"  
@@ -114,7 +126,9 @@
                             BorderWidth="1"
                         MinimumWidthRequest="140" HorizontalOptions="Start"/>
             </VerticalStackLayout>
-
+            <Entry Text="City" x:Name="AddCityEntry" BackgroundColor="#80F5F5DC" WidthRequest="1007" HorizontalOptions="Start"  IsVisible="false"/>
+            <Button x:Name="AddNewCityButton" IsVisible="true" HorizontalOptions="Start" Text="Add New City" WidthRequest="1007" Clicked="AddNewCityButton_Clicked" Margin="3,3,3,3" BorderColor="Black" />
+            <Button x:Name="CancelAddingCityButton" Text="Cancel" HorizontalOptions="Start" WidthRequest="1007" Clicked="CancelAddingCityButton_Clicked" Margin="3,3,3,3" BorderColor="Black" />
             <!-- Majoituksen syöttökentät -->
             <Label x:Name="LodgesLabel" Text="Lodges" FontSize="Header" Margin="200,0,0,0" IsVisible="false" />
             <HorizontalStackLayout
