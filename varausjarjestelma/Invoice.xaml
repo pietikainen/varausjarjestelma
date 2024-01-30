@@ -111,6 +111,10 @@
 
                 </Grid>
             </ScrollView>
+
         </Frame>
+        <Button x:Name="PrintInvoiceButton" Text="Print" Clicked="PrintInvoiceButton_Clicked" Margin="3"/>
+        <Button x:Name="SendEmailButton" Text="Send Email" Clicked="SendEmailButton_Clicked" Margin="3"/>
+        <Button x:Name="MainPageButton" Text="Main Page" Clicked="MainPageButton_Clicked" Margin="3"/>
     </VerticalStackLayout>
 </ContentPage>

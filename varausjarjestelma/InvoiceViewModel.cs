@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-// Määritellään nimiavaruus vastaamaan projektisi nimiavaruutta
+
 namespace varausjarjestelma
 {
     // ViewModel-luokka, joka toteuttaa INotifyPropertyChanged-rajapinnan.

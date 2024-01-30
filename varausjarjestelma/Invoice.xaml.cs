@@ -17,4 +17,19 @@ public partial class Invoice : ContentPage
     {
 
     }
+
+    async Task MainPageButton_Clicked(object sender, EventArgs e)
+    {
+       await Navigation.PushAsync(new MainPage());
+    }
+
+    private void PrintInvoiceButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void SendEmailButton_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
