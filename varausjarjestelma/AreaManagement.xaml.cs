@@ -148,4 +148,4 @@ public partial class AreaManagement : ContentPage
         CancelAddingCityButton.IsVisible = false;
         LodgingAndService.IsVisible = true;
     }
-}
+}                   

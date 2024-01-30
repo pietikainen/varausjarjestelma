@@ -2,45 +2,91 @@
 <ContentPage
     x:Class="varausjarjestelma.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    WidthRequest="500"  HeightRequest="800" >
 
-    <ScrollView>
+    
+    <ContentPage.Resources>
+        
+        <ResourceDictionary>
+            <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Goldenrod"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="5"/>
+                <!-- Varjostuksen määrittely -->
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Button.Shadow">
+                                        <Setter.Value>
+                                            <Shadow Brush="Black" Opacity="0.8" Radius="5" Offset="4,4"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Button.Shadow">
+                                        <Setter.Value>
+                                            <Shadow Brush="Black" Opacity="0.4" Radius="2" Offset="2,2"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid >
+        <Image Source="mokkitausta.png" Aspect="Fill" />
+        <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <Image
                 Aspect="AspectFit"
                 HeightRequest="185"
                 SemanticProperties.Description="dot net bot in a race car number eight"
-                Source="dotnet_bot.png" />
+                Source="mokkilogo.png" />
 
             <Label
                 x:Name="MySqlTestLabel"
                 HorizontalOptions="Center"
                 SemanticProperties.HeadingLevel="Level1"
                 Style="{StaticResource Headline}"
-                Text="Hello, World!"
-                VerticalOptions="Center" />
+                Text="MÖKKI MASTER"
+                FontAttributes="Bold"
+                FontFamily="header"
+                VerticalOptions="Center"
+                WidthRequest="300" />
 
             <Button
                 x:Name="MySqlTestBtn"
                 Clicked="OnDatabaseTestButtonClicked"
                 HorizontalOptions="Center"
                 Text="Click to test MySQL Database!"
-                VerticalOptions="Center" />
+                VerticalOptions="Center"
+                WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}" />
 
             <Button
                 x:Name="MySqlReadBtn"
                 Clicked="OnDatabaseReadButtonClicked"
                 HorizontalOptions="Center"
                 Text="Click to read MySQL data from table 'alue'"
-                VerticalOptions="Center" />
+                VerticalOptions="Center"
+                WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}" />
             
                 <!-- nappijoka suorittaa navigoinnin -->
-            
-            <Button Text="Manage" Clicked="NavigateToAreaManagementButtonClicked" />
-            <Button Text="Booking" Clicked="NavigateToBookingButtonClicked" />
-            <Button Text="Invoice" Clicked="NavigateToInvoiceButtonClicked" />
+
+            <Button Text="Manage" WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}" Clicked="NavigateToAreaManagementButtonClicked" />
+            <Button Text="Booking" WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}" Clicked="NavigateToBookingButtonClicked" />
+            <Button Text="Invoice" WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}" Clicked="NavigateToBookingButtonClicked" />
 
         </VerticalStackLayout>
     </ScrollView>
-
+    </Grid>
 </ContentPage>
