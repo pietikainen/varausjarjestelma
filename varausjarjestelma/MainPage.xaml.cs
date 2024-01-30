@@ -53,9 +53,10 @@ namespace varausjarjestelma
             }
         }
 
-        async void NavigateToManagementButtonClicked(object sender, EventArgs e)
+
+        async void NavigateToAreaManagementButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Management());
+            await Navigation.PushAsync(new AreaManagement());
         }
     }
 }

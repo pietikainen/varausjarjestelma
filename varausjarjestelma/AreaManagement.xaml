@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="varausjarjestelma.AreaManagement"
+             Title="Management" BackgroundColor="AntiqueWhite"
+             >
+
+    <Grid HeightRequest="1050" >
+
+        <Image Source="lodge.png" Aspect="AspectFill"  />
+
+        <VerticalStackLayout>
+
+            <!-- Listviewkomponentit. Tulevat esiin kun alue on valittu -->
+            <VerticalStackLayout x:Name="LodgingAndService" IsVisible="true">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Lodges" Grid.Column="0" FontSize="Header" HorizontalOptions="Center"/>
+                    <Label Text="Services" Grid.Column="1" FontSize="Header" HorizontalOptions="Center" />
+                </Grid>
+
+                <HorizontalStackLayout >
+                    <!-- Majoitus -->
+                    <Border
+    x:Name="LodgingListViewFrame"
+    Margin="1" 
+    MinimumHeightRequest="300"
+    MinimumWidthRequest="150"
+    Stroke="Black"
+    StrokeThickness="1"
+    StrokeShape="RoundRectangle 20,20,20,20"
+    BackgroundColor="#80F5F5DC"
+    HorizontalOptions="Start"
+    VerticalOptions="Start">
+                        <ListView 
+                x:Name="LodgingListView"
+                ItemTapped="LodgingListView_ItemTapped"
+                BackgroundColor="#80F5F5DC"
+                MinimumWidthRequest="500" 
+                Margin="0,0,0,0"
+                >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ScrollView>
+                                            <Label 
+                                  Text="{Binding 
+                                  FullDescription}" 
+                                  Margin="10,5,0,5"
+                                  TextColor="Black"/>
+                                        </ScrollView>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Border>
+                    <!-- Palvelut -->
+                    <Border
+    x:Name="ServiceListViewFrame"
+    MinimumHeightRequest="300"
+    MinimumWidthRequest="150"
+    Stroke="Black"
+    StrokeThickness="1"
+    StrokeShape="RoundRectangle 20,20,20,20"
+    BackgroundColor="#80F5F5DC"
+    HorizontalOptions="Start"
+    VerticalOptions="Start">
+                        <ListView 
+                x:Name="ServiceListView"
+                ItemTapped="ServiceListView_ItemTapped"
+                BackgroundColor="#80F5F5DC"
+                MinimumWidthRequest="500" 
+                Margin="0,0,0,0">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ScrollView>
+                                            <Label 
+                                Text="{Binding 
+                                FullDescription}" 
+                                Margin="10,5,0,5"
+                                TextColor="Black"/>
+                                        </ScrollView>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Border>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Button x:Name="AddLodgingButton" 
+                            Clicked="AddLodgingButton_Clicked" 
+                            Text="Add Lodging" 
+                            WidthRequest="500"  
+                            Margin="3,3,3,3" 
+                            BorderColor="Black" 
+                            BorderWidth="1"
+                        MinimumWidthRequest="140"/>
+                    <Button x:Name="AddServiceButton" 
+                            Clicked="AddServiceButton_Clicked" 
+                            Text="Add Service" WidthRequest="500"  
+                            Margin="3,3,3,3" BorderColor="Black" 
+                            BorderWidth="1"
+                        MinimumWidthRequest="140"/>
+                </HorizontalStackLayout>
+                <Button     x:Name="ChooseCityButton"
+                            Clicked="ChooseCityButton_Clicked"
+                            Text="Choose City" WidthRequest="1007"  
+                            Margin="3,3,3,3" BorderColor="Black" 
+                            BorderWidth="1"
+                        MinimumWidthRequest="140" HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+
+            <!-- Majoituksen syöttökentät -->
+            <Label x:Name="LodgesLabel" Text="Lodges" FontSize="Header" Margin="200,0,0,0" IsVisible="false" />
+            <HorizontalStackLayout
+            x:Name="Addlodging"
+            IsVisible="false">
+
+                <Border
+                    x:Name="AddLodgingListViewBorder"
+                    MinimumHeightRequest="355"
+                    MinimumWidthRequest="150"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20,20,20,20"
+                    Margin="20,5,10,5"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start">
+                    <ListView 
+                        x:Name="AddLodgingListView"
+                        ItemTapped="AddLodgingListView_ItemTapped"
+                        BackgroundColor="#80F5F5DC"
+                        MinimumWidthRequest="500" >
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ScrollView>
+                                        <Label 
+                            Text="{Binding 
+                            FullDescription}" 
+                            Margin="5"
+                            TextColor="Black"/>
+                                    </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+
+                <VerticalStackLayout
+                Margin="1,20,1,0">
+                    <Entry x:Name="LodgingNameEntry" Text="Name" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5,0,5,5"  />
+                    <Entry x:Name="LodgingAddressEntry" Text="Address" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <Entry x:Name="LodgingPostalCodeEntry" Text="City" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <Entry x:Name="LodgingCityEntry" Text="Postal code" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <Entry x:Name="LodgingSizeEntry" Text="Size" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <Entry x:Name="LodgingRoomEntry" Text="Rooms" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <!-- Lista mistä voi valita valmiiksi -->
+                    <Entry x:Name="LodgingEquipmentEntry" Text="Equipment" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <!-- rastiruutuun varustelu taso -->
+
+                    <Entry x:Name="LodgingPriceEntry" Text="Price" BackgroundColor="#80F5F5DC" WidthRequest="200" Margin="5" />
+                    <!-- päivä kohtainen hinnoittelu ? -->
+
+                </VerticalStackLayout>
+
+            </HorizontalStackLayout>
+            <Button x:Name="AddNewLodgingButton" Text="Add New" Clicked="AddNewLodgingButton_Clicked" HorizontalOptions="Start" WidthRequest="500" BorderColor="Black" BorderWidth="1" Margin="30,5,5,5" IsVisible="false"/>
+            <Button x:Name="SaveLodgingButton" Text="Save" Clicked="SaveLodgingButton_Clicked"  HorizontalOptions="Start" WidthRequest="500" BorderColor="Black" BorderWidth="1" Margin="30,5,5,5" IsVisible="false"/>
+            <Button x:Name="ReturnLodgingButton" Text="Return" Clicked="ReturnLodgingButton_Clicked"  HorizontalOptions="Start" WidthRequest="500" BorderColor="Black" BorderWidth="1" Margin="30,5,5,5" IsVisible="false"/>
+
+
+            <!-- Palveluiden syöttökentät syöttökentät -->
+            <HorizontalStackLayout
+                x:Name="AddService"
+                    IsVisible="false">
+                
+                <VerticalStackLayout>
+                    <Label x:Name="ServicesLabel" Text="Services" FontSize="Header" Margin="180,0,0,0" IsVisible="true" />
+                    <Border
+                x:Name="AddServiceListViewBorder"
+                MinimumHeightRequest="300"
+                MinimumWidthRequest="150"
+                Stroke="Black"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 20,20,20,20"
+                
+                HorizontalOptions="Start"
+                VerticalOptions="Start">
+                    <ListView 
+            x:Name="AddServiceListView"
+            ItemTapped="AddServiceListView_ItemTapped"
+            BackgroundColor="#80F5F5DC"
+            MinimumWidthRequest="500" 
+            Margin="0,0,0,0"
+            >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ScrollView>
+                                        <Label 
+                            Text="{Binding 
+                            FullDescription}" 
+                            Margin="10,5,0,5"
+                            TextColor="Black"/>
+                                    </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+
+                <VerticalStackLayout>
+                    <Entry x:Name="ServiceNameEntry" Text="Service Name" />
+                    <Entry x:Name="ServiceStreetAddressEntry" Text="Street Address" />
+                    <Entry x:Name="PostalCodeEntry" Text="Postal code" />
+                    <Entry x:Name="ServiceCityEntry" Text="City" />
+                    <Entry x:Name="ServicePriceEntry" Text="Service Price" />
+                    <!--hinnoittelu ? -->
+                    <HorizontalStackLayout>
+                        <Button x:Name="AddNewServiceButton" Text="Add" Clicked="AddNewServiceButton_Clicked" Margin="3,3,3,3" 
+                        MinimumWidthRequest="140"/>
+                        <Button x:Name="DeleteServiceButton" Text="Delete" Clicked="DeleteServiceButton_Clicked" Margin="3,3,3,3" 
+                        MinimumWidthRequest="140"/>
+                        
+                    </HorizontalStackLayout>
+                    <Button x:Name="ReturnServiceButton" Text="Return" Clicked="ReturnServiceButton_Clicked" Margin="3,3,3,3" 
+                        MinimumWidthRequest="140" />
+                </VerticalStackLayout>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+            <!-- Listviewkomponenttien napit. Tulevat esiin kun alue on valittu -->
+
+
+
+
+            <Button 
+            x:Name="MainMenuButton"  
+            Text="Main Menu"
+            MinimumWidthRequest="1007"
+                BorderColor="Black"
+                BorderWidth="1"
+            HorizontalOptions="Start"
+            Margin="3,3,3,3"
+            IsVisible="true"
+            Clicked="MainMenuButton_Clicked" />
+
+            <!-- POP-UP Ikkuna alue valinnalle -->
+            <Frame 
+            x:Name="PopupFrame" 
+               BackgroundColor="#80F5F5DC" 
+               Padding="5" IsVisible="False" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" 
+               WidthRequest="300" 
+               HeightRequest="500"
+            BorderColor="Black"
+            >
+                <StackLayout>
+                    <ListView 
+                x:Name="ListView" 
+                ItemTapped="AreaListView_ItemTapped" 
+                
+                MinimumWidthRequest="500" 
+                Margin="0,0,0,0" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ScrollView>
+                                        <Label 
+                                    Text="{Binding 
+                                    FullDescription}" 
+                                    Margin="10,5,0,5"
+                                    TextColor="Black"/>
+                                    </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <HorizontalStackLayout>
+                        <Button x:Name="AreaPopupOkButton" Text="Ok" Clicked="AreaPopupOkButtonClicked" Margin="3,3,3,3" 
+                            MinimumWidthRequest="140" />
+                        <Button x:Name="AreaPopupCancelButton" Text="Cancel" Clicked="AreaPopupCancelButtonClicked" 
+                            MinimumWidthRequest="140" Margin="3,3,3,3" />
+                    </HorizontalStackLayout>
+                </StackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

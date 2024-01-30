@@ -35,7 +35,8 @@
                 VerticalOptions="Center" />
             
                 <!-- nappijoka suorittaa navigoinnin -->
-            <Button Text="Siirry Management-sivulle" Clicked="NavigateToManagementButtonClicked" />
+            
+            <Button Text="Manage" Clicked="NavigateToAreaManagementButtonClicked" />
 
 
         </VerticalStackLayout>
