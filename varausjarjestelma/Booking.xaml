@@ -6,7 +6,7 @@
 
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="15">
-            <Button x:Name="MainPageButton" Text="Main Page" Clicked="MainPageButtonClicked" BorderColor="Black" BorderWidth="1"
+            <Button x:Name="MainMenuButton" Text="Main Menu" Clicked="MainMenuButtonClicked" BorderColor="Black" BorderWidth="1"
                     />
 
             <!-- Kaupungin valinta -->

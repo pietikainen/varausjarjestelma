@@ -33,7 +33,7 @@ public partial class Booking : ContentPage
         EndDay.Text = e.NewDate.ToString();
     }
 
-    private void MainPageButtonClicked(object sender, EventArgs e)
+    private void MainMenuButtonClicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new MainPage());
     }

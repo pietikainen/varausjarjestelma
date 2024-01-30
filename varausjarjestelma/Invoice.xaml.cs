@@ -18,7 +18,7 @@ public partial class Invoice : ContentPage
 
     }
 
-    async Task MainPageButton_Clicked(object sender, EventArgs e)
+    async void MainMenuButtonClicked(object sender, EventArgs e)
     {
        await Navigation.PushAsync(new MainPage());
     }
