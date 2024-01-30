@@ -68,6 +68,12 @@
 	  <MauiXaml Update="AreaManagement.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Booking.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Invoice.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Management.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

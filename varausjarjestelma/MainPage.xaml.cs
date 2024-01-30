@@ -58,5 +58,13 @@ namespace varausjarjestelma
         {
             await Navigation.PushAsync(new AreaManagement());
         }
+        async void NavigateToBookingButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Booking());
+        }
+        async void NavigateToInvoiceButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Invoice());
+        }
     }
 }

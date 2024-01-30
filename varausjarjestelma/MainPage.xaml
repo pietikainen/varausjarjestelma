@@ -37,7 +37,8 @@
                 <!-- nappijoka suorittaa navigoinnin -->
             
             <Button Text="Manage" Clicked="NavigateToAreaManagementButtonClicked" />
-
+            <Button Text="Booking" Clicked="NavigateToBookingButtonClicked" />
+            <Button Text="Invoice" Clicked="NavigateToInvoiceButtonClicked" />
 
         </VerticalStackLayout>
     </ScrollView>
