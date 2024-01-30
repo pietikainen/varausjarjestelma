@@ -55,17 +55,17 @@ namespace varausjarjestelma
         }
 
 
-        async void NavigateToAreaManagementButtonClicked(object sender, EventArgs e)
+       private async void NavigateToAreaManagementButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AreaManagement());
+              await Navigation.PushAsync(new AreaManagement());
         }
-        async void NavigateToBookingButtonClicked(object sender, EventArgs e)
+        private async void NavigateToBookingButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Booking());
+             await Navigation.PushAsync(new Booking());
         }
-        async void NavigateToInvoiceButtonClicked(object sender, EventArgs e)
+        private async void NavigateToInvoiceButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Invoice());
+            await  Navigation.PushAsync(new Invoice());
         }
     }
 }
