@@ -9,6 +9,7 @@ namespace varausjarjestelma
         public MainPage()
         {
             InitializeComponent();
+
         }
 
         private async void OnDatabaseTestButtonClicked(object sender, EventArgs e)
