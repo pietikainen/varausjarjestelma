@@ -1,12 +1,116 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:varausjarjestelma"
              x:Class="varausjarjestelma.Invoice"
-             Title="Invoice">
+             Title="Invoice"
+             >
+    
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        
+            <Grid Padding="20"
+                  RowDefinitions="Auto, Auto, Auto"
+                  ColumnDefinitions="Auto, *, Auto"
+                  RowSpacing="10"
+                  ColumnSpacing="10">
+
+                <!-- Hakukentät -->
+                <Label Text="Search by Customer Name:" Grid.Row="0" Grid.Column="0" VerticalOptions="Center"/>
+                <Entry x:Name="CustomerNameEntry" Grid.Row="0" Grid.Column="1" />
+
+                <Label Text="Search by Invoice Number:" Grid.Row="1" Grid.Column="0" VerticalOptions="Center"/>
+                <Entry x:Name="InvoiceNumberEntry" Grid.Row="1" Grid.Column="1" />
+
+                <!-- Haku-painike -->
+                <Button Text="Search" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Clicked="Button_Clicked"/>
+
+                <!-- Laskujen listaus -->
+            <Frame Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="250" HasShadow="True">
+                <ListView x:Name="InvoicesListView" BackgroundColor="AliceBlue">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10" ColumnDefinitions="*,*,*,*">
+                                    <Label Text="{Binding InvoiceNumber}" Grid.Column="0" FontAttributes="Bold"/>
+                                    <Label Text="{Binding CustomerName}" Grid.Column="1"/>
+                                    <Label Text="{Binding Amount, StringFormat='Amount: {0:C}'}" Grid.Column="2"/>
+                                    <Label Text="{Binding DueDate, StringFormat='Due: {0:d}'}" Grid.Column="3"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+
+        </Grid>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <!-- Skaalautuva sarake, joka täyttää jäljellä olevan tilan -->
+                <ColumnDefinition Width="100"/>
+                <!-- Kiinteä leveys 100 pikseliä -->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <!-- Skaalautuva rivi, joka täyttää jäljellä olevan tilan -->
+                <RowDefinition Height="50"/>
+                <!-- Kiinteä korkeus 50 pikseliä -->
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Invoice ID"/>
+            <Entry Grid.Row="1" Text="Entry"/>
+            <Button Text="Nappi 2" Grid.Row="2" Grid.Column="0" BorderColor="Black" BorderWidth="1"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="Reservation ID"/>
+            <Entry Grid.Row="1" Grid.Column="1" Text="Entry"/>
+            <Button Text="Nappi 2" Grid.Row="2" Grid.Column="1" BorderColor="Black" BorderWidth="1"/>
+            <Button Text="Nappi 2" Grid.Row="2" Grid.Column="2" BorderColor="Black" BorderWidth="1"/>
+        </Grid>
+        <Frame Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="500" HasShadow="True">
+            <ScrollView BackgroundColor="Beige" >
+                <Grid Padding="20"
+              RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+              ColumnDefinitions="Auto, *"
+              RowSpacing="10">
+
+                    <Label Text="Invoice ID:" Grid.Row="0" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding InvoiceId}" Grid.Row="0" Grid.Column="1"/>
+
+                    <Label Text="Reservation:" Grid.Row="1" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding Reservation}" Grid.Row="1" Grid.Column="1"/>
+
+                    <Label Text="Amount:" Grid.Row="2" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding Amount}" Grid.Row="2" Grid.Column="1"/>
+
+                    <Label Text="VAT Class:" Grid.Row="3" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding VatClass}" Grid.Row="3" Grid.Column="1"/>
+
+                    <Label Text="Paid:" Grid.Row="4" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding IsPaid}" Grid.Row="4" Grid.Column="1"/>
+
+                    <Label Text="Customer ID:" Grid.Row="5" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding CustomerId}" Grid.Row="5" Grid.Column="1"/>
+
+                    <Label Text="Customer:" Grid.Row="6" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding CustomerName}" Grid.Row="6" Grid.Column="1"/>
+
+                    <Label Text="Postal Code:" Grid.Row="7" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding PostalCode}" Grid.Row="7" Grid.Column="1"/>
+
+                    <Label Text="Street Address:" Grid.Row="8" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding StreetAddress}" Grid.Row="8" Grid.Column="1"/>
+
+                    <Label Text="Email:" Grid.Row="9" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding Email}" Grid.Row="9" Grid.Column="1"/>
+
+                    <Label Text="Phone Number:" Grid.Row="10" Grid.Column="0" FontAttributes="Bold"/>
+                    <Label Text="{Binding PhoneNumber}" Grid.Row="10" Grid.Column="1"/>
+
+                </Grid>
+            </ScrollView>
+        </Frame>
     </VerticalStackLayout>
 </ContentPage>
