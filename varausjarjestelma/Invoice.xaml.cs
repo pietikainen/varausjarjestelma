@@ -1,3 +1,4 @@
+using System.Diagnostics;
 
 namespace varausjarjestelma;
 
@@ -13,9 +14,32 @@ public partial class Invoice : ContentPage
         BindingContext = new InvoiceViewModel();
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
+    public async void OnSearchButtonClicked(object sender, EventArgs e)
     {
-
+        try
+        {
+            var helper = new Database.MySqlHelper();
+        
+        // Tarkasta hakuehdot
+        // Jos tyhjä, aja GetAllInvoicesAsync
+        if (string.IsNullOrEmpty(CustomerNameEntry.Text))
+        {
+            var invoices = await helper.GetAllInvoicesAsync();
+            InvoicesListView.ItemsSource = invoices;
+            }
+        }
+        // TODO: Muuten hakukenttien arvot ja aja GetInvoicesBySearchAsync
+        catch (AggregateException ae)
+        {
+            foreach (var innerException in ae.InnerExceptions)
+            {
+                Debug.WriteLine($"Inner Exception: {innerException.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+        }   
     }
 
     async void MainMenuButtonClicked(object sender, EventArgs e)
