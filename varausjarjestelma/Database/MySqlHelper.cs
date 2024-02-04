@@ -46,7 +46,7 @@ namespace varausjarjestelma.Database
             }
         }
 
-        public async Task<List<AlueData>> GetAllAlueDataAsync()
+        public async Task<List<AreaData>> GetAllAlueDataAsync()
         {
             using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
             {
@@ -55,14 +55,14 @@ namespace varausjarjestelma.Database
                 using (var command = new MySqlCommand("SELECT * FROM alue", connection))
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    List<AlueData> alueDataList = new List<AlueData>();
+                    List<AreaData> alueDataList = new List<AreaData>();
 
                     while (await reader.ReadAsync())
                     {
-                        AlueData alueData = new AlueData
+                        AreaData alueData = new AreaData
                         {
-                            AlueId = reader.GetInt32("alue_id"),
-                            Nimi = reader.GetString("nimi")
+                            AreaId = reader.GetInt32("alue_id"),
+                            Name = reader.GetString("nimi")
                         };
                         alueDataList.Add(alueData);
                     }
@@ -110,10 +110,10 @@ namespace varausjarjestelma.Database
             }
         }
 
-        public class AlueData
+        public class AreaData
         {
-            public int AlueId { get; set; }
-            public required string Nimi { get; set; }
+            public int AreaId { get; set; }
+            public string Name { get; set; }
         }
 
         public class InvoiceData
@@ -123,5 +123,49 @@ namespace varausjarjestelma.Database
             public double InvoiceAmount { get; set; }
             public int IsPaid { get; set; }
         }   
+
+        public class ReservationData
+        {
+            public int ReservationId { get; set; }
+            public int CustomerId { get; set; }
+            public int CabinId { get; set; }
+            public DateTime ReservationDate { get; set; }
+            public DateTime ConfirmationDate { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+        }
+
+        public class CustomerData
+        {
+            public int CustomerId { get; set; }
+            public int PostalCode { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Address { get; set; }
+            public string Email { get; set; }
+            public string Phone { get; set; }
+
+        }
+
+        public class CabinData
+        {
+            public int CabinId { get; set; }
+            public int AreaId { get; set; }
+            public int PostalCode { get; set; }
+            public string CabinName { get; set; }
+            public string Address { get; set; }
+            public double Price { get; set; }
+            public string Description { get; set; }
+            public int Beds { get; set; }
+            public string Features { get; set; }
+        }
+
+        public class PostalCodeData
+        {
+            public int PostalCode { get; set; }
+            public string City { get; set; }
+        }
+
+
     }
 }

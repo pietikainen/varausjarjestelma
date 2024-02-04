@@ -40,7 +40,7 @@ public partial class Invoice : ContentPage
         }
     }
 
-    public async void OnSearchButtonClicked(object sender, EventArgs e)
+    public void OnSearchButtonClicked(object sender, EventArgs e)
     {
         // kirjoita filtterityyppinen ratkaisu tähän
     }
