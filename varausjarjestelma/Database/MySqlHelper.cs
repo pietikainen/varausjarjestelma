@@ -104,7 +104,6 @@ namespace varausjarjestelma.Database
                             IsPaid = reader.GetInt32("maksettu")
                         };
                         invoiceDataList.Add(invoiceData);
-                        Debug.WriteLine(invoiceData.InvoiceNumber + " " + invoiceData.CustomerName + " " + invoiceData.InvoiceAmount + " " + invoiceData.IsPaid);
                     }
                     return invoiceDataList;
                 }
