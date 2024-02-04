@@ -46,7 +46,7 @@ namespace varausjarjestelma.Database
             }
         }
 
-        public async Task<List<AreaData>> GetAllAlueDataAsync()
+        public async Task<List<AreaData>> GetAllAreaDataAsync()
         {
             using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
             {
@@ -55,18 +55,18 @@ namespace varausjarjestelma.Database
                 using (var command = new MySqlCommand("SELECT * FROM alue", connection))
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-                    List<AreaData> alueDataList = new List<AreaData>();
+                    List<AreaData> areaDataList = new List<AreaData>();
 
                     while (await reader.ReadAsync())
                     {
-                        AreaData alueData = new AreaData
+                        AreaData areaData = new AreaData
                         {
                             AreaId = reader.GetInt32("alue_id"),
                             Name = reader.GetString("nimi")
                         };
-                        alueDataList.Add(alueData);
+                        areaDataList.Add(areaData);
                     }
-                    return alueDataList;
+                    return areaDataList;
                 }
             }
         }
@@ -121,6 +121,7 @@ namespace varausjarjestelma.Database
             public int InvoiceNumber { get; set; }
             public string CustomerName { get; set; }
             public double InvoiceAmount { get; set; }
+            public double Vat { get; set; }
             public int IsPaid { get; set; }
         }   
 
@@ -147,6 +148,23 @@ namespace varausjarjestelma.Database
 
         }
 
+        public class ServiceData
+        {
+            public int ServiceId { get; set; }
+            public string AreaId { get; set; }
+            public string Name { get; set; }
+            public string Type { get; set; }
+            public string Description { get; set; }
+            public double Price { get; set; }
+            public double Vat { get; set; }
+        }
+
+        public class ServicesOnReservationData
+        {
+            public int ReservationId { get; set; }
+            public int ServiceId { get; set; }
+            public int Amount { get; set; }
+        }
         public class CabinData
         {
             public int CabinId { get; set; }
