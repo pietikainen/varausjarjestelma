@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls.Platform;
 using System.Diagnostics;
 
 namespace varausjarjestelma;
@@ -12,23 +13,20 @@ public partial class Invoice : ContentPage
 
         InitializeComponent();
         BindingContext = new InvoiceViewModel();
+        OnPageLoad();
+
     }
 
-    public async void OnSearchButtonClicked(object sender, EventArgs e)
+    private async void OnPageLoad()
+    // Ladataan kaikki laskut tietokannasta ja näytetään ne InvoicesListView:ssä.
     {
         try
         {
             var helper = new Database.MySqlHelper();
-        
-        // Tarkasta hakuehdot
-        // Jos tyhjä, aja GetAllInvoicesAsync
-        if (string.IsNullOrEmpty(CustomerNameEntry.Text))
-        {
             var invoices = await helper.GetAllInvoicesAsync();
             InvoicesListView.ItemsSource = invoices;
-            }
+
         }
-        // TODO: Muuten hakukenttien arvot ja aja GetInvoicesBySearchAsync
         catch (AggregateException ae)
         {
             foreach (var innerException in ae.InnerExceptions)
@@ -39,7 +37,12 @@ public partial class Invoice : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine($"An error occurred: {ex.Message}");
-        }   
+        }
+    }
+
+    public async void OnSearchButtonClicked(object sender, EventArgs e)
+    {
+        // kirjoita filtterityyppinen ratkaisu tähän
     }
 
     async void MainMenuButtonClicked(object sender, EventArgs e)
@@ -49,11 +52,11 @@ public partial class Invoice : ContentPage
 
     private void PrintInvoiceButton_Clicked(object sender, EventArgs e)
     {
-
+        // kirjoita tulostusmetodi tähän
     }
 
     private void SendEmailButton_Clicked(object sender, EventArgs e)
     {
-
+        // kirjoita sähköpostin lähetysmetodi tähän
     }
 }
