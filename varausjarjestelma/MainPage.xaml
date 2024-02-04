@@ -3,17 +3,18 @@
     x:Class="varausjarjestelma.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    WidthRequest="500"  HeightRequest="800" >
+    HeightRequest="800"
+    WidthRequest="500">
     <ContentPage.Resources>
 
         <ResourceDictionary>
             <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="DarkGoldenrod"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="CornerRadius" Value="10"/>
-                <Setter Property="Margin" Value="5"/>
-                <!-- Varjostuksen määrittely -->
+                <Setter Property="BackgroundColor" Value="DarkGoldenrod" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Margin" Value="5" />
+                <!--  Varjostuksen määrittely  -->
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -21,7 +22,11 @@
                                 <VisualState.Setters>
                                     <Setter Property="Button.Shadow">
                                         <Setter.Value>
-                                            <Shadow Brush="Black" Opacity="0.8" Radius="5" Offset="4,4"/>
+                                            <Shadow
+                                                Brush="Black"
+                                                Opacity="0.8"
+                                                Radius="5"
+                                                Offset="4,4" />
                                         </Setter.Value>
                                     </Setter>
                                 </VisualState.Setters>
@@ -35,50 +40,35 @@
     </ContentPage.Resources>
 
 
-    <Grid >
-        <Image Source="mokkitausta.png" Aspect="Fill" />
+    <Grid>
+        <Image Aspect="Fill" Source="mokkitausta.png" />
         <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
-            <Image
-                Aspect="AspectFit"
-                HeightRequest="185"
-                SemanticProperties.Description="dot net bot in a race car number eight"
-                Source="mokkilogo.png" />
+            <VerticalStackLayout Padding="30,0" Spacing="25">
+                <Image
+                    Aspect="AspectFit"
+                    HeightRequest="185"
+                    SemanticProperties.Description="dot net bot in a race car number eight"
+                    Source="mokkilogo.png" />
 
-            <Label
-                x:Name="MySqlTestLabel"
-                HorizontalOptions="Center"
-                SemanticProperties.HeadingLevel="Level1"
-                Style="{StaticResource Headline}"
-                Text="MÖKKI MASTER"
-                FontAttributes="Bold"
-                FontFamily="header"
-                VerticalOptions="Center"
-                WidthRequest="300" />
+                <!--  nappijoka suorittaa navigoinnin  -->
 
-            <Button
-                x:Name="MySqlTestBtn"
-                Clicked="OnDatabaseTestButtonClicked"
-                HorizontalOptions="Center"
-                Text="Click to test MySQL Database!"
-                VerticalOptions="Center"
-                WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}"  />
+                <Button
+                    Clicked="NavigateToAreaManagementButtonClicked"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    Text="Manage"
+                    WidthRequest="300" />
+                <Button
+                    Clicked="NavigateToBookingButtonClicked"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    Text="Booking"
+                    WidthRequest="300" />
+                <Button
+                    Clicked="NavigateToInvoiceButtonClicked"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    Text="Invoice"
+                    WidthRequest="300" />
 
-            <Button
-                x:Name="MySqlReadBtn"
-                Clicked="OnDatabaseReadButtonClicked"
-                HorizontalOptions="Center"
-                Text="Click to read MySQL data from table 'alue'"
-                VerticalOptions="Center"
-                WidthRequest="300" Style="{StaticResource DarkBrownButtonStyle}"  />
-            
-                <!-- nappijoka suorittaa navigoinnin -->
-
-                <Button Text="Manage" WidthRequest="300"  Clicked="NavigateToAreaManagementButtonClicked" Style="{StaticResource DarkBrownButtonStyle}" />
-                <Button Text="Booking" WidthRequest="300"  Clicked="NavigateToBookingButtonClicked" Style="{StaticResource DarkBrownButtonStyle}" />
-                <Button Text="Invoice" WidthRequest="300"  Clicked="NavigateToInvoiceButtonClicked" Style="{StaticResource DarkBrownButtonStyle}" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>
