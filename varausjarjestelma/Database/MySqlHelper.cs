@@ -71,10 +71,58 @@ namespace varausjarjestelma.Database
             }
         }
 
+        public async Task<List<InvoiceData>> GetAllInvoicesAsync()
+        {
+            using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(
+                    @"SELECT
+                        l.lasku_id,
+                        concat(a.sukunimi, ' ', a.etunimi) AS asiakas,
+	                    l.summa,
+	                    l.maksettu
+                    FROM 
+	                    lasku l
+                    JOIN
+                    	varaus v ON l.varaus_id = v.varaus_id
+                    JOIN
+                    	asiakas a ON v.asiakas_id = a.asiakas_id;", connection))
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    List<InvoiceData> invoiceDataList = new List<InvoiceData>();
+
+                    while (await reader.ReadAsync())
+                    {
+                        InvoiceData invoiceData = new InvoiceData
+                        {
+                            InvoiceNumber = reader.GetInt32("lasku_id"),
+                            CustomerName = reader.GetString("asiakas"),
+                            InvoiceAmount = reader.GetDouble("summa"),
+                            IsPaid = reader.GetInt32("maksettu")
+                        };
+                        invoiceDataList.Add(invoiceData);
+                        Debug.WriteLine(invoiceData.InvoiceNumber + " " + invoiceData.CustomerName + " " + invoiceData.InvoiceAmount + " " + invoiceData.IsPaid);
+                    }
+                    return invoiceDataList;
+                }
+            }
+        }
+
         public class AlueData
         {
             public int AlueId { get; set; }
-            public string Nimi { get; set; }
+            public required string Nimi { get; set; }
         }
+
+        public class InvoiceData
+        {
+            public int InvoiceNumber { get; set; }
+            public string CustomerName { get; set; }
+            public double InvoiceAmount { get; set; }
+            public int IsPaid { get; set; }
+        }   
     }
 }
