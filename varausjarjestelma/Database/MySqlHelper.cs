@@ -45,6 +45,97 @@ namespace varausjarjestelma.Database
                 return false;
             }
         }
+        public async Task<List<CustomerData>> GetAllCustomerDataAsync()
+        {
+            using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT * FROM asiakas JOIN posti ON asiakas.postinro = posti.postinro;", connection))
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    List<CustomerData> customerDataList = new List<CustomerData>();
+
+                    while (await reader.ReadAsync())
+                    {
+                        CustomerData customerData = new CustomerData
+                        {
+                            CustomerId = reader.GetInt32("asiakas_id"),
+                            PostalCode = reader.GetInt32("postinro"),
+                            FirstName = reader.GetString("etunimi"),
+                            LastName = reader.GetString("sukunimi"),
+                            Address = reader.GetString("lahiosoite"),
+                            Email = reader.GetString("email"),
+                            Phone = reader.GetString("puhelinnro")
+                        };
+                        customerDataList.Add(customerData);
+                    }
+                    return customerDataList;
+                }
+            }
+        }
+
+        public async Task<List<ServiceData>> GetAllServiceDataAsync()
+        {
+            using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT * FROM asiakas JOIN posti ON asiakas.postinro = posti.postinro;", connection))
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    List<ServiceData> serviceDataList = new List<ServiceData>();
+
+                    while (await reader.ReadAsync())
+                    {
+                            ServiceData serviceData = new ServiceData
+                            {
+                            ServiceId = reader.GetInt32("palvelu_id"),
+                            AreaId = reader.GetString("alue_id"),
+                            Name = reader.GetString("nimi"),
+                            Type = reader.GetString("tyyppi"),
+                            Description = reader.GetString("kuvaus"),
+                            Price = reader.GetDouble("hinta"),
+                            Vat = reader.GetDouble("alv")
+                        };
+                            serviceDataList.Add(serviceData);
+                    }
+                    return serviceDataList;
+                }
+            }
+        }
+
+        public async Task<List<CabinData>> GetAllCabinDataAsync()
+        {
+            using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT * FROM mokki;", connection))
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    List<CabinData> cabinDataList = new List<CabinData>();
+
+                    while (await reader.ReadAsync())
+                    {
+                        CabinData cabinData = new CabinData
+                        {
+                            CabinId = reader.GetInt32("mokki_id"),
+                            AreaId = reader.GetInt32("alue_id"),
+                            PostalCode = reader.GetInt32("postinro"),
+                            CabinName = reader.GetString("mokkinimi"),
+                            Address = reader.GetString("katuosoite"),
+                            Price = reader.GetDouble("hinta"),
+                            Description = reader.GetString("kuvaus"),
+                            Beds = reader.GetInt32("henkilomaara"),
+                            Features = reader.GetString("varustelu")
+                        };
+                        cabinDataList.Add(cabinData);
+                    }
+                    return cabinDataList;
+                }
+            }
+        }
 
         public async Task<List<AreaData>> GetAllAreaDataAsync()
         {
