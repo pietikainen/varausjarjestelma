@@ -207,7 +207,7 @@ namespace varausjarjestelma.Database
             }
         }
 
-        public async Task<List<InvoiceData>> GetAllInvoicesAsync()
+        public async Task<List<InvoiceData>> GetAllInvoicesPreviewAsync()
         {
             using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
             {
