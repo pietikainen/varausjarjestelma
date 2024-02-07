@@ -71,6 +71,51 @@ namespace varausjarjestelma.Database
             }
         }
 
+        public async Task<bool> AddAreaAsync(string newArea)
+        {
+            MySqlConnection connection = new MySqlConnection(connectionStringBuilder.ConnectionString);
+
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                await connection.OpenAsync();
+
+                string query = "INSERT INTO alue(nimi) VALUES(" + newArea + ");";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+
+            connection.Close();
+            Console.WriteLine("Done.");
+            return true;
+        }
+
+        public async Task<AreaData> GetAreaAsync(int areaID)
+        {
+            string query = "SELECT * FROM alue WHERE alue_id=" + areaID + ");";
+
+            using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(query, connection))
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    AreaData alueData = new AreaData();
+
+                    await reader.ReadAsync();
+                    alueData.AreaId = reader.GetInt32("alue_id");
+                    alueData.Name = reader.GetString("nimi");
+                    return alueData;
+                }
+            }
+        }
+
         public async Task<List<InvoiceData>> GetAllInvoicesAsync()
         {
             using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
