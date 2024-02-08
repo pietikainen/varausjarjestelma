@@ -13,17 +13,17 @@ public partial class Invoice : ContentPage
 
         InitializeComponent();
         BindingContext = new InvoiceViewModel();
-        OnPageLoad();
+        GetInvoicesPreviewData();
 
     }
 
-    private async void OnPageLoad()
+    private async void GetInvoicesPreviewData()
     // Ladataan kaikki laskut tietokannasta ja n‰ytet‰‰n ne InvoicesListView:ss‰.
     {
         try
         {
             var helper = new Database.MySqlHelper();
-            var invoices = await helper.GetAllInvoicesAsync();
+            var invoices = await helper.GetAllInvoicesPreviewAsync();
             InvoicesListView.ItemsSource = invoices;
 
         }
@@ -40,9 +40,38 @@ public partial class Invoice : ContentPage
         }
     }
 
+
+    private void FilterInvoicesByNumber(object sender, EventArgs e)
+    {
+
+
+    }
+
+    private void FilterInvoicesByName(object sender, EventArgs e)
+    {
+
+    }
+
+
+    // Button clicked event handlers start here
+
     public void OnSearchButtonClicked(object sender, EventArgs e)
     {
-        // kirjoita filtterityyppinen ratkaisu t‰h‰n
+        if (InvoiceNumberEntry.Text != null)
+        {
+            FilterInvoicesByNumber(sender, e);
+        }
+        else if (CustomerNameEntry.Text != null)
+        {
+            FilterInvoicesByName(sender, e);
+        }
+        else
+        {
+            InvoicesListView.ItemsSource = null;
+            GetInvoicesPreviewData();
+            // =?=
+        }
+
     }
 
     async void MainMenuButtonClicked(object sender, EventArgs e)
