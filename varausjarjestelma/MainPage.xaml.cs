@@ -1,6 +1,12 @@
-﻿using Mysqlx;
-using Org.BouncyCastle.Tls;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using System.ComponentModel.DataAnnotations;
+using MySql.EntityFrameworkCore;
 using System.Diagnostics;
+using varausjarjestelma.Database;
+using Microsoft.Extensions.Options;
+using System.ComponentModel;
+
 
 namespace varausjarjestelma
 {
@@ -24,5 +30,7 @@ namespace varausjarjestelma
         {
             await  Navigation.PushAsync(new Invoice());
         }
+
+
     }
 }
