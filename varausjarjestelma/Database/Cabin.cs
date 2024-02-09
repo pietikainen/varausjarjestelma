@@ -12,7 +12,7 @@ namespace varausjarjestelma.Database
         [Key]
         public int mokki_id { get; set; }
         public int alue_id { get; set; }
-        public int postinro { get; set; }
+        public string postinro { get; set; }
         public string mokkinimi { get; set; }
         public string katuosoite { get; set; }
         public double hinta { get; set; }

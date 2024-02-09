@@ -13,7 +13,7 @@ namespace varausjarjestelma.Database
         public int palvelu_id { get; set; }
         public int alue_id { get; set; }
         public string nimi { get; set; }
-        public string tyyppi { get; set; }
+        public int tyyppi { get; set; }
         public string kuvaus { get; set; }
         public double hinta { get; set; }
         public double alv { get; set; }

@@ -10,7 +10,7 @@ namespace varausjarjestelma.Database
     public class PostalCode
     {
         [Key]
-        public int postinro { get; set; }
+        public string postinro { get; set; }
         public string toimipaikka { get; set; }
     }
 }
