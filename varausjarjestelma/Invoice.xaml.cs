@@ -22,7 +22,7 @@ public partial class Invoice : ContentPage
     {
         try
         {
-            var helper = new Database.MySqlHelper();
+            var helper = new Database.MySqlController();
             var invoices = await helper.GetAllInvoicesPreviewAsync();
             InvoicesListView.ItemsSource = invoices;
 
