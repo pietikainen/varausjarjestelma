@@ -24,30 +24,20 @@
                 x:Name="MySqlTestBtn"
                 Clicked="OnDatabaseTestButtonClicked"
                 HorizontalOptions="Center"
-                Text="Click to test MySQL Database!"
+                Text="Click to test MySQL Database! (using old connection)"
                 VerticalOptions="Center" />
 
             <Button
                 x:Name="MySqlReadBtn"
-                Clicked="OnDatabaseReadButtonClicked"
+                Clicked="MySqlReadBtn_Clicked"
                 HorizontalOptions="Center"
-                Text="Click to read MySQL data from table 'alue'"
+                Text="Click to read MySQL data from table 'asiakas' (using Entity Framework Core)"
                 VerticalOptions="Center" />
 
-            <Button
-                x:Name="PopulateListViewBtn"
-                Clicked="OnPopulateListViewButtonClicked"
-                HorizontalOptions="Center"
-                Text="Populate listview"
-                VerticalOptions="Center" />
-
-            <ListView
-                x:Name="MySqlListView"
-                ItemsSource="{Binding Alueet}"
-                VerticalOptions="FillAndExpand">
+            <ListView x:Name="MySqlListView" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Nimi}" />
+                        <TextCell Text="{Binding FullName}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

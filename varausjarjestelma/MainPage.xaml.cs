@@ -1,6 +1,12 @@
-﻿using Mysqlx;
-using Org.BouncyCastle.Tls;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using System.ComponentModel.DataAnnotations;
+using MySql.EntityFrameworkCore;
 using System.Diagnostics;
+using varausjarjestelma.Database;
+using Microsoft.Extensions.Options;
+using System.ComponentModel;
+
 
 namespace varausjarjestelma
 {
@@ -15,7 +21,7 @@ namespace varausjarjestelma
         {
             try
             {
-                var helper = new Database.MySqlHelper();
+                var helper = new Database.MySqlController();
                 var isConnected = await helper.TestConnectionAsync();
                 MySqlTestLabel.Text = isConnected ? "Connected successfully" : "Connection failed";
             }
@@ -32,46 +38,30 @@ namespace varausjarjestelma
             }
         }
 
-        private async void OnDatabaseReadButtonClicked(object sender, EventArgs e)
+        private async void MySqlReadBtn_Clicked(object sender, EventArgs e)
         {
-            try
+            var customers = await Database.MySqlController.GetCustomersAsync();
+            List<Customer> customerDataList = new List<Customer>();
+
+            if (customers != null)
             {
-                var helper = new Database.MySqlHelper();
-                var alueDataList = await helper.GetAllAlueDataAsync();
-                MySqlTestLabel.Text = $"Found {alueDataList.Count} rows";
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.InnerExceptions)
+                foreach (var customer in customers)
                 {
-                    Debug.WriteLine($"Inner Exception: {innerException.Message}");
+                    customerDataList.Add(new Customer
+                    {
+                        asiakas_id = customer.asiakas_id,
+                        postinro = customer.postinro,
+                        etunimi = customer.etunimi,
+                        sukunimi = customer.sukunimi,
+                        lahiosoite = customer.lahiosoite,
+                        email = customer.email,
+                        puhelinnro = customer.puhelinnro
+                    });
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"An error occurred: {ex.Message}");
+                MySqlListView.ItemsSource = customerDataList;
             }
         }
 
-        private async void OnPopulateListViewButtonClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var helper = new Database.MySqlHelper();
-                var alueDataList = await helper.GetAllAlueDataAsync();
-                MySqlListView.ItemsSource = alueDataList;
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.InnerExceptions)
-                {
-                    Debug.WriteLine($"Inner Exception: {innerException.Message}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"An error occurred: {ex.Message}");
-            }
-        }   
+
     }
 }
