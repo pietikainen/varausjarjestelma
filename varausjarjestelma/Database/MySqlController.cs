@@ -115,13 +115,14 @@ namespace varausjarjestelma.Database
             }
         }
 
+
         public async Task<List<ServiceData>> GetAllServiceDataAsync()
         {
             using (var connection = new MySqlConnection(connectionStringBuilder.ConnectionString))
             {
                 await connection.OpenAsync();
 
-                using (var command = new MySqlCommand("SELECT * FROM asiakas JOIN posti ON asiakas.postinro = posti.postinro;", connection))
+                using (var command = new MySqlCommand("SELECT * FROM palvelu;", connection))
                 using (var reader = await command.ExecuteReaderAsync())
                 {
                     List<ServiceData> serviceDataList = new List<ServiceData>();
@@ -131,9 +132,9 @@ namespace varausjarjestelma.Database
                             ServiceData serviceData = new ServiceData
                             {
                             ServiceId = reader.GetInt32("palvelu_id"),
-                            AreaId = reader.GetString("alue_id"),
+                            AreaId = reader.GetInt32("alue_id"),
                             Name = reader.GetString("nimi"),
-                            Type = reader.GetString("tyyppi"),
+                            Type = reader.GetInt32("tyyppi"),
                             Description = reader.GetString("kuvaus"),
                             Price = reader.GetDouble("hinta"),
                             Vat = reader.GetDouble("alv")
@@ -327,9 +328,9 @@ namespace varausjarjestelma.Database
         public class ServiceData
         {
             public int ServiceId { get; set; }
-            public string AreaId { get; set; }
+            public int AreaId { get; set; }
             public string Name { get; set; }
-            public string Type { get; set; }
+            public int Type { get; set; }
             public string Description { get; set; }
             public double Price { get; set; }
             public double Vat { get; set; }

@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using varausjarjestelma.Database;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace varausjarjestelma;
 
 public partial class AreaManagement : ContentPage
@@ -5,6 +10,30 @@ public partial class AreaManagement : ContentPage
     public AreaManagement()
     {
         InitializeComponent();
+        BindingContext = new ServiceViewModel();
+        ServicesListData();
+    }
+
+    private async void ServicesListData()
+    {
+        try
+        {
+            var dataB = new Database.MySqlController();
+            var services = await dataB.GetAllServiceDataAsync();
+            ServicesListView.ItemsSource = services;
+            AddServicesListView.ItemsSource = services;
+        }
+        catch (AggregateException ae)
+        {
+            foreach (var innerException in ae.InnerExceptions)
+            {
+                Debug.WriteLine($"Inner Exception: {innerException.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+        }
     }
 
 
@@ -70,7 +99,21 @@ public partial class AreaManagement : ContentPage
 
     private void AddNewServiceButton_Clicked(object sender, EventArgs e)
     {
+        var context = new varausjarjestelma.Database.AppContext();
 
+        Service newService = new Service()
+        {
+            //palvelu_id = 40004, // lis‰‰ kantaan palvelu_id:lle AUTO_INCREMENT
+            alue_id = Convert.ToInt32(ServiceTypeEntry.Text),
+            nimi = ServiceNameEntry.Text.ToString(),
+            kuvaus = ServiceDescEntry.Text.ToString(),
+            tyyppi = Convert.ToInt32(ServiceTypeEntry.Text),
+            hinta = Convert.ToInt32(ServicePriceEntry.Text),
+            alv = Convert.ToInt32(ServiceVatEntry.Text)
+        };
+
+        context.palvelu.Add(newService);
+        context.SaveChanges();
     }
 
     private void DeleteServiceButton_Clicked(object sender, EventArgs e)

@@ -71,7 +71,7 @@
     HorizontalOptions="Start"
     VerticalOptions="Start">
                         <ListView 
-                x:Name="ServiceListView"
+                x:Name="ServicesListView"
                 ItemTapped="ServiceListView_ItemTapped"
                 BackgroundColor="#80F5F5DC"
                 MinimumWidthRequest="500" 
@@ -79,13 +79,15 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <ScrollView>
-                                            <Label 
-                                Text="{Binding 
-                                FullDescription}" 
-                                Margin="10,5,0,5"
-                                TextColor="Black"/>
-                                        </ScrollView>
+                                            <Grid Padding="10" ColumnDefinitions="*,*,*,*,*,*,*">
+                                                <Label Grid.Column="0" Text="{Binding ServiceId}" />
+                                                <Label Grid.Column="1" Text="{Binding AreaId}" />
+                                                <Label Grid.Column="2" Text="{Binding Name}" />
+                                                <Label Grid.Column="3" Text="{Binding Type}" />
+                                                <Label Grid.Column="4" Text="{Binding Description}" />
+                                                <Label Grid.Column="5" Text="{Binding Price}" />
+                                                <Label Grid.Column="6" Text="{Binding Vat}" />
+                                            </Grid>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -208,7 +210,7 @@
                 HorizontalOptions="Start"
                 VerticalOptions="Start">
                     <ListView 
-            x:Name="AddServiceListView"
+            x:Name="AddServicesListView"
             ItemTapped="AddServiceListView_ItemTapped"
             BackgroundColor="#80F5F5DC"
             MinimumWidthRequest="500" 
@@ -218,11 +220,15 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <ScrollView>
-                                        <Label 
-                            Text="{Binding 
-                            FullDescription}" 
-                            Margin="10,5,0,5"
-                            TextColor="Black"/>
+                                            <Grid Padding="10" ColumnDefinitions="*,*,*,*,*,*,*">
+                                                <Label Grid.Column="0" Text="{Binding ServiceId}" />
+                                                <Label Grid.Column="1" Text="{Binding AreaId}" />
+                                                <Label Grid.Column="2" Text="{Binding Name}" />
+                                                <Label Grid.Column="3" Text="{Binding Type}" />
+                                                <Label Grid.Column="4" Text="{Binding Description}" />
+                                                <Label Grid.Column="5" Text="{Binding Price}" />
+                                                <Label Grid.Column="6" Text="{Binding Vat}" />
+                                            </Grid>
                                     </ScrollView>
                                 </ViewCell>
                             </DataTemplate>
@@ -231,12 +237,13 @@
                 </Border>
 
                 <VerticalStackLayout>
-                    <Entry x:Name="ServiceNameEntry" Text="Service Name" />
-                    <Entry x:Name="ServiceStreetAddressEntry" Text="Street Address" />
-                    <Entry x:Name="PostalCodeEntry" Text="Postal code" />
-                    <Entry x:Name="ServiceCityEntry" Text="City" />
+                    <Entry x:Name="ServiceNameEntry" Text="Service Name" BindingContext="ServiceViewModel.Name" />
+                    <Entry x:Name="ServiceAreaIdEntry" Text="Area ID" />
+                     <Entry x:Name="ServiceDescEntry" Text="Description" />
+                    <Entry x:Name="ServiceTypeEntry" Text="Type" />
                     <Entry x:Name="ServicePriceEntry" Text="Service Price" />
-                    <!--hinnoittelu ? -->
+                     <Entry x:Name="ServiceVatEntry" Text="Service Vat" />
+                        <!--hinnoittelu ? -->
                     <HorizontalStackLayout>
                         <Button x:Name="AddNewServiceButton" Text="Add" Clicked="AddNewServiceButton_Clicked" Margin="3,3,3,3" 
                         MinimumWidthRequest="140"/>
