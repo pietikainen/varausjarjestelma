@@ -29,6 +29,8 @@ public partial class AreaManagement : ContentPage
         ReturnLodgingButton.IsVisible = true;
         SaveLodgingButton.IsVisible = true;
         MainMenuButton.IsVisible = false;
+        AddNewCityButton.IsVisible = false;
+        CancelAddingCityButton.IsVisible = false;
     }
 
     private void AddServiceButton_Clicked(object sender, EventArgs e)
@@ -37,6 +39,9 @@ public partial class AreaManagement : ContentPage
         LodgingAndService.IsVisible = false;
         AddService.IsVisible = true;
         MainMenuButton.IsVisible = false;
+        AddCitybutton.IsVisible = false;
+        CancelAddingCityButton.IsVisible = false;
+        AddNewCityButton.IsVisible= false;
     }
     private void AreaPopupCancelButtonClicked(object sender, EventArgs e)
     {
@@ -112,6 +117,8 @@ public partial class AreaManagement : ContentPage
         LodgingAndService.IsVisible=true;
         AddService.IsVisible = false;
         MainMenuButton.IsVisible=true;
+        AddCitybutton.IsVisible = true;
+        AddNewCityButton.IsVisible = true;
     }
 
     private void ChooseCityButton_Clicked(object sender, EventArgs e)
@@ -119,6 +126,7 @@ public partial class AreaManagement : ContentPage
         LodgingAndService.IsVisible=false;
         PopupFrame.IsVisible = true;
         MainMenuButton.IsVisible = false;
+        AddNewCityButton.IsVisible=false;
     }
 
     private void AddCitybutton_Clicked(object sender, EventArgs e)
@@ -128,7 +136,7 @@ public partial class AreaManagement : ContentPage
         AddCitybutton.IsVisible = true;
         AddCityEntry.IsVisible = true;
         CancelAddingCityButton.IsVisible = true;
-        
+        AddNewCityButton.IsVisible = true;
     }
 
     private void AddNewCityButton_Clicked(object sender, EventArgs e)

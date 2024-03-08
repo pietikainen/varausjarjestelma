@@ -3,23 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="varausjarjestelma.AreaManagement"
              Title="Management" BackgroundColor="AntiqueWhite"
-             >
-
-    <Grid HeightRequest="1050" >
+             HeightRequest="800"
+            WidthRequest="1500">
+    <ScrollView>
+        <Grid HeightRequest="1050" >
 
         <Image Source="lodge.png" Aspect="AspectFill"  />
 
-        <VerticalStackLayout>
+            <VerticalStackLayout
+                HorizontalOptions="Start"
+                VerticalOptions="Start">
 
             <!-- Listviewkomponentit. Tulevat esiin kun alue on valittu -->
             <VerticalStackLayout x:Name="LodgingAndService" IsVisible="true">
-                <Grid>
+                    <Grid
+                        HorizontalOptions="Center"
+                VerticalOptions="Start"
+                WidthRequest="400" 
+          
+                    >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="Manege Lodges And Services" Grid.Column="0" FontSize="Header" HorizontalOptions="Start"/>
+                    <Label Text="Manage"  FontSize="Header" HorizontalOptions="Start"/>
                     
                 </Grid>
 
@@ -308,4 +316,5 @@
 
         </VerticalStackLayout>
     </Grid>
+    </ScrollView>
 </ContentPage>

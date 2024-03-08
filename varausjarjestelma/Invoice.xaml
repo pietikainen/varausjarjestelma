@@ -4,11 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
-    Title="Invoice">
-
+    Title="Invoice"
+    HeightRequest="800"
+    WidthRequest="800">
+    <ScrollView>
     <VerticalStackLayout>
-
-        <Grid
+        
+            <Grid
             Padding="20"
             ColumnDefinitions="Auto, *, Auto"
             ColumnSpacing="10"
@@ -266,5 +268,6 @@
             Margin="3"
             Clicked="MainMenuButtonClicked"
             Text="Main Menu" />
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
