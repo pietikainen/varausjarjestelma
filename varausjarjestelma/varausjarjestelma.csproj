@@ -78,6 +78,9 @@
 	  <MauiXaml Update="Booking.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Customer.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Invoice.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

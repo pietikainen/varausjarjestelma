@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="varausjarjestelma.Customer"
+             Title="Customer">
+    <Grid>
+        <Image Aspect="Fill" Source="mokkitausta.png" />
+        <ScrollView>
+            <VerticalStackLayout Padding="30,0" Spacing="25">
+                <Entry x:Name="firstNameEntry" Margin="5" Placeholder="First Name" />
+                <Entry x:Name="surNameEntry" Margin="5" Placeholder="Surname" />
+                <Entry x:Name="addressEntry" Margin="5" Placeholder="Address" />
+                <Entry x:Name="postalCodeEntry" Margin="5" Placeholder="Postal Code" />
+                <Entry x:Name="phoneEntry" Margin="5" Placeholder="Phone" />
+                <Entry x:Name="emailEntry" Margin="5" Placeholder="Email" />
+                <Button x:Name="submitButton" Style="{StaticResource DarkBrownButtonStyle}" Text="Submit" Clicked="submitButton_Clicked"></Button>
+                <Frame Padding="0" Margin="5" CornerRadius="10" BorderColor="DarkGray">
+                    <CollectionView x:Name="approvedDataList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal" Padding="10">
+                                    <Label Text="{Binding FullName}" />
+                                    <Label Text="{Binding lahiosoite}" Margin="10,0,0,0"/>
+                                    <Label Text="{Binding puhelinnro}" Margin="10,0,0,0"/>
+                                   
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

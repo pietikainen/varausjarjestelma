@@ -5,39 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     HeightRequest="800"
     WidthRequest="500">
-    <ContentPage.Resources>
 
-        <ResourceDictionary>
-            <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="DarkGoldenrod" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Margin" Value="5" />
-                <!--  Varjostuksen määrittely  -->
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="Button.Shadow">
-                                        <Setter.Value>
-                                            <Shadow
-                                                Brush="Black"
-                                                Opacity="0.8"
-                                                Radius="5"
-                                                Offset="4,4" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
 
     <Grid>
@@ -67,7 +35,11 @@
                     Style="{StaticResource DarkBrownButtonStyle}"
                     Text="Invoice"
                     WidthRequest="300" />
-
+                <Button
+                    Clicked="NavigateToCustomerButtonClicked"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    Text="Customer"
+                    WidthRequest="300" />
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
