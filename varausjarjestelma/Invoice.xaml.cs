@@ -1,11 +1,12 @@
 using Microsoft.Maui.Controls.Platform;
 using System.Diagnostics;
+using varausjarjestelma.Controller;
 
 namespace varausjarjestelma;
 
 public partial class Invoice : ContentPage
 {
-	public Invoice()
+    public Invoice()
 	{
         // Asetetaan sivun BindingContext InvoiceViewModel-olioon.
         // Tämä mahdollistaa XAML-tiedostossa määriteltyjen elementtien datan sitomisen
@@ -13,8 +14,13 @@ public partial class Invoice : ContentPage
 
         InitializeComponent();
         BindingContext = new InvoiceViewModel();
-        GetInvoicesPreviewData();
 
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        GetInvoicesPreviewData();
     }
 
     private async void GetInvoicesPreviewData()
@@ -22,7 +28,7 @@ public partial class Invoice : ContentPage
     {
         try
         {
-            var helper = new Database.MySqlController();
+            var helper = new InvoiceController();
             var invoices = await helper.GetAllInvoicesPreviewAsync();
             InvoicesListView.ItemsSource = invoices;
 
@@ -39,6 +45,34 @@ public partial class Invoice : ContentPage
             Debug.WriteLine($"An error occurred: {ex.Message}");
         }
     }
+
+    private async void OnInvoiceTapped(object sender, ItemTappedEventArgs e)
+    {
+        try
+        {
+            if (e.Item == null || !(e.Item is InvoiceData selectedInvoice))
+            {
+                Debug.WriteLine("e.Item is null or not a Invoice object.");
+                Debug.WriteLine("e.Item: " + e.Item);
+                return;
+            }
+                
+
+            Debug.WriteLine("Selected invoice: " + selectedInvoice);
+
+            var invoiceId = selectedInvoice.InvoiceNumber;
+            var popupPage = new InvoiceDetails(invoiceId);
+
+            Console.WriteLine("Selected invoice: " + selectedInvoice);
+
+            await Navigation.PushAsync(popupPage);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+
 
 
     private void FilterInvoicesByNumber(object sender, EventArgs e)
@@ -79,12 +113,12 @@ public partial class Invoice : ContentPage
        await Navigation.PushAsync(new MainPage());
     }
 
-    private void PrintInvoiceButton_Clicked(object sender, EventArgs e)
+    private void PrintInvoiceButtonClicked(object sender, EventArgs e)
     {
         // kirjoita tulostusmetodi tähän
     }
 
-    private void SendEmailButton_Clicked(object sender, EventArgs e)
+    private void SendEmailButtonClicked(object sender, EventArgs e)
     {
         // kirjoita sähköpostin lähetysmetodi tähän
     }

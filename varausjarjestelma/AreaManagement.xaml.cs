@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using varausjarjestelma.Database;
+using varausjarjestelma.Controller;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace varausjarjestelma;
@@ -18,7 +19,7 @@ public partial class AreaManagement : ContentPage
     {
         try
         {
-            var dataB = new Database.MySqlController();
+            var dataB = new ServiceController();
             var services = await dataB.GetAllServiceDataAsync();
             ServicesListView.ItemsSource = services;
             AddServicesListView.ItemsSource = services;

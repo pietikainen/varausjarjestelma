@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-//using MySql.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using varausjarjestelma.Controller;
 
 namespace varausjarjestelma.Database
 {
@@ -12,7 +13,8 @@ namespace varausjarjestelma.Database
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=ohjelmisto1-sql-pietikainen-6a40.a.aivencloud.com;Database=vn;User=kayttaja;Password=AVNS_DpLuKO1gwxqxgTFe1dy;Port=11244;");
+            MySqlConnection connection = MySqlController.GetConnection();
+            optionsBuilder.UseMySQL(connection);
         }
 
         public AppContext()
