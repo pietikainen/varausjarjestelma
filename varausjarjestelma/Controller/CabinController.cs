@@ -12,9 +12,6 @@ namespace varausjarjestelma.Controller
 {
     public class CabinController
     {
-        private readonly MySqlConnectionStringBuilder connectionStringBuilder;
-        private readonly String connectionString = ConfigurationManager.AppSettings["connectionString"];
-
         public async Task<List<CabinData>> GetAllCabinDataAsync()
         {
             MySqlConnection connection = MySqlController.GetConnection();

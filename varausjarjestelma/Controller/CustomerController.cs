@@ -13,9 +13,6 @@ namespace varausjarjestelma.Controller
 {
     public class CustomerController
     {
-        private readonly MySqlConnectionStringBuilder connectionStringBuilder;
-        private readonly String connectionString = ConfigurationManager.AppSettings["connectionString"];
-
         public static async Task<List<Database.Customer>> GetCustomersAsync()
         {
             using (var context = new Database.AppContext())
