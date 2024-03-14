@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,5 +18,13 @@ namespace varausjarjestelma.Database
         public DateTime vahvistus_pvm { get; set; }
         public DateTime varattu_alkupvm { get; set; }
         public DateTime varattu_loppupvm { get; set; }
+
+        // connection parameters
+
+        [ForeignKey("asiakas_id")]
+        public Customer customer { get; set; }
+
+        [ForeignKey("mokki_mokki_id")]
+        public Cabin cabin { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,5 +20,10 @@ namespace varausjarjestelma.Database
         public string kuvaus { get; set; }
         public int henkilomaara { get; set; }
         public string varustelu { get; set; }
+
+        // connection parameters
+
+        [ForeignKey("alue_id")]
+        public Area Area { get; set; }
     }
 }
