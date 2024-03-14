@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="varausjarjestelma.InvoiceDetails"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="InvoiceDetails">
+    <StackLayout>
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Invoice ID:" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding InvoiceId}" />
+
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Reservation:" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="{Binding Reservation}" />
+
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Amount:" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="{Binding Amount}" />
+
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="VAT Class:" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="{Binding VatClass}" />
+
+        <Label
+            Grid.Row="4"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Paid:" />
+        <Label
+            Grid.Row="4"
+            Grid.Column="1"
+            Text="{Binding IsPaid}" />
+
+        <Label
+            Grid.Row="5"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Customer ID:" />
+        <Label
+            Grid.Row="5"
+            Grid.Column="1"
+            Text="{Binding CustomerId}" />
+
+        <Label
+            Grid.Row="6"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Customer:" />
+        <Label
+            Grid.Row="6"
+            Grid.Column="1"
+            Text="{Binding CustomerName}" />
+
+        <Label
+            Grid.Row="7"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Postal Code:" />
+        <Label
+            Grid.Row="7"
+            Grid.Column="1"
+            Text="{Binding PostalCode}" />
+
+        <Label
+            Grid.Row="8"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Street Address:" />
+        <Label
+            Grid.Row="8"
+            Grid.Column="1"
+            Text="{Binding StreetAddress}" />
+
+        <Label
+            Grid.Row="9"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Email:" />
+        <Label
+            Grid.Row="9"
+            Grid.Column="1"
+            Text="{Binding Email}" />
+
+        <Label
+            Grid.Row="10"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            Text="Phone Number:" />
+        <Label
+            Grid.Row="10"
+            Grid.Column="1"
+            Text="{Binding PhoneNumber}" />
+
+
+        <Button
+            x:Name="PrintInvoiceButton"
+            Margin="3"
+            Clicked="TestPrintOfDataToConsole"
+            Text="Print" />
+
+        <Button
+            x:Name="MainMenuButton"
+            Margin="3"
+            Clicked="MainMenuButtonClicked"
+            Text="Print" />
+    </StackLayout>
+</ContentPage>

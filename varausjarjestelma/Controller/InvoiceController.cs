@@ -88,11 +88,13 @@ namespace varausjarjestelma.Controller
 
                     if (context.Database.CanConnect())
                     {
-                        var invoices = await context.lasku.Where(i => i.lasku_id == id).ToListAsync();
+                        var invoice = await context.lasku.Where(i => i.lasku_id == id).ToListAsync();
                         Debug.WriteLine("Got invoice from database");
-                        if (invoices != null)
+                        Debug.WriteLine("invoice id: " + invoice.ToString());
+
+                        if (invoice != null)
                         {
-                            return invoices;
+                            return invoice;
                         }
                         else
                         {
@@ -115,6 +117,8 @@ namespace varausjarjestelma.Controller
         }
 
     }
+
+
     public class InvoiceData
     {
         public int InvoiceNumber { get; set; }
