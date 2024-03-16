@@ -19,15 +19,38 @@ namespace varausjarjestelma.Database
         public string email { get; set; }
         public string puhelinnro { get; set; }
 
-        // connection parameters
-        [ForeignKey("postinro")]
+        //connection parameters
+       [ForeignKey("postinro")]
         public PostalCode PostalCode { get; set; }
-    
-    public string FullName
-    {
-        get { return $"{etunimi} {sukunimi}"; }
-    }
-    
-    }
 
+        public string FullName
+        {
+            get { return $"{etunimi} {sukunimi}"; }
+        }
+
+        public string CustomerId
+        {
+            get { return $"{asiakas_id}"; }
+        }
+
+        public string Address
+        {
+            get { return $"{lahiosoite}"; }
+        }
+
+        public string PostalCodeData
+        {
+            get { return $"{postinro}"; }
+        }
+
+        public string PhoneNumber
+        {
+            get { return $"{puhelinnro}"; }
+        }
+
+        public string Email
+        {
+            get { return $"{email}"; }
+        }
+    }
 }

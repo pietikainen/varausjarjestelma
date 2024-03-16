@@ -1,34 +1,196 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Customer"
-             Title="Customer">
-    <Grid>
-        <Image Aspect="Fill" Source="mokkitausta.png" />
-        <ScrollView>
-            <VerticalStackLayout Padding="30,0" Spacing="25">
-                <Entry x:Name="firstNameEntry" Margin="5" Placeholder="First Name" />
-                <Entry x:Name="surNameEntry" Margin="5" Placeholder="Surname" />
-                <Entry x:Name="addressEntry" Margin="5" Placeholder="Address" />
-                <Entry x:Name="postalCodeEntry" Margin="5" Placeholder="Postal Code" />
-                <Entry x:Name="phoneEntry" Margin="5" Placeholder="Phone" />
-                <Entry x:Name="emailEntry" Margin="5" Placeholder="Email" />
-                <Button x:Name="submitButton" Style="{StaticResource DarkBrownButtonStyle}" Text="Submit" Clicked="submitButton_Clicked"></Button>
-                <Frame Padding="0" Margin="5" CornerRadius="10" BorderColor="DarkGray">
-                    <CollectionView x:Name="approvedDataList">
-                        <CollectionView.ItemTemplate>
+<ContentPage
+    x:Class="varausjarjestelma.Customer"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Customer">
+    <ScrollView>
+        <VerticalStackLayout>
+            <HorizontalStackLayout>
+                <Grid Margin="20" Padding="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Customer form starts  -->
+                    <!--  Column 0 and 1  -->
+                    <Label Text="First name:" VerticalOptions="Center" />
+                    <Entry x:Name="firstNameEntry" Grid.Column="1" />
+                    <Label
+                        Grid.Row="1"
+                        Text="Last name:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="lastNameEntry"
+                        Grid.Row="1"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="2"
+                        Text="Address:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="addressEntry"
+                        Grid.Row="2"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="3"
+                        Text="Postal Code:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="postalCodeEntry"
+                        Grid.Row="3"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="4"
+                        Text="City:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="cityEntry"
+                        Grid.Row="4"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="5"
+                        Text="Phone number:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="phoneNumberEntry"
+                        Grid.Row="5"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="6"
+                        Text="Email:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="emailEntry"
+                        Grid.Row="6"
+                        Grid.Column="1" />
+
+                    <!--  Column 2  -->
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Clicked="CustomerSubmitButtonClicked"
+                        Text="Save" />
+                </Grid>
+
+
+
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Grid Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="150" />
+
+
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Text="ID" />
+                    <Label Grid.Column="1" Text="Name" />
+                    <Label Grid.Column="2" Text="Address" />
+                    <Label Grid.Column="3" Text="Postal Code" />
+                    <Label Grid.Column="4" Text="City" />
+                    <Label Grid.Column="5" Text="Phone number" />
+                    <Label Grid.Column="6" Text="Email" />
+                </Grid>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame>
+                    <ListView x:Name="CustomerListView" BackgroundColor="AliceBlue">
+                        <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Orientation="Horizontal" Padding="10">
-                                    <Label Text="{Binding FullName}" />
-                                    <Label Text="{Binding lahiosoite}" Margin="10,0,0,0"/>
-                                    <Label Text="{Binding puhelinnro}" Margin="10,0,0,0"/>
-                                   
-                                </StackLayout>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
+                                        <Label Grid.Column="1" Text="{Binding FullName}" />
+                                        <Label Grid.Column="2" Text="{Binding Address}" />
+                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
+                                        <Label Grid.Column="4" Text="{Binding City}" />
+                                        <Label Grid.Column="5" Text="{Binding Phone}" />
+                                        <Label Grid.Column="6" Text="{Binding Email}" />
+                                    </Grid>
+                                </ViewCell>
                             </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Frame>
-            </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
+                <!--
+
+                                    <ListView
+                        x:Name="CustomerListViews"
+                        Margin="0,20,0,0"
+                        BackgroundColor="#BCBCBC"
+                        MaximumHeightRequest="500"
+                        MinimumWidthRequest="900">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="300" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
+                                        <Label Grid.Column="1" Text="{Binding FullName}" />
+                                        <Label Grid.Column="2" Text="{Binding Address}" />
+                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
+                                        <Label Grid.Column="4" Text="{Binding City}" />
+                                        <Label Grid.Column="5" Text="{Binding PhoneNumber}" />
+                                        <Label Grid.Column="6" Text="{Binding Email}" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+
+                -->
+
+
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+
+
+    </ScrollView>
 </ContentPage>
