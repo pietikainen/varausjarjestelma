@@ -17,6 +17,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -26,63 +27,89 @@
 
                     <!--  Customer form starts  -->
                     <!--  Column 0 and 1  -->
-                    <Label Text="First name:" VerticalOptions="Center" />
-                    <Entry x:Name="firstNameEntry" Grid.Column="1" />
+                    <Label
+                        x:Name="customerIdLabel"
+                        IsVisible="False"
+                        Text="Customer Id:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="customerIdEntry"
+                        Grid.Column="1"
+                        BackgroundColor="#DBDBDB"
+                        IsReadOnly="True"
+                        IsVisible="False" />
                     <Label
                         Grid.Row="1"
+                        Text="First name:"
+                        VerticalOptions="Center" />
+                    <Entry
+                        x:Name="firstNameEntry"
+                        Grid.Row="1"
+                        Grid.Column="1" />
+                    <Label
+                        Grid.Row="2"
                         Text="Last name:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="lastNameEntry"
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Grid.Column="1" />
                     <Label
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Text="Address:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="addressEntry"
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Grid.Column="1" />
                     <Label
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Text="Postal Code:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="postalCodeEntry"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Grid.Column="1" />
                     <Label
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Text="City:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="cityEntry"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         Grid.Column="1" />
                     <Label
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Text="Phone number:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="phoneNumberEntry"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="1" />
                     <Label
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Text="Email:"
                         VerticalOptions="Center" />
                     <Entry
                         x:Name="emailEntry"
-                        Grid.Row="6"
+                        Grid.Row="7"
                         Grid.Column="1" />
 
                     <!--  Column 2  -->
                     <Button
+                        x:Name="CustomerSubmitButton"
                         Grid.Row="3"
                         Grid.Column="2"
                         Clicked="CustomerSubmitButtonClicked"
                         Text="Save" />
+
+                    <Button
+                        x:Name="CustomerModifyButton"
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Clicked="CustomerModifyButton_Clicked"
+                        IsVisible="false"
+                        Text="Update" />
                 </Grid>
 
 
@@ -118,7 +145,10 @@
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Frame>
-                    <ListView x:Name="CustomerListView" BackgroundColor="AliceBlue">
+                    <ListView
+                        x:Name="CustomerListView"
+                        BackgroundColor="AliceBlue"
+                        ItemTapped="CustomerListViewItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

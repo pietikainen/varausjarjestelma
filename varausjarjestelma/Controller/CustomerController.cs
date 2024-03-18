@@ -20,7 +20,7 @@ namespace varausjarjestelma.Controller
             await connection.OpenAsync();
 
             using (var command = new MySqlCommand(
-                @"SELECT a.asiakas_id, CONCAT(a.sukunimi, ' ', a.etunimi) as kokonimi, a.lahiosoite,
+                @"SELECT a.asiakas_id, a.sukunimi, a.etunimi, a.lahiosoite,
 		                a.postinro, p.toimipaikka, a.puhelinnro, a.email 
                     FROM asiakas a
                     JOIN posti p on a.postinro = p.postinro
@@ -36,7 +36,9 @@ namespace varausjarjestelma.Controller
                         CustomerId = reader.GetInt32("asiakas_id"),
                         PostalCode = reader.GetString("postinro"),
                         City = reader.GetString("toimipaikka"),
-                        FullName = reader.GetString("kokonimi"),
+                        FirstName = reader.GetString("etunimi"),
+                        LastName = reader.GetString("sukunimi"),
+                        FullName = reader.GetString("sukunimi") + " " + reader.GetString("etunimi"),
                         Address = reader.GetString("lahiosoite"),
                         Email = reader.GetString("email"),
                         Phone = reader.GetString("puhelinnro")
@@ -48,34 +50,70 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        public static async Task<bool> InsertCustomerAsync(Database.Customer customer)
+        public static async Task<bool> InsertAndModifyCustomerAsync(Database.Customer customer, string option)
         {
             MySqlConnection connection = MySqlController.GetConnection();
             await connection.OpenAsync();
-
+            string optionText;
             try
             {
-                Debug.WriteLine("Inside insertcustomerasync try");
-                using (var command = new MySqlCommand(
-                    @"INSERT INTO asiakas (etunimi, sukunimi, lahiosoite, postinro, email, puhelinnro)
-                    VALUES (@etunimi, @sukunimi, @lahiosoite, @postinro, @email, @puhelinnro)", connection))
+
+                switch (option)
                 {
+                    case "modify":
+                        optionText = @"UPDATE asiakas SET etunimi = @etunimi, sukunimi = @sukunimi, 
+                                        lahiosoite = @lahiosoite, postinro = @postinro,
+                                        email = @email, puhelinnro = @puhelinnro WHERE asiakas_id = @id";
+                        break;
+
+                    default: // add
+                        optionText = @"INSERT INTO asiakas (etunimi, sukunimi, lahiosoite, postinro, email, puhelinnro)
+                                        VALUES (@etunimi, @sukunimi, @lahiosoite, @postinro, @email, @puhelinnro)";
+                        break;
+                }
+
+                using (var command = new MySqlCommand(optionText, connection))
+                {
+                    if (option == "modify")
+                    {
+                        command.Parameters.AddWithValue("@id", customer.asiakas_id);
+                    }
                     command.Parameters.AddWithValue("@etunimi", customer.etunimi);
                     command.Parameters.AddWithValue("@sukunimi", customer.sukunimi);
                     command.Parameters.AddWithValue("@lahiosoite", customer.lahiosoite);
                     command.Parameters.AddWithValue("@postinro", customer.postinro);
                     command.Parameters.AddWithValue("@email", customer.email);
                     command.Parameters.AddWithValue("@puhelinnro", customer.puhelinnro);
-
                     await command.ExecuteNonQueryAsync();
-
-                    Debug.WriteLine("Customer inserted to database");
                     return true;
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error inserting customer to database:");
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> DeleteCustomerAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            await connection.OpenAsync();
+
+            try
+            {
+                using (var command = new MySqlCommand(
+                    @"DELETE FROM asiakas WHERE asiakas_id = @id", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    await command.ExecuteNonQueryAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
                 Debug.WriteLine(e.Message);
                 return false;
             }
@@ -89,6 +127,8 @@ namespace varausjarjestelma.Controller
         public int CustomerId { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string FullName { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
