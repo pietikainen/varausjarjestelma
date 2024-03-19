@@ -5,8 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
     Title="Invoice"
-    HeightRequest="800"
-    WidthRequest="800">
+    HeightRequest="1000"
+    WidthRequest="1000">
     <ScrollView>
         <VerticalStackLayout>
 
@@ -80,181 +80,316 @@
 
             </Grid>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <!--  Skaalautuva sarake, joka täyttää jäljellä olevan tilan  -->
-                    <ColumnDefinition Width="100" />
-                    <!--  Kiinteä leveys 100 pikseliä  -->
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <!--  Skaalautuva rivi, joka täyttää jäljellä olevan tilan  -->
-                    <RowDefinition Height="50" />
-                    <!--  Kiinteä korkeus 50 pikseliä  -->
-                </Grid.RowDefinitions>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Invoice ID" />
-                <Entry Grid.Row="1" Text="Entry" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    BorderColor="Black"
-                    BorderWidth="1"
-                    Text="Nappi 2" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Text="Reservation ID" />
-                <Entry
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Text="Entry" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    BorderColor="Black"
-                    BorderWidth="1"
-                    Text="Nappi 2" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    BorderColor="Black"
-                    BorderWidth="1"
-                    Text="Nappi 2" />
-            </Grid>
             <Frame
                 Padding="0"
                 BorderColor="Black"
                 CornerRadius="20"
                 HasShadow="True"
-                HeightRequest="500">
+                HeightRequest="700"
+                WidthRequest="800">
+
                 <ScrollView BackgroundColor="Beige">
-                    <Grid
-                        Padding="20"
-                        ColumnDefinitions="Auto, *"
-                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
-                        RowSpacing="10">
+                    <StackLayout>
+                        <Grid
+                            x:Name="InvoiceGrid_HeaderPart"
+                            Padding="10"
+                            RowSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
 
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Invoice ID:" />
-                        <Label
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="{Binding InvoiceId}" />
 
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Reservation:" />
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Text="{Binding Reservation}" />
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="3"
+                                FontAttributes="Bold"
+                                FontSize="Title"
+                                Text="LASKU" />
 
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Amount:" />
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{Binding Amount}" />
+                            <!--  Yrityksen tiedot  -->
+                            <Image
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="0"
+                                Margin="-100,0,0,0"
+                                Aspect="AspectFit"
+                                HeightRequest="100"
+                                Source="mokkilogo.png" />
 
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="VAT Class:" />
-                        <Label
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Text="{Binding VatClass}" />
+                            <!--<Label Grid.Row="3" Text="Village Newbies" />
+                            <Label Grid.Row="4" Text="Siilokatu 1" />
+                            <Label Grid.Row="5" Text="90700 OULU" />-->
 
-                        <Label
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Paid:" />
-                        <Label
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Text="{Binding IsPaid}" />
+                            <!--  Asiakkaan tiedot  -->
+                            <Label Grid.Row="4" Text="{Binding FullName}" />
+                            <Label Grid.Row="5" Text="{Binding Address}" />
+                            <Label Grid.Row="6" Text="{Binding PostalCodeAndCity}" />
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Text="{Binding VatClass}" />
 
-                        <Label
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Customer ID:" />
-                        <Label
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Text="{Binding CustomerId}" />
+                            <!--  Laskun tiedot  -->
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Text="Laskun numero:" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="4"
+                                Text="{Binding InvoiceId}" />
 
-                        <Label
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Customer:" />
-                        <Label
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Text="{Binding CustomerName}" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="3"
+                                Text="Laskun päivämäärä:" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="4"
+                                Text="{Binding InvoiceDate}" />
 
-                        <Label
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Postal Code:" />
-                        <Label
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Text="{Binding PostalCode}" />
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="3"
+                                Text="Eräpäivä:" />
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="4"
+                                Text="{Binding DueDate}" />
 
-                        <Label
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Street Address:" />
-                        <Label
-                            Grid.Row="8"
-                            Grid.Column="1"
-                            Text="{Binding StreetAddress}" />
+                        </Grid>
+                        <!--  Laskun sisältö alkaa  -->
 
-                        <Label
-                            Grid.Row="9"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Email:" />
-                        <Label
-                            Grid.Row="9"
-                            Grid.Column="1"
-                            Text="{Binding Email}" />
+                        <Grid x:Name="InvoiceGrid_SpacerPart" Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="160" />
+                            </Grid.ColumnDefinitions>
+                            <!--  Sisällön header  -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                FontAttributes="Bold"
+                                Text="Selite" />
 
-                        <Label
-                            Grid.Row="10"
-                            Grid.Column="0"
-                            FontAttributes="Bold"
-                            Text="Phone Number:" />
-                        <Label
-                            Grid.Row="10"
-                            Grid.Column="1"
-                            Text="{Binding PhoneNumber}" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                Text="Määrä" />
 
-                    </Grid>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                Text="á-hinta" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="3"
+                                FontAttributes="Bold"
+                                Text="Alv-%" />
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="4"
+                                FontAttributes="Bold"
+                                Text="Yhteensä" />
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.ColumnSpan="5"
+                                HeightRequest="2"
+                                HorizontalOptions="FillAndExpand"
+                                Color="Black" />
+                        </Grid>
+                        <Grid x:Name="InvoiceGrid_ContentPart" Padding="10">
+
+                            <!--  Sisällön tiedot  -->
+
+                        </Grid>
+
+                        <Grid x:Name="InvoiceGrid_FooterPart" Padding="10">
+
+                            <!--  Footer tiedot  -->
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition Width="260" />
+                                <ColumnDefinition Width="260" />
+                                <ColumnDefinition Width="260" />
+                            </Grid.ColumnDefinitions>
+
+                            <BoxView
+                                Grid.Row="0"
+                                Grid.ColumnSpan="5"
+                                HeightRequest="2"
+                                HorizontalOptions="FillAndExpand"
+                                Color="Grey" />
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Fill"
+                                WidthRequest="2"
+                                Color="Grey" />
+
+                            <Label
+                                Grid.Row="1"
+                                Padding="5,0,0,0"
+                                Text="Eräpäivä" />
+                            <Label
+                                Grid.Row="2"
+                                Padding="5,0,0,0"
+                                Text="{Binding DueDate}" />
+
+                            <!--<BoxView
+                                HeightRequest="1"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="End"
+                                Color="Black" />-->
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                HorizontalOptions="End"
+                                VerticalOptions="Fill"
+                                WidthRequest="2"
+                                Color="Grey" />
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="5,0,0,0"
+                                Text="Viitenumero" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Padding="5,0,0,0"
+                                Text="1 125 52 25" />
+
+
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Grid.Column="2"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Fill"
+                                WidthRequest="2"
+                                Color="Grey" />
+
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Padding="5,0,0,0"
+                                Text="YHTEENSÄ" />
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Padding="5,0,0,0"
+                                Text="{Binding Total, StringFormat='{0:C}'}" />
+                            <BoxView
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Grid.Column="2"
+                                HorizontalOptions="End"
+                                VerticalOptions="Fill"
+                                WidthRequest="2"
+                                Color="Grey" />
+
+
+
+                            <BoxView
+                                Grid.Row="3"
+                                Grid.ColumnSpan="5"
+                                HeightRequest="2"
+                                HorizontalOptions="FillAndExpand"
+                                Color="Grey" />
+
+
+                            <Label
+                                Grid.Row="4"
+                                Padding="0,10,0,0"
+                                FontSize="Small"
+                                Text="Village Newbies Oy" />
+
+                            <Label Grid.Row="5" Text="Siilokatu 1" />
+
+                            <Label Grid.Row="6" Text="90700 OULU" />
+
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Padding="0,10,0,0"
+                                Text="Y-tunnus: 1234567-8" />
+
+                            <Label
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Text="Puh: 040 123 4567" />
+
+                            <Label
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                Text="laskutus@villagenewbies.fi" />
+
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="2"
+                                Padding="0,10,0,0"
+                                Text="IBAN: FI12 3456 7890 1234 56" />
+
+                            <Label
+                                Grid.Row="5"
+                                Grid.Column="2"
+                                Text="BIC: NDEAFIHH" />
+
+                            <Label
+                                Grid.Row="6"
+                                Grid.Column="2"
+                                Text="www.villagenewbies.fi" />
+
+
+
+                        </Grid>
+
+                    </StackLayout>
                 </ScrollView>
-
             </Frame>
             <Button
                 x:Name="PrintInvoiceButton"
