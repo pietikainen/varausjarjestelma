@@ -36,6 +36,10 @@ namespace varausjarjestelma
             await Navigation.PushAsync(new Customer());
         }
 
+        private async void NavigateToReportingButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Reporting());
+        }
 
     }
 }

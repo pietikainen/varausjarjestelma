@@ -40,6 +40,11 @@
                     Style="{StaticResource DarkBrownButtonStyle}"
                     Text="Customer"
                     WidthRequest="300" />
+                <Button
+                    Clicked="NavigateToReportingButtonClicked"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    Text="Reporting"
+                    WidthRequest="300" />
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
