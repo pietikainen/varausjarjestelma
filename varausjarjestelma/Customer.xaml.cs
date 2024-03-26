@@ -148,8 +148,7 @@ public partial class Customer : ContentPage
 
             customerIdLabel.IsVisible = true;
             customerIdEntry.IsVisible = true;
-            CustomerSubmitButton.IsVisible = false;
-            CustomerModifyButton.IsVisible = true;
+
         }
         else if (action == "Delete" && customer != null)
         {
@@ -183,9 +182,8 @@ public partial class Customer : ContentPage
         phoneNumberEntry.Text = "";
         emailEntry.Text = "";
 
-        CustomerSubmitButton.IsVisible = true;
-        CustomerModifyButton.IsVisible = false;
         customerIdEntry.IsVisible = false;
+        customerIdLabel.IsVisible = false;
     }
 
 
@@ -197,5 +195,17 @@ public partial class Customer : ContentPage
     private void CustomerClearButton_Clicked(object sender, EventArgs e)
     {
         ResetCustomerForm();
+    }
+
+    private void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
+    {
+        if (customerIdEntry.IsVisible)
+        {
+            CustomerModifyButton_Clicked(sender, e);
+        }
+        else
+        {
+            CustomerSubmitButtonClicked(sender, e);
+        }
     }
 }
