@@ -185,7 +185,7 @@ public partial class Customer : ContentPage
 
         CustomerSubmitButton.IsVisible = true;
         CustomerModifyButton.IsVisible = false;
-
+        customerIdEntry.IsVisible = false;
     }
 
 
@@ -194,5 +194,8 @@ public partial class Customer : ContentPage
         CustomerListView.ItemsSource = await CustomerController.GetAllCustomerDataAsync();
     }
 
-
+    private void CustomerClearButton_Clicked(object sender, EventArgs e)
+    {
+        ResetCustomerForm();
+    }
 }

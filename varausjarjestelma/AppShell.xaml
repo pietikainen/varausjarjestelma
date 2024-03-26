@@ -4,12 +4,25 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
-    Shell.FlyoutBehavior="Disabled"
-    Title="varausjarjestelma">
+    BackgroundColor="AliceBlue"
+    Title="varausjarjestelma"
+    >
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    <ShellContent
+   Title="Manage"
+   ContentTemplate="{DataTemplate local:AreaManagement}"
+   Route="AreaManagement" />
+    <ShellContent
+   Title="Booking"
+   ContentTemplate="{DataTemplate local:Booking}"
+   Route="Booking" />
+    <ShellContent
+      Title="Customer"
+      ContentTemplate="{DataTemplate local:Customer}"
+      Route="Customer" />
 
 </Shell>

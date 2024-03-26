@@ -5,6 +5,8 @@
              x:Class="varausjarjestelma.App">
     <Application.Resources>
         <ResourceDictionary>
+
+            <!-- Custom Button Style -->
             <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="DarkGoldenrod" />
                 <Setter Property="TextColor" Value="White" />
@@ -27,6 +29,13 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
+            <!-- Custom ListView Style -->
+            <!-- Custom ListView Style määritelmä -->
+            <Style x:Key="CustomListViewStyle" TargetType="ListView">
+                <Setter Property="BackgroundColor" Value="Linen" />
+                <Setter Property="SeparatorColor" Value="DarkGoldenrod" />
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
