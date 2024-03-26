@@ -18,32 +18,74 @@ namespace varausjarjestelma.Controller
 
             await connection.OpenAsync();
 
-                using (var command = new MySqlCommand("SELECT * FROM mokki;", connection))
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    List<CabinData> cabinDataList = new List<CabinData>();
+            using (var command = new MySqlCommand("SELECT * FROM mokki;", connection))
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                List<CabinData> cabinDataList = new List<CabinData>();
 
-                    while (await reader.ReadAsync())
+                while (await reader.ReadAsync())
+                {
+                    CabinData cabinData = new CabinData
                     {
-                        CabinData cabinData = new CabinData
+                        CabinId = reader.GetInt32("mokki_id"),
+                        AreaId = reader.GetInt32("alue_id"),
+                        PostalCode = reader.GetInt32("postinro"),
+                        CabinName = reader.GetString("mokkinimi"),
+                        Address = reader.GetString("katuosoite"),
+                        Price = reader.GetDouble("hinta"),
+                        Description = reader.GetString("kuvaus"),
+                        Beds = reader.GetInt32("henkilomaara"),
+                        Features = reader.GetString("varustelu")
+                    };
+                    cabinDataList.Add(cabinData);
+                }
+                await connection.CloseAsync();
+                return cabinDataList;
+            }
+        }
+
+        public async Task<List<CabinData>> GetCabinsByAreaIdAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            await connection.OpenAsync();
+
+            try
+            {
+                using (var command = new MySqlCommand(
+                    @"SELECT * FROM mokki WHERE alue_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        List<CabinData> cabinDataList = new List<CabinData>();
+
+                        while (await reader.ReadAsync())
                         {
-                            CabinId = reader.GetInt32("mokki_id"),
-                            AreaId = reader.GetInt32("alue_id"),
-                            PostalCode = reader.GetInt32("postinro"),
-                            CabinName = reader.GetString("mokkinimi"),
-                            Address = reader.GetString("katuosoite"),
-                            Price = reader.GetDouble("hinta"),
-                            Description = reader.GetString("kuvaus"),
-                            Beds = reader.GetInt32("henkilomaara"),
-                            Features = reader.GetString("varustelu")
-                        };
-                        cabinDataList.Add(cabinData);
+                            CabinData cabinData = new CabinData
+                            {
+                                CabinId = reader.GetInt32("mokki_id"),
+                                AreaId = reader.GetInt32("alue_id"),
+                                PostalCode = reader.GetInt32("postinro"),
+                                CabinName = reader.GetString("mokkinimi"),
+                                Address = reader.GetString("katuosoite"),
+                                Price = reader.GetDouble("hinta"),
+                                Description = reader.GetString("kuvaus"),
+                                Beds = reader.GetInt32("henkilomaara"),
+                                Features = reader.GetString("varustelu")
+                            };
+                            cabinDataList.Add(cabinData);
+                        }
+                        await connection.CloseAsync();
+                        return cabinDataList;
                     }
-                    await connection.CloseAsync();
-                    return cabinDataList;
                 }
             }
-        
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                return null;
+            }
+        }
 
     }
 
