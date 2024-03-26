@@ -1,115 +1,286 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Booking"
-             Title="Booking"
-             HeightRequest="800"
-             WidthRequest="500">
+<ContentPage
+    x:Class="varausjarjestelma.Booking"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Booking"
+    HeightRequest="800"
+    WidthRequest="1000">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="15" Padding="15">
-            <Button x:Name="MainMenuButton" Text="Main Menu" Clicked="MainMenuButtonClicked" BorderColor="Black" BorderWidth="1"
-                    />
 
-            <!-- Kaupungin valinta -->
-            <Label Text="Choose City"/>
-            <Picker x:Name="CityPicker">
-                <!-- Kaupunkien nimet lisätään koodissa -->
-            </Picker>
-            <Frame Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="250" HasShadow="True">
 
-                <!-- Mökkien lista -->
-                
-                <ListView x:Name="LodgeListView" HeightRequest="200" IsVisible="False">
-                    <!-- Mökkien nimet ja tiedot lisätään koodissa -->
+        <VerticalStackLayout Padding="15" Spacing="15">
+            <Button
+                x:Name="MainMenuButton"
+                BorderColor="Black"
+                BorderWidth="1"
+                Clicked="MainMenuButtonClicked"
+                Text="Main Menu" />
+
+            <!--  Kaupungin valinta  -->
+            <Label Text="Choose Area" />
+            <Picker x:Name="AreaPicker" SelectedIndexChanged="AreaPicker_SelectedIndexChanged" />
+
+
+            <!--Cabin selection-->
+            <Frame x:Name="CabinsFrame" IsVisible="False">
+                <StackLayout x:Name="CabinsContainer">
+                    <Grid
+                        x:Name="CabinInfoGrid"
+                        ColumnDefinitions="*,*,*,*,*"
+                        RowDefinitions="Auto">
+                        <Label Text="Name" />
+                        <Label Grid.Column="1" Text="Beds" />
+                        <Label Grid.Column="2" Text="Description" />
+                        <Label Grid.Column="3" Text="Features" />
+                        <Label Grid.Column="4" Text="Price" />
+                    </Grid>
+
+                    <Grid>
+                        <ListView
+                            x:Name="CabinsListView"
+                            BackgroundColor="AliceBlue"
+                            ItemTapped="OnCabinTapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Padding="10" ColumnDefinitions="*,*,*,*,*">
+                                            <Label
+                                                Grid.Column="0"
+                                                FontAttributes="Bold"
+                                                Text="{Binding CabinName}" />
+                                            <Label Grid.Column="1" Text="{Binding Beds}" />
+                                            <Label Grid.Column="2" Text="{Binding Description}" />
+                                            <Label Grid.Column="3" Text="{Binding Features}" />
+                                            <Label Grid.Column="4" Text="{Binding Price, StringFormat='{0:C}'}" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Frame x:Name="CabinsNullFrame" IsVisible="True">
+                <Label
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Text="No cabins found" />
+            </Frame>
+
+
+
+            <Frame
+                Padding="0"
+                BorderColor="Black"
+                CornerRadius="20"
+                HasShadow="True"
+                HeightRequest="250">
+
+                <!--  Mökkien lista  -->
+
+                <ListView
+                    x:Name="CabinListView"
+                    HeightRequest="200"
+                    IsVisible="False">
+                    <!--  Mökkien nimet ja tiedot lisätään koodissa  -->
                 </ListView>
             </Frame>
-            <!-- Mökin tiedot -->
-            <StackLayout  x:Name="LodgingDetails" IsVisible="False">
-                <Label Text="Lodging Details" />
-                <Label x:Name="LodgingName" FontAttributes="Bold"/>
-                <Label x:Name="LodgingDescription"/>
-                <Label x:Name="LodgingPrice"/>
-                <Label x:Name="LodgingInfo" />
-                <!-- Lisää tarvittaessa muita tietoja -->
-            </StackLayout>
-
-            <Frame Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="250" HasShadow="True">
-                <!-- Info tekstiruutu -->
+            <Frame
+                Padding="0"
+                BorderColor="Black"
+                CornerRadius="20"
+                HasShadow="True"
+                HeightRequest="250">
+                <!--  Info tekstiruutu  -->
                 <ScrollView HeightRequest="150">
-                    <Label x:Name="CottageInfo"/>
+                    <Label x:Name="CabinInfo" />
                 </ScrollView>
             </Frame>
-            <Frame Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="250" HasShadow="True">
-                <!-- Palveluiden varaaminen -->
-                
+            <Frame
+                Padding="0"
+                BorderColor="Black"
+                CornerRadius="20"
+                HasShadow="True"
+                HeightRequest="250">
+                <!--  Palveluiden varaaminen  -->
+
                 <ListView x:Name="ServicesListView" HeightRequest="150">
-                    <!-- Palveluiden nimet ja tiedot lisätään koodissa -->
+                    <!--  Palveluiden nimet ja tiedot lisätään koodissa  -->
                 </ListView>
             </Frame>
-            <!-- Valittujen palveluiden esikatselu -->
+            <!--  Valittujen palveluiden esikatselu  -->
 
 
-            <!-- Varauspäivämäärän valinta -->
-            <DatePicker x:Name="StartDatePicker" DateSelected="StartDatePicker_DateSelected"/>
-            <DatePicker x:Name="EndDatePicker" DateSelected="EndDatePicker_DateSelected"/>
+            <!--  Varauspäivämäärän valinta  -->
+            <DatePicker x:Name="StartDatePicker" DateSelected="StartDatePicker_DateSelected" />
+            <DatePicker x:Name="EndDatePicker" DateSelected="EndDatePicker_DateSelected" />
 
-            <!-- Asiakkaan yhteystietolomake -->
-            <Entry x:Name="FirstNameEntry" Placeholder="First name"/>
-            <Entry x:Name="LastNameEntry" Placeholder="Last name"/>
-            <Entry x:Name="AddressEntry" Placeholder="Address"/>
-            <Entry x:Name="CityEntry" Placeholder="City"/>
-            <Entry x:Name="PostalCodeEntry" Placeholder="Postal code"/>
-            <Entry x:Name="EmailEntry" Placeholder="Email"/>
-            <Entry x:Name="PhoneNumberEntry" Placeholder="Phone number"/>
+            <!--  Asiakkaan yhteystietolomake  -->
+            <Entry x:Name="FirstNameEntry" Placeholder="First name" />
+            <Entry x:Name="LastNameEntry" Placeholder="Last name" />
+            <Entry x:Name="AddressEntry" Placeholder="Address" />
+            <Entry x:Name="CityEntry" Placeholder="City" />
+            <Entry x:Name="PostalCodeEntry" Placeholder="Postal code" />
+            <Entry x:Name="EmailEntry" Placeholder="Email" />
+            <Entry x:Name="PhoneNumberEntry" Placeholder="Phone number" />
 
-            <!-- Varaa-nappi -->
-            <Button Text="Book Now" Clicked="OnBookNowClicked" BorderColor="Black" BorderWidth="1"/>
-            <Frame Padding="0" CornerRadius="20" BorderColor="Black" HeightRequest="500" HasShadow="True">
-                <ScrollView BackgroundColor="Beige" >
-                    <Grid Padding="20"
-              RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
-              ColumnDefinitions="Auto,*"
-              RowSpacing="10">
+            <!--  Varaa-nappi  -->
+            <Button
+                BorderColor="Black"
+                BorderWidth="1"
+                Clicked="OnBookNowClicked"
+                Text="Book Now" />
+            <Frame
+                Padding="0"
+                BorderColor="Black"
+                CornerRadius="20"
+                HasShadow="True"
+                HeightRequest="500">
+                <ScrollView BackgroundColor="Beige">
+                    <Grid
+                        Padding="20"
+                        ColumnDefinitions="Auto,*"
+                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
+                        RowSpacing="10">
 
 
-                        <!-- MUOKKAA VIELÄ KOMPONENTIT OIKEAN LAISEKSI x:name -->
-                        <Label Text="First Name:" Grid.Row="0" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding FirstName}" Grid.Row="0" Grid.Column="1"/>
+                        <!--  MUOKKAA VIELÄ KOMPONENTIT OIKEAN LAISEKSI x:name  -->
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="First Name:" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding FirstName}" />
 
-                        <Label Text="Last Name:" Grid.Row="1" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding LastName}" Grid.Row="1" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Last Name:" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding LastName}" />
 
-                        <Label Text="Address:" Grid.Row="2" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding Address}" Grid.Row="2" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Address:" />
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding Address}" />
 
-                        <Label Text="City:" Grid.Row="3" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding City}" Grid.Row="3" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="City:" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding City}" />
 
-                        <Label Text="Postal Code:" Grid.Row="4" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Postal Code:" />
+                        <Label
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Text="{Binding PostalCode}" />
 
-                        <Label Text="Email:" Grid.Row="5" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding Email}" Grid.Row="5" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Email:" />
+                        <Label
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text="{Binding Email}" />
 
-                        <Label Text="Phone:" Grid.Row="6" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding Phone}" Grid.Row="6" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Phone:" />
+                        <Label
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Text="{Binding Phone}" />
 
-                        <Label Text="Lodge:" Grid.Row="7" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding Lodge}" Grid.Row="7" Grid.Column="1"/>
-                        <Label Text="Start Day"  Grid.Row="8" Grid.Column="0" FontAttributes="Bold"  />
-                        <Label Text="End Day"    Grid.Row="9" Grid.Column="0" FontAttributes="Bold"  />
-                        <Label Text="Start Day" x:Name="StartDay" Grid.Row="8" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="End" />
-                        <Label Text="End Day" x:Name="EndDay" Grid.Row="9" Grid.Column="0" FontAttributes="Bold" HorizontalTextAlignment="End" />
+                        <Label
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Cabin:" />
+                        <Label
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Text="{Binding Cabin}" />
+                        <Label
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Start Day" />
+                        <Label
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="End Day" />
+                        <Label
+                            x:Name="StartDay"
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="End"
+                            Text="Start Day" />
+                        <Label
+                            x:Name="EndDay"
+                            Grid.Row="9"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="End"
+                            Text="End Day" />
 
-                        <Label Text="Lodge Price:" Grid.Row="10" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding StreetAddress}" Grid.Row="10" Grid.Column="1"/>
-                        <!-- Tähän listview komponentti minkä sisällä horizontaalisesti palvelun nimi ja hinta -->
-                        <Label Text="Services:" Grid.Row="11" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding Services}" Grid.Row="11" Grid.Column="1"/>
+                        <Label
+                            Grid.Row="10"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Cabin Price:" />
+                        <Label
+                            Grid.Row="10"
+                            Grid.Column="1"
+                            Text="{Binding StreetAddress}" />
+                        <!--  Tähän listview komponentti minkä sisällä horizontaalisesti palvelun nimi ja hinta  -->
+                        <Label
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Services:" />
+                        <Label
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Text="{Binding Services}" />
 
-                        <Label Text="Total Price:" Grid.Row="12" Grid.Column="0" FontAttributes="Bold"/>
-                        <Label Text="{Binding TotalPrice }" Grid.Row="12" Grid.Column="0"/>
+                        <Label
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            Text="Total Price:" />
+                        <Label
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Text="{Binding TotalPrice}" />
 
                     </Grid>
                 </ScrollView>
