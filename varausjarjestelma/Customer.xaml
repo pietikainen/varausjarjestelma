@@ -6,13 +6,13 @@
     Title="Customer"
     BackgroundColor="LightGoldenrodYellow">
     <ScrollView>
-        
+
         <VerticalStackLayout>
             <HorizontalStackLayout>
                 <Grid Margin="20" Padding="0">
-                    <Grid.RowDefinitions >
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto"  />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -99,37 +99,29 @@
 
                     <!--  Column 2  -->
                     <Button
-                        x:Name="CustomerSubmitButton"
+                        x:Name="CustomerFormSubmitButton"
                         Grid.Row="8"
                         Grid.Column="1"
-                        Clicked="CustomerSubmitButtonClicked"
-                        Text="Save" 
-                        Style="{StaticResource DarkBrownButtonStyle}"/>
+                        Clicked="CustomerFormSubmitButton_Clicked"
+                        Style="{StaticResource DarkBrownButtonStyle}"
+                        Text="Save" />
 
-                    <Button
-                        x:Name="CustomerModifyButton"
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        Clicked="CustomerModifyButton_Clicked"
-                        IsVisible="false"
-                        Text="Update" 
-                        Style="{StaticResource DarkBrownButtonStyle}"/>
                     <Button
                         x:Name="CustomerClearButton"
                         Grid.Row="8"
                         Grid.Column="0"
-                        Clicked="CustomerClearButton_Clicked" 
+                        Clicked="CustomerClearButton_Clicked"
                         IsVisible="true"
-                        Text="Clear" 
-                        Style="{StaticResource DarkBrownButtonStyle}"/>
+                        Style="{StaticResource DarkBrownButtonStyle}"
+                        Text="Clear" />
                 </Grid>
 
 
 
             </HorizontalStackLayout>
 
-            <HorizontalStackLayout >
-                <Grid Margin="25,0,0,0" >
+            <HorizontalStackLayout>
+                <Grid Margin="25,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="200" />
@@ -143,23 +135,40 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                    </Grid.RowDefinitions >
-                    <Label Text="ID" FontAttributes="Bold" />
-                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold" />
-                    <Label Grid.Column="2" Text="Address" FontAttributes="Bold" />
-                    <Label Grid.Column="3" Text="Postal Code" FontAttributes="Bold" />
-                    <Label Grid.Column="4" Text="City" FontAttributes="Bold" />
-                    <Label Grid.Column="5" Text="Phone number" FontAttributes="Bold" />
-                    <Label Grid.Column="6" Text="Email" FontAttributes="Bold" />
+                    </Grid.RowDefinitions>
+                    <Label FontAttributes="Bold" Text="ID" />
+                    <Label
+                        Grid.Column="1"
+                        FontAttributes="Bold"
+                        Text="Name" />
+                    <Label
+                        Grid.Column="2"
+                        FontAttributes="Bold"
+                        Text="Address" />
+                    <Label
+                        Grid.Column="3"
+                        FontAttributes="Bold"
+                        Text="Postal Code" />
+                    <Label
+                        Grid.Column="4"
+                        FontAttributes="Bold"
+                        Text="City" />
+                    <Label
+                        Grid.Column="5"
+                        FontAttributes="Bold"
+                        Text="Phone number" />
+                    <Label
+                        Grid.Column="6"
+                        FontAttributes="Bold"
+                        Text="Email" />
                 </Grid>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Frame Style="{StaticResource DarkBrownButtonStyle}" Margin="3,5,5,5">
+                <Frame Margin="3,5,5,5" Style="{StaticResource DarkBrownButtonStyle}">
                     <ListView
                         x:Name="CustomerListView"
                         BackgroundColor="PaleGoldenrod"
-                        ItemTapped="CustomerListViewItemTapped"
-                        >
+                        ItemTapped="CustomerListViewItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -187,7 +196,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </Frame>
-  
+
 
 
             </HorizontalStackLayout>
@@ -235,4 +244,4 @@
                   </ListView>
 
 
-              -->
+-->
