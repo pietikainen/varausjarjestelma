@@ -1,8 +1,6 @@
 using varausjarjestelma.Controller;
 using System.Diagnostics;
-using Org.BouncyCastle.Crypto.Signers;
-using Microsoft.Maui.Graphics.Text;
-using Google.Protobuf.Reflection;
+
 
 namespace varausjarjestelma;
 
@@ -51,8 +49,8 @@ public partial class Customer : ContentPage
         var email = emailEntry.Text;
         var city = cityEntry.Text;
 
-        var confirmationMessage = $"Name: {firstName} {lastName}\nAddress: {address}\nPostal code: {postalCode}\nPhone: {phone}\nEmail: {email}\n";
-        var isAccepted = await DisplayAlert("Vahvista tiedot", confirmationMessage, "Kyllä", "Ei");
+        var confirmationMessage = $"Name: {firstName} {lastName}\nAddress: {address}\nPostal code: {postalCode}\nCity: {city}\nPhone: {phone}\nEmail: {email}\n";
+        var isAccepted = await DisplayAlert("Confirm customer information", confirmationMessage, "Yes", "No");
 
         try
         {
@@ -100,7 +98,7 @@ public partial class Customer : ContentPage
         var city = cityEntry.Text;
 
         var confirmationMessage = $"Customer Id: {customerId}\nName: {firstName} {lastName}\nAddress: {address}\n" +
-            $"Postal code: {postalCode}\nPhone: {phone}\nEmail: {email}\n";
+            $"Postal code: {postalCode}\nCity: {city}\nPhone: {phone}\nEmail: {email}\n";
         var isAccepted = await DisplayAlert("Confirm modification", confirmationMessage, "Yes", "No");
 
         if (isAccepted)
@@ -120,7 +118,7 @@ public partial class Customer : ContentPage
             {
                 postinro = postalCodeEntry.Text,
                 toimipaikka = cityEntry.Text
-            };           
+            };
 
             await PostalCodeController.InsertPostalCodeAsync(cityData);
             await CustomerController.InsertAndModifyCustomerAsync(customer, "modify");
@@ -136,7 +134,7 @@ public partial class Customer : ContentPage
         var customer = e.Item as varausjarjestelma.Controller.CustomerData;
 
         if (action == "Modify" && customer != null)
-        {          
+        {
             customerIdEntry.Text = customer.CustomerId.ToString();
             firstNameEntry.Text = customer.FirstName;
             lastNameEntry.Text = customer.LastName;
@@ -160,13 +158,13 @@ public partial class Customer : ContentPage
             {
                 await CustomerController.DeleteCustomerAsync(customer.CustomerId);
                 await RefreshListView();
-       
+
             }
             else
             {
                 await DisplayAlert("Error", "Customer is null. Cannot delete.", "OK");
             }
-           
+
         }
 
     }
@@ -197,15 +195,94 @@ public partial class Customer : ContentPage
         ResetCustomerForm();
     }
 
-    private void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
+    private async void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
     {
-        if (customerIdEntry.IsVisible)
+        var formDataisValid = await ValidateFormData();
+        if (formDataisValid)
         {
-            CustomerModifyButton_Clicked(sender, e);
-        }
-        else
-        {
-            CustomerSubmitButtonClicked(sender, e);
+            if (customerIdEntry.IsVisible)
+            {
+                CustomerModifyButton_Clicked(sender, e);
+            }
+            else
+            {
+                CustomerSubmitButtonClicked(sender, e);
+            }
         }
     }
+
+    private async Task<bool> ValidateFormData()
+    {
+        List<string> errorString = new List<string>();
+        bool isValid = true;
+
+        // Tried to do this with foreach loop but it didn't work if user
+        // previously modified customer data and then tried to add new customer
+        // Because of isvisible property of customerIdEntry
+        // Sorry.
+
+        if (firstNameEntry.Text == null || firstNameEntry.Text.Length == 0)
+        {
+            errorString.Add("First name cannot be empty.");
+        }
+
+        if (lastNameEntry.Text == null || lastNameEntry.Text.Length == 0)
+        {
+            errorString.Add("Last name cannot be empty.");
+        }
+
+        if (addressEntry.Text == null || addressEntry.Text.Length == 0)
+        {
+            errorString.Add("Address cannot be empty.");
+        }
+
+        if (!postalCodeEntry.Text.All(char.IsDigit) || postalCodeEntry.Text.Length != 5)
+        {
+            errorString.Add("Postal code must be numeric and 5 characters long.");
+        }
+
+        if (!phoneNumberEntry.Text.All(char.IsDigit))
+        {
+            errorString.Add("Phone number must be in numeric form.");
+        }
+
+        if (!IsEmailValid(emailEntry.Text))
+        {
+            errorString.Add("Email is not valid.");
+        }
+
+        if (errorString.Count > 0)
+        {
+            isValid = false;
+            await DisplayAlert("Error", string.Join("\n", errorString), "OK");
+        }
+
+        return isValid;
+    }
+
+    private bool IsEmailValid(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private async void PostalCodeEntryUnfocused(object sender, FocusEventArgs e)
+    {
+        var postalCode = postalCodeEntry.Text;
+        if (postalCode.Length == 5)
+        {
+            var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
+            cityEntry.Text = city;
+        }
+    }
+
+
+    
 }
