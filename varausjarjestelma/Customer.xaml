@@ -9,7 +9,10 @@
 
         <VerticalStackLayout>
             <HorizontalStackLayout>
-                <Grid Margin="20" Padding="0">
+                <Grid
+                    x:Name="CustomerForm"
+                    Margin="20"
+                    Padding="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -71,15 +74,18 @@
                     <Entry
                         x:Name="postalCodeEntry"
                         Grid.Row="4"
-                        Grid.Column="1" />
+                        Grid.Column="1"
+                        HorizontalOptions="Start"
+                        Unfocused="PostalCodeEntryUnfocused"
+                        WidthRequest="70" />
                     <Label
-                        Grid.Row="5"
-                        Text="City:"
-                        VerticalOptions="Center" />
-                    <Entry
                         x:Name="cityEntry"
-                        Grid.Row="5"
-                        Grid.Column="1" />
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        Margin="-90,0,0,0"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
                     <Label
                         Grid.Row="6"
                         Text="Phone number:"
@@ -241,7 +247,4 @@
                               </ViewCell>
                           </DataTemplate>
                       </ListView.ItemTemplate>
-                  </ListView>
-
-
--->
+                  </ListView>-->
