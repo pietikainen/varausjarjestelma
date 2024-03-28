@@ -4,53 +4,63 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
-    Title="Invoice"
-    HeightRequest="1000"
-    WidthRequest="1000">
-    <ScrollView>
+    Title="INVOICE"
+    HeightRequest="1010"
+    WidthRequest="1000"
+    >
+    <Frame Padding="0" CornerRadius="20" HasShadow="True" BackgroundColor="LightGoldenrodYellow"     HeightRequest="1000"
+    WidthRequest="1000" >
+        <ScrollView>
+        
         <VerticalStackLayout>
+            <StackLayout>
+                <!-- Ensimmäinen viiva -->
+                <Label HorizontalOptions="Center" Text="KELPAAKO NAVI PALKIKSI" VerticalOptions="Center" Margin="0" ></Label>
+                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand" Margin="0,20,0,10"/>
+                <HorizontalStackLayout HorizontalOptions="Start">
+                    <Button Text="Invoice" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+                    <Button Text="Manage" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+                    <Button Text="Sivu3" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+                    <Button Text="Sivu4" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+                    <Button Text="Sivu5" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+                </HorizontalStackLayout>
+                
+                <!-- Toinen viiva -->
+                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand" Margin="0,10,0,20"/>
+            </StackLayout>
+            <HorizontalStackLayout>
+            <VerticalStackLayout>
+            <!--  Hakukentät  -->
 
-            <Grid
-                Padding="20"
-                ColumnDefinitions="Auto, *, Auto"
-                ColumnSpacing="10"
-                RowDefinitions="Auto, Auto, Auto"
-                RowSpacing="10">
-
-                <!--  Hakukentät  -->
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Search by Customer Name:"
-                    VerticalOptions="Center" />
                 <Entry
                     x:Name="CustomerNameEntry"
-                    Grid.Row="0"
-                    Grid.Column="1" />
-
-                <Label
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Text="Search by Invoice Number:"
-                    VerticalOptions="Center" />
+                    Placeholder="Search by name"  
+                    Margin="5" WidthRequest="250" HorizontalOptions="Start"/>
+                    
                 <Entry
                     x:Name="InvoiceNumberEntry"
-                    Grid.Row="1"
-                    Grid.Column="1" />
+                    Placeholder="Search by Invoice Number"
+                    Margin="5" WidthRequest="250" HorizontalOptions="Start"/>
 
                 <!--  Haku-painike  -->
                 <Button
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="2"
                     Clicked="OnSearchButtonClicked"
-                    Text="Search" />
+                    Text="Search"
+                    Style="{StaticResource DarkBrownButtonStyle}"
+                    HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+                <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="ID" Margin="20,0,5,0"></Label>
+                    <Label Text="Name" Margin="145,0,5,0"></Label>
+                        <Label Text="Sum" Margin="125,0,5,0"></Label>
+                        <Label Text="Open" Margin="130,0,5,0"></Label>
 
+                    </HorizontalStackLayout>
                 <!--  Laskujen listaus  -->
                 <Frame
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
+                    WidthRequest="700"
+                    Margin="5"
                     Padding="0"
                     BorderColor="Black"
                     CornerRadius="20"
@@ -58,7 +68,7 @@
                     HeightRequest="250">
                     <ListView
                         x:Name="InvoicesListView"
-                        BackgroundColor="AliceBlue"
+                        BackgroundColor="beige"
                         ItemTapped="OnInvoiceTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -77,16 +87,61 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </Frame>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+            <StackLayout>
+                <!-- Ensimmäinen viiva -->
+                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand"/>
+                <Label Text="Invoice Preview" HorizontalOptions="Center" FontAttributes="Bold" />
+                <!-- Toinen viiva -->
+                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
 
-            </Grid>
-
-            <Frame
+            <HorizontalStackLayout HorizontalOptions="End">
+                <VerticalStackLayout>
+                    <Entry
+                        Placeholder="Laskun muokkaus tästä alaspäin"  
+                        Margin="5,30,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="jos ei tarve niin poistetaan"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                    <Entry
+                        Placeholder="text"  
+                        Margin="5,5,10,5" WidthRequest="250" HorizontalOptions="Start"/>
+                </VerticalStackLayout>
+                <Frame
                 Padding="0"
                 BorderColor="Black"
                 CornerRadius="20"
                 HasShadow="True"
-                HeightRequest="700"
-                WidthRequest="800">
+                HeightRequest="600"
+                WidthRequest="700" HorizontalOptions="End"
+                Margin="0,20,30,5" 
+                >
 
                 <ScrollView BackgroundColor="Beige">
                     <StackLayout>
@@ -383,29 +438,26 @@
                                 Grid.Row="6"
                                 Grid.Column="2"
                                 Text="www.villagenewbies.fi" />
-
-
-
                         </Grid>
 
                     </StackLayout>
                 </ScrollView>
             </Frame>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="End" Margin="0,0,25,0">
             <Button
                 x:Name="PrintInvoiceButton"
-                Margin="3"
                 Clicked="PrintInvoiceButtonClicked"
-                Text="Print" />
+                Text="Print"
+                Style="{StaticResource DarkBrownButtonStyle}"/>
             <Button
-                x:Name="SendEmailButton"
-                Margin="3"
+                x:Name="SendEmailButton" 
                 Clicked="SendEmailButtonClicked"
-                Text="Send Email" />
-            <Button
-                x:Name="MainMenuButton"
-                Margin="3"
-                Clicked="MainMenuButtonClicked"
-                Text="Main Menu" />
+                Text="Send Email"
+                Style="{StaticResource DarkBrownButtonStyle}"/>
+          
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
+    </Frame>
 </ContentPage>
