@@ -3,37 +3,171 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="varausjarjestelma.Management"
              Title="Management">
-    
-    <VerticalStackLayout>
-        
-        <Label HorizontalOptions="Start"   Text="Area management!" VerticalOptions="Center" />
-        <Label />
 
-        <Label Text="Area" />
-        <Entry x:Name="AddEntry" Text="Add Area" WidthRequest="300" BackgroundColor="LightGray" HorizontalOptions="Start"  />
+    <ContentPage.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#519EDA" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="MinimumWidthRequest" Value="120" />
+            <Setter Property="MaximumWidthRequest" Value="150" />
+
+            <Setter Property="BorderColor" Value="Gray" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+        <Style x:Key="listViewStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="BackgroundColor" Value="#BCBCBC" />
+            <Setter Property="MaximumHeightRequest" Value="500" />
+            <Setter Property="MinimumWidthRequest" Value="900" />
+
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+
+        <VerticalStackLayout>
             
-        
-            <!-- Upper Buttons-->
-        <HorizontalStackLayout>
-            <Button x:Name="AddButton" Text="Add" Clicked="AddButtonClicked" />
-            <Button x:Name="RemoveButton" Text="Remove" Clicked="RemoveButtonClicked" />
-        </HorizontalStackLayout>
-        <!-- ListView Components-->
-        <HorizontalStackLayout>
-            <Frame Padding="0" CornerRadius="10" HeightRequest="500">
-                <ListView x:Name="AreaListView" ItemTapped="AreaListViewItemTapped" BackgroundColor="SteelBlue" MinimumWidthRequest="500" Margin="0,0,0,0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <HorizontalStackLayout>
-                                    <Label Text="{Binding FullDescription}" Margin="10,5,0,5" />
-                                </HorizontalStackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Frame>
-        </HorizontalStackLayout>
+                <HorizontalStackLayout>
 
-    </VerticalStackLayout>
+                <Picker Margin="10,10,10,10" SelectedIndexChanged="Picker_SelectedIndexChanged">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Areas</x:String>
+                            <x:String>Cabins</x:String>
+                            <x:String>Services</x:String>
+                            
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+
+                <Button
+                    x:Name="addCabinButton"
+                    Margin="10,10,0,10"
+                    IsVisible="false"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Add cabins"
+                    Clicked="addCabinButton_Clicked"/>
+
+                    <Button
+                    x:Name="addServiceButton"
+                    Margin="10,10,0,10"
+                    IsVisible="false"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Add services" 
+                    Clicked="addServiceButton_Clicked"/>
+
+
+
+                    <Button
+                    x:Name="addAreaButton"
+                    Margin="10,10,0,10"
+                    IsVisible="false"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Add areas" 
+                    Clicked="addAreaButton_Clicked"/>
+
+                </HorizontalStackLayout>
+
+            
+            
+
+            <HorizontalStackLayout>
+                <Frame BackgroundColor="#f7f7f7" MinimumWidthRequest="1100" Margin="10,0,0,0">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label FontAttributes="Bold" Text="ID" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Name" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Address" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Postal Code" />
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="City" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="Phone number" />
+                        <Label
+                            Grid.Column="6"
+                            FontAttributes="Bold"
+                            Text="Email" />
+                    </Grid>
+                </Frame>
+                
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame MinimumWidthRequest="1100" Margin="10,0,0,0">
+
+                    <ListView x:Name="CustomerListView" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="10,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
+                                        <Label Grid.Column="1" Text="{Binding FullName}" />
+                                        <Label Grid.Column="2" Text="{Binding Address}" />
+                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
+                                        <Label Grid.Column="4" Text="{Binding City}" />
+                                        <Label Grid.Column="5" Text="{Binding Phone}" />
+                                        <Label Grid.Column="6" Text="{Binding Email}" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+                </Frame>
+                <Image
+                    x:Name="listViewSpinner"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    IsAnimationPlaying="True"
+                    IsVisible="false"
+                    Source="black_hole.gif" />
+
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+
+
+    </ScrollView>
 </ContentPage>
