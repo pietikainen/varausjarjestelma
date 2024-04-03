@@ -1,12 +1,13 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
-<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:varausjarjestelma"
-             x:Class="varausjarjestelma.App">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="varausjarjestelma.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:varausjarjestelma">
     <Application.Resources>
         <ResourceDictionary>
 
-            <!-- Custom Button Style -->
+            <!--  Custom Button Style  -->
             <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="SaddleBrown" />
                 <Setter Property="TextColor" Value="White" />
@@ -22,7 +23,11 @@
                                 <VisualState.Setters>
                                     <Setter Property="Button.Shadow">
                                         <Setter.Value>
-                                            <Shadow Brush="Black" Opacity="0.8" Radius="5" Offset="4,4" />
+                                            <Shadow
+                                                Brush="Black"
+                                                Opacity="0.8"
+                                                Radius="5"
+                                                Offset="4,4" />
                                         </Setter.Value>
                                     </Setter>
                                 </VisualState.Setters>
@@ -46,7 +51,11 @@
                                 <VisualState.Setters>
                                     <Setter Property="Button.Shadow">
                                         <Setter.Value>
-                                            <Shadow Brush="Black" Opacity="0.8" Radius="5" Offset="4,4" />
+                                            <Shadow
+                                                Brush="Black"
+                                                Opacity="0.8"
+                                                Radius="5"
+                                                Offset="4,4" />
                                         </Setter.Value>
                                     </Setter>
                                 </VisualState.Setters>
@@ -55,8 +64,8 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-            <!-- Custom ListView Style -->
-            <!-- Custom ListView Style määritelmä -->
+            <!--  Custom ListView Style  -->
+            <!--  Custom ListView Style määritelmä  -->
             <Style x:Key="CustomListViewStyle" TargetType="ListView">
                 <Setter Property="BackgroundColor" Value="Linen" />
                 <Setter Property="SeparatorColor" Value="DarkGoldenrod" />
