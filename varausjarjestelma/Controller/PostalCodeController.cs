@@ -95,7 +95,7 @@ namespace varausjarjestelma.Controller
 
                     if (jsonObject.Count <= 0)
                     {
-                        return "Postal Code doesn't exist";
+                        return null;
                     }
                     else
                     {
@@ -111,7 +111,7 @@ namespace varausjarjestelma.Controller
                 {
                     Debug.WriteLine("Error fetching postal code from Posti API");
                     Debug.WriteLine(e.Message);
-                    return "Cannot fetch postal code";
+                    return null;
                 }
             }
 
