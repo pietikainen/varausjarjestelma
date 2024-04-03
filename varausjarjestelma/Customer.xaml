@@ -3,182 +3,105 @@
     x:Class="varausjarjestelma.Customer"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Customer"
-    BackgroundColor="LightGoldenrodYellow">
+    BackgroundColor="#fafafa">
+    <ContentPage.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#519EDA" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="MinimumWidthRequest" Value="120" />
+            <Setter Property="MaximumWidthRequest" Value="150" />
+
+            <Setter Property="BorderColor" Value="Gray" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+        <Style x:Key="listViewStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="BackgroundColor" Value="#BCBCBC" />
+            <Setter Property="MaximumHeightRequest" Value="500" />
+            <Setter Property="MinimumWidthRequest" Value="900" />
+
+        </Style>
+    </ContentPage.Resources>
     <ScrollView>
 
         <VerticalStackLayout>
             <HorizontalStackLayout>
-                <Grid
-                    x:Name="CustomerForm"
-                    Margin="20"
-                    Padding="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="100" />
-                    </Grid.ColumnDefinitions>
 
-                    <!--  Customer form starts  -->
-                    <!--  Column 0 and 1  -->
-                    <Label
-                        x:Name="customerIdLabel"
-                        IsVisible="False"
-                        Text="Customer Id:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="customerIdEntry"
-                        Grid.Column="1"
-                        BackgroundColor="#DBDBDB"
-                        IsReadOnly="True"
-                        IsVisible="False" />
-                    <Label
-                        Grid.Row="1"
-                        Text="First name:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="firstNameEntry"
-                        Grid.Row="1"
-                        Grid.Column="1" />
-                    <Label
-                        Grid.Row="2"
-                        Text="Last name:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="lastNameEntry"
-                        Grid.Row="2"
-                        Grid.Column="1" />
-                    <Label
-                        Grid.Row="3"
-                        Text="Address:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="addressEntry"
-                        Grid.Row="3"
-                        Grid.Column="1" />
-                    <Label
-                        Grid.Row="4"
-                        Text="Postal Code:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="postalCodeEntry"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        HorizontalOptions="Start"
-                        Unfocused="PostalCodeEntryUnfocused"
-                        WidthRequest="70" />
-                    <Label
-                        x:Name="cityEntry"
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        Margin="-90,0,0,0"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Center"
-                        WidthRequest="100" />
-                    <Label
-                        Grid.Row="6"
-                        Text="Phone number:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="phoneNumberEntry"
-                        Grid.Row="6"
-                        Grid.Column="1" />
-                    <Label
-                        Grid.Row="7"
-                        Text="Email:"
-                        VerticalOptions="Center" />
-                    <Entry
-                        x:Name="emailEntry"
-                        Grid.Row="7"
-                        Grid.Column="1" />
+                <Button
+                    x:Name="AddCustomerButton"
+                    Margin="10,10,0,10"
+                    Clicked="AddCustomerButton_Clicked"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Add customer" />
 
-                    <!--  Column 2  -->
-                    <Button
-                        x:Name="CustomerFormSubmitButton"
-                        Grid.Row="8"
-                        Grid.Column="1"
-                        Clicked="CustomerFormSubmitButton_Clicked"
-                        Style="{StaticResource DarkBrownButtonStyle}"
-                        Text="Save" />
-
-                    <Button
-                        x:Name="CustomerClearButton"
-                        Grid.Row="8"
-                        Grid.Column="0"
-                        Clicked="CustomerClearButton_Clicked"
-                        IsVisible="true"
-                        Style="{StaticResource DarkBrownButtonStyle}"
-                        Text="Clear" />
-                </Grid>
+                <Entry
+                    x:Name="SearchCustomerEntry"
+                    Margin="670,10,0,10"
+                    HorizontalOptions="End"
+                    MinimumWidthRequest="300"
+                    Placeholder="Search..." />
 
 
 
             </HorizontalStackLayout>
 
             <HorizontalStackLayout>
-                <Grid Margin="25,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="150" />
+                <Frame BackgroundColor="#f7f7f7" MinimumWidthRequest="1100" Margin="10,0,0,0">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
 
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Label FontAttributes="Bold" Text="ID" />
-                    <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        Text="Name" />
-                    <Label
-                        Grid.Column="2"
-                        FontAttributes="Bold"
-                        Text="Address" />
-                    <Label
-                        Grid.Column="3"
-                        FontAttributes="Bold"
-                        Text="Postal Code" />
-                    <Label
-                        Grid.Column="4"
-                        FontAttributes="Bold"
-                        Text="City" />
-                    <Label
-                        Grid.Column="5"
-                        FontAttributes="Bold"
-                        Text="Phone number" />
-                    <Label
-                        Grid.Column="6"
-                        FontAttributes="Bold"
-                        Text="Email" />
-                </Grid>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label FontAttributes="Bold" Text="ID" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Name" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Address" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Postal Code" />
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="City" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="Phone number" />
+                        <Label
+                            Grid.Column="6"
+                            FontAttributes="Bold"
+                            Text="Email" />
+                    </Grid>
+                </Frame>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Frame Margin="3,5,5,5" Style="{StaticResource DarkBrownButtonStyle}">
-                    <ListView
-                        x:Name="CustomerListView"
-                        BackgroundColor="PaleGoldenrod"
-                        ItemTapped="CustomerListViewItemTapped">
+                <Frame MinimumWidthRequest="1100" Margin="10,0,0,0">
+
+                    <ListView x:Name="CustomerListView" ItemTapped="CustomerListViewItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid>
+                                    <Grid Margin="10,0,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50" />
                                             <ColumnDefinition Width="200" />
@@ -187,8 +110,10 @@
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition Width="150" />
-
                                         </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
                                         <Label Grid.Column="0" Text="{Binding CustomerId}" />
                                         <Label Grid.Column="1" Text="{Binding FullName}" />
                                         <Label Grid.Column="2" Text="{Binding Address}" />
@@ -200,9 +125,16 @@
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+
                     </ListView>
                 </Frame>
-
+                <Image
+                    x:Name="listViewSpinner"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    IsAnimationPlaying="True"
+                    IsVisible="false"
+                    Source="black_hole.gif" />
 
 
             </HorizontalStackLayout>
@@ -213,38 +145,3 @@
 
     </ScrollView>
 </ContentPage>
-<!--
-
-                                  <ListView
-                      x:Name="CustomerListViews"
-                      Margin="0,20,0,0"
-                      BackgroundColor="#BCBCBC"
-                      MaximumHeightRequest="500"
-                      MinimumWidthRequest="900">
-                      <ListView.ItemTemplate>
-                          <DataTemplate>
-                              <ViewCell>
-                                  <Grid>
-                                      <Grid.ColumnDefinitions>
-                                          <ColumnDefinition Width="50" />
-                                          <ColumnDefinition Width="200" />
-                                          <ColumnDefinition Width="300" />
-                                          <ColumnDefinition Width="100" />
-                                          <ColumnDefinition Width="100" />
-                                          <ColumnDefinition Width="150" />
-                                          <ColumnDefinition Width="150" />
-                                      </Grid.ColumnDefinitions>
-
-
-                                      <Label Grid.Column="0" Text="{Binding CustomerId}" />
-                                      <Label Grid.Column="1" Text="{Binding FullName}" />
-                                      <Label Grid.Column="2" Text="{Binding Address}" />
-                                      <Label Grid.Column="3" Text="{Binding PostalCode}" />
-                                      <Label Grid.Column="4" Text="{Binding City}" />
-                                      <Label Grid.Column="5" Text="{Binding PhoneNumber}" />
-                                      <Label Grid.Column="6" Text="{Binding Email}" />
-                                  </Grid>
-                              </ViewCell>
-                          </DataTemplate>
-                      </ListView.ItemTemplate>
-                  </ListView>-->
