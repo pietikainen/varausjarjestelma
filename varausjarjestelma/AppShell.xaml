@@ -4,25 +4,45 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
-    BackgroundColor="AliceBlue"
     Title="varausjarjestelma"
-    >
+    BackgroundColor="#bbbbbc"
+    FlyoutBehavior="Disabled">
+    <Shell.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Clicked="RequestMainMenuPage" Text="Main Menu" />
+            <MenuFlyoutItem Text="Quit" />
+        </MenuBarItem>
+        <MenuBarItem Text="Customer">
+            <MenuFlyoutItem Text="Add..." />
+            <MenuFlyoutItem Clicked="RequestCustomerPage" Text="View..." />
+        </MenuBarItem>
+        <MenuBarItem Text="Area">
+            <MenuFlyoutItem Text="Add..." />
+            <MenuFlyoutItem Clicked="RequestAreaPage" Text="View..." />
+        </MenuBarItem>
+        <MenuBarItem Text="Booking">
+            <MenuFlyoutItem Text="Add..." />
+            <MenuFlyoutItem Clicked="RequestBookingPage" Text="View..." />
+        </MenuBarItem>
+        <MenuBarItem Text="TESTI">
+            <MenuFlyoutItem Text="Add..." />
+            <MenuFlyoutItem Clicked="RequestManagementPage" Text="Testi_management" />
+        </MenuBarItem>
+        <MenuBarItem Text="Invoices">
+            <MenuFlyoutItem Text="Add..." />
+            <MenuFlyoutItem Clicked="RequestInvoicePage" Text="View all..." />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-    <ShellContent
-   Title="Manage"
-   ContentTemplate="{DataTemplate local:AreaManagement}"
-   Route="AreaManagement" />
-    <ShellContent
-   Title="Booking"
-   ContentTemplate="{DataTemplate local:Booking}"
-   Route="Booking" />
-    <ShellContent
-      Title="Customer"
-      ContentTemplate="{DataTemplate local:Customer}"
-      Route="Customer" />
+        </MenuBarItem>
+        <MenuBarItem Text="Help">
+            <MenuFlyoutItem Clicked="RequestAboutPage" Text="About" />
+        </MenuBarItem>
+    </Shell.MenuBarItems>
+    <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
+    <ShellContent ContentTemplate="{DataTemplate local:Customer}" Route="Customer" />
+    <ShellContent ContentTemplate="{DataTemplate local:AreaManagement}" Route="AreaManagement" />
+    <ShellContent ContentTemplate="{DataTemplate local:Booking}" Route="Booking" />
+    <ShellContent ContentTemplate="{DataTemplate local:Management}" Route="Management" />
+    <ShellContent ContentTemplate="{DataTemplate local:Invoice}" Route="Invoice" />
+    <ShellContent ContentTemplate="{DataTemplate local:About}" Route="About" />
 
 </Shell>
