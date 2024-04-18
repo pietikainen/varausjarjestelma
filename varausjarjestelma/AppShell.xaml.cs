@@ -44,6 +44,10 @@
             await Shell.Current.GoToAsync("//About");
         }
 
+        private void RequestQuit(object sender, EventArgs e)
+        {
+            Application.Current.Quit();
+        }
 
     }
 }
