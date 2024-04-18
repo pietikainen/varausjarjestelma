@@ -25,6 +25,24 @@
             <Setter Property="MinimumWidthRequest" Value="900" />
 
         </Style>
+        
+        
+        <!--  Sort button styles ready to go  -->
+
+        <Style x:Key="sortButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+
+        <Style x:Key="sortButtonDescendedStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#a0a0a0" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
+
+
+
     </ContentPage.Resources>
     <ScrollView>
 
@@ -40,11 +58,11 @@
 
                 <SearchBar
                     x:Name="SearchCustomerEntry"
-                    Margin="780,10,0,10"
-                    HorizontalOptions="EndAndExpand"
+                    Margin="670,10,0,10"
+                    HorizontalOptions="End"
                     MinimumWidthRequest="300"
-                    Placeholder="Search..." />
-
+                    Placeholder="Search by name..."
+                    TextChanged="SearchBar_TextChanged" />
 
 
             </HorizontalStackLayout>
