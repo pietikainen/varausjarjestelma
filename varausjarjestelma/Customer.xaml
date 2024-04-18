@@ -38,10 +38,10 @@
                     Style="{StaticResource buttonStyle}"
                     Text="Add customer" />
 
-                <Entry
+                <SearchBar
                     x:Name="SearchCustomerEntry"
-                    Margin="670,10,0,10"
-                    HorizontalOptions="End"
+                    Margin="780,10,0,10"
+                    HorizontalOptions="EndAndExpand"
                     MinimumWidthRequest="300"
                     Placeholder="Search..." />
 
@@ -50,7 +50,11 @@
             </HorizontalStackLayout>
 
             <HorizontalStackLayout>
-                <Frame BackgroundColor="#f7f7f7" MinimumWidthRequest="1100" Margin="10,0,0,0">
+                <Frame
+                    Margin="10,0,0,0"
+                    BackgroundColor="#f7f7f7"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
                     <Grid Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -59,7 +63,7 @@
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="150" />
                             <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="200" />
 
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -86,7 +90,7 @@
                         <Label
                             Grid.Column="5"
                             FontAttributes="Bold"
-                            Text="Phone number" />
+                            Text="Phone" />
                         <Label
                             Grid.Column="6"
                             FontAttributes="Bold"
@@ -95,7 +99,10 @@
                 </Frame>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Frame MinimumWidthRequest="1100" Margin="10,0,0,0">
+                <Frame
+                    Margin="10,0,0,0"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
 
                     <ListView x:Name="CustomerListView" ItemTapped="CustomerListViewItemTapped">
                         <ListView.ItemTemplate>
@@ -109,7 +116,7 @@
                                             <ColumnDefinition Width="100" />
                                             <ColumnDefinition Width="150" />
                                             <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="200" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />

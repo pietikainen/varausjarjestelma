@@ -7,6 +7,9 @@ public partial class Management : ContentPage
 		InitializeComponent();
 	}
 
+    // private string <valittu arvo dropista>;
+
+
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
 		var picker = sender as Picker;
@@ -29,6 +32,23 @@ public partial class Management : ContentPage
                 break;
         }
     }
+
+    // search:
+    // ottaa vastaan parametrin "drop_value" ja "haku"
+
+
+
+
+    // list area
+        // etsint‰ parametrit on: "area" ja "haku"
+        //suodattaa listalta ja n‰ytt‰‰ vain ne jotka vastaavat hakua
+
+
+    // list cabin
+
+    // list service
+
+
 
     private void addCabinButton_Clicked(object sender, EventArgs e)
     {

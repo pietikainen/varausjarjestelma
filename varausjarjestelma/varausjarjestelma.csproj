@@ -83,6 +83,9 @@
 	  <MauiXaml Update="AddCustomerModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="AddReservationModal.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="AddServiceModal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

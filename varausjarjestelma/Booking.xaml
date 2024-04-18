@@ -3,258 +3,421 @@
     x:Class="varausjarjestelma.Booking"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Booking"
-    HeightRequest="1010"
-    WidthRequest="1000">
-    <Frame Padding="0" CornerRadius="20" HasShadow="True" BackgroundColor="LightGoldenrodYellow"     HeightRequest="1000"
-WidthRequest="1000" >
-        <ScrollView>
+    BackgroundColor="#fafafa">
+    <ContentPage.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#519EDA" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="MinimumWidthRequest" Value="120" />
+            <Setter Property="MaximumWidthRequest" Value="150" />
+
+            <Setter Property="BorderColor" Value="Gray" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+        <Style x:Key="listViewStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="BackgroundColor" Value="#BCBCBC" />
+            <Setter Property="MaximumHeightRequest" Value="500" />
+            <Setter Property="MinimumWidthRequest" Value="900" />
+
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
 
 
-            <VerticalStackLayout Padding="15" Spacing="15">
-                <StackLayout>
-                    <!-- Ensimmäinen viiva -->
-                    <Label HorizontalOptions="Center" Text="KELPAAKO NAVI PALKIKSI" VerticalOptions="Center" Margin="0" ></Label>
-                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand" Margin="0,20,0,10"/>
-                    <HorizontalStackLayout HorizontalOptions="Start">
-                        <Button Text="Invoice" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
-                        <Button Text="Manage" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
-                        <Button Text="Sivu3" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
-                        <Button Text="Sivu4" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
-                        <Button Text="Sivu5" Style="{StaticResource DarkBrownButtonStyle}" BackgroundColor="SaddleBrown"></Button>
+        <Frame>
+
+
+            <HorizontalStackLayout>
+
+                <!--  1. palsta  -->
+                <VerticalStackLayout>
+
+
+                    <HorizontalStackLayout>
+                        <VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <!--<Label Text="Res.#" />
+                                <Label
+                                    Margin="0,0,400,10"
+                                    FontSize="Medium"
+                                    Text="{Binding reservationNumber}" />-->
+                                <!--  joo ei oo kiva kovakoodata marginaaleja, koska ei tule responsiivisuutta - voisit korjata  -->
+                            </HorizontalStackLayout>
+                            <!--  Area selection  -->
+                            <Label
+                                Margin="0,0,0,10"
+                                FontSize="12"
+                                Text="Choose area: " />
+                            <Picker
+                                x:Name="AreaPicker"
+                                HorizontalOptions="Start"
+                                SelectedIndexChanged="AreaPicker_SelectedIndexChanged"
+                                WidthRequest="200" />
+
+
+                            <!--  Cabin selection  -->
+                            <StackLayout>
+                                <Label
+                                    Margin="0,10,0,10"
+                                    FontSize="12"
+                                    Text="Choose cabin: " />
+                                <Frame
+                                    Margin="0,0,0,0"
+                                    BackgroundColor="#fafafa"
+                                    WidthRequest="200">
+                                    <ScrollView>
+                                        <StackLayout>
+                                            <ListView x:Name="listViewCabinMain" HeightRequest="200">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextCell Detail="{Binding Price, StringFormat='{0:C}'}" Text="{Binding CabinName}" />
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackLayout>
+                                    </ScrollView>
+                                </Frame>
+                            </StackLayout>
+
+                            <StackLayout>
+                                <Label
+                                    Margin="0,10,0,10"
+                                    FontSize="12"
+                                    Text="Choose services: " />
+
+                                <StackLayout
+                                    x:Name="ServicesCheckboxFrame"
+                                    Margin="0,10,0,10"
+                                    BackgroundColor="#fafafa"
+                                    WidthRequest="200" />
+                            </StackLayout>
+
+                            <StackLayout>
+                                <!--  Tähän joku ikkuna, jossa mökin tiedot tarjolla kivasti  -->
+                                <!--  Entä jos mökkiin on jo varaus ko. ajalle?  -->
+                            </StackLayout>
+
+                        </VerticalStackLayout>
                     </HorizontalStackLayout>
 
-                    <!-- Toinen viiva -->
-                    <BoxView HeightRequest="2" BackgroundColor="SaddleBrown" HorizontalOptions="FillAndExpand" Margin="0,10,0,20"/>
-                </StackLayout>
-                <!--  Kaupungin valinta  -->
-                <Label Text="Choose Area" />
-                <Picker x:Name="AreaPicker" SelectedIndexChanged="AreaPicker_SelectedIndexChanged" />
-                <!--Cabin selection-->
-                <Frame x:Name="CabinsFrame" IsVisible="true" BackgroundColor="Beige">
-                    <StackLayout x:Name="CabinsContainer">
-                        <Grid
-                            x:Name="CabinInfoGrid"
-                            ColumnDefinitions="*,*,*,*,*"
-                            RowDefinitions="Auto">
-                            <Label Text="Name" Margin="10,0,0,0" />
-                            <Label Grid.Column="1" Text="Beds"  Margin="4,0,0,0" />
-                            <Label Grid.Column="2" Text="Description"  Margin="1,0,0,0" />
-                            <Label Grid.Column="3" Text="Features"  Margin="0,0,0,0" />
-                            <Label Grid.Column="4" Text="Price" />
-                        </Grid>
+
+
+
+
+
+
+                </VerticalStackLayout>
+
+
+                <!--  2.palsta  -->
+
+
+                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="300">
+                    <Label
+                        Margin="0,0,0,10"
+                        FontSize="12"
+                        Text="Select customer:" />
+                    <SearchBar
+                        Placeholder="Search..."
+                        SearchCommand="{Binding SearchCommand}"
+                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
+
+                    <Frame Margin="0,10,0,10" BackgroundColor="#fafafa">
+                        <ListView x:Name="CustomerListView" HeightRequest="75">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Detail="{Binding Email}" Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Frame>
+
+                    <Frame>
+                        <VerticalStackLayout x:Name="CustomerDetails">
+
+                            <Label Text="First name:" FontSize="12" Margin="0,0,0,5"/>
+                            <Entry x:Name="firstNameEntry"/>
+                            <Label Text="Last name:" FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="lastNameEntry" />
+                            <Label Text="Address:" FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="addressEntry" />
+                            <Label Text="Postal code:" FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="postalCodeEntry" />
+                            <Label Text="City:" FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="cityEntry" />
+                            <Label Text="Email: " FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="emailEntry" />
+                            <Label Text="Phone: " FontSize="12" Margin="0,10,0,5"/>
+                            <Entry x:Name="phoneNumberEntry" />
+
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="AddCustomerButton" Style="{StaticResource buttonStyle}" Text="Save new customer" Margin="0,20,0,0" Grid.ColumnSpan="2"/>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </VerticalStackLayout>
+
+
+                <!--  3. palsta  -->
+                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="300">
+                    <Label FontSize="12" Text="Check-in date: " />
+                    <DatePicker
+                        x:Name="CheckInDatePicker"
+                        Date="{Binding CheckInDate}"
+                        HorizontalOptions="Start"
+                        WidthRequest="200" />
+                    <Label FontSize="12" Text="Check-out date: " />
+                    <DatePicker
+                        x:Name="CheckOutDatePicker"
+                        Date="{Binding CheckOutDate}"
+                        HorizontalOptions="Start"
+                        WidthRequest="200" />
+                </VerticalStackLayout>
+                <!--  4. palsta  -->
+
+                <VerticalStackLayout Margin="10,0,0,10">
+                    <Frame
+                        BackgroundColor="#fafafa"
+                        HorizontalOptions="EndAndExpand"
+                        IsVisible="True"
+                        WidthRequest="390">
 
                         <Grid>
-                            <ListView
-                            x:Name="CabinsListView"
-                            BackgroundColor="Beige"
-                            ItemTapped="OnCabinTapped">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+
+
+
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                Margin="0,0,0,20"
+                                FontAttributes="Bold"
+                                HorizontalOptions="Center"
+                                Text="Reservation details" />
+
+
+                            <!--  Customer information  -->
+                            <!--  1. column  -->
+
+                            <Label
+                                Grid.Row="1"
+                                FontSize="12"
+                                Text="Customer ID: " />
+                            <Label
+                                x:Name="CustomerIDEntry"
+                                Grid.Row="2"
+                                Text="binding ID" />
+                            <Label
+                                Grid.Row="3"
+                                FontSize="12"
+                                Text="Name: " />
+                            <Label
+                                x:Name="NameEntry"
+                                Grid.Row="4"
+                                Text="binding name" />
+                            <Label
+                                Grid.Row="5"
+                                FontSize="12"
+                                Text="Email: " />
+                            <Label
+                                x:Name="EmailEntry"
+                                Grid.Row="6"
+                                Text="binding email" />
+
+                            <!--  2. column  -->
+
+                            <Label
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Text="Phone: " />
+                            <Label
+                                x:Name="PhoneEntry"
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Text="binding phone" />
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Text="Address: " />
+                            <Label
+                                x:Name="AddressEntry"
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Text="binding address" />
+                            <Label
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Text="Postal code: " />
+                            <Label
+                                x:Name="PostalCodeEntry"
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                Text="binding postalcode" />
+                            <Label
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Text="City: " />
+                            <Label
+                                x:Name="CityEntry"
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                Text="binding City" />
+
+                            <!--  Reservation details  -->
+                            <!--  1. column  -->
+
+
+                            <!--  Cabin details  -->
+                            <Label
+                                Grid.Row="9"
+                                Margin="0,0,0,0"
+                                FontSize="12"
+                                Text="Cabin: " />
+                            <Label
+                                x:Name="CabinEntry"
+                                Grid.Row="10"
+                                Text="binding cabinname" />
+
+                            <!--  Date picker  -->
+                            <Label
+                                Grid.Row="11"
+                                FontSize="12"
+                                Text="Start date:" />
+                            <Label
+                                Grid.Row="11"
+                                Grid.Column="1"
+                                FontSize="12"
+                                Text="End date:" />
+                            <Label
+                                x:Name="DatesEntry"
+                                Grid.Row="12"
+                                Text="binding dates" />
+
+                            <!--  ¨Service details  -->
+
+                            <Label
+                                Grid.Row="13"
+                                FontSize="12"
+                                Text="Services: " />
+                            <ListView x:Name="ServicesSelectedForReservation" Grid.Row="14">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <ViewCell>
-                                            <Grid Padding="10" ColumnDefinitions="*,*,*,*,*">
-                            
-                                                <Label
-                                                Grid.Column="0"
-                                                FontAttributes="Bold"
-                                                Text="{Binding CabinName}" />
-                                                <Label Grid.Column="1" Text="{Binding Beds}" />
-                                                <Label Grid.Column="2" Text="{Binding Description}" />
-                                                <Label Grid.Column="3" Text="{Binding Features}" />
-                                                <Label Grid.Column="4" Text="{Binding Price, StringFormat='{0:C}'}" />
-                                
-                                            </Grid>
-                                        </ViewCell>
+                                        <TextCell Text="" />
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
+
+
+
+                            <!--  3. column  -->
+                            <!--  Price  -->
+                            <Label
+                                x:Name="PriceEntry"
+                                Grid.Row="10"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalOptions="EndAndExpand"
+                                Text="€ / Night" />
+                            <Label
+                                x:Name="DatesTotalEntry"
+                                Grid.Row="12"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalOptions="EndAndExpand"
+                                Text="x Days" />
+                            <Label
+                                x:Name="ServicesTotalEntry"
+                                Grid.Row="15"
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                HorizontalOptions="EndAndExpand"
+                                Text="Total €" />
+
+
+
+                            <!--  Listview tähän? populoituu checkboxeista, vai listviewstä?  -->
+
+
+
+                            <!--  Buttons for form  -->
+
+
+
                         </Grid>
-                    </StackLayout>
-                </Frame>
-
-                <Frame x:Name="CabinsNullFrame" IsVisible="True" BackgroundColor="DimGrey">
-                    <Label
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center"
-                    Text="No cabins found"  />
-                </Frame>
-
-                <HorizontalStackLayout>
-                <VerticalStackLayout>
-                <!--  Asiakkaan yhteystietolomake  -->
-                <Entry x:Name="FirstNameEntry" Placeholder="First name" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="LastNameEntry" Placeholder="Last name" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="AddressEntry" Placeholder="Address" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="CityEntry" Placeholder="City" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="PostalCodeEntry" Placeholder="Postal code" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="EmailEntry" Placeholder="Email" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <Entry x:Name="PhoneNumberEntry" Placeholder="Phone number" WidthRequest="250" HorizontalOptions="Start" Margin="5" />
-                        <DatePicker x:Name="StartDatePicker" DateSelected="StartDatePicker_DateSelected" Margin="5"/>
-                        <DatePicker x:Name="EndDatePicker" DateSelected="EndDatePicker_DateSelected" Margin="5" />
-                
-                        <Button
-                            Clicked="OnBookNowClicked"
-                            Text="Book Now"
-                            Style="{StaticResource DarkBrownButtonStyle}"
-                            Margin="5,0,0,0"
-                            HorizontalOptions="Start"/>
-                </VerticalStackLayout>
-                    <Frame
-                        Padding="0"
-                        BorderColor="Black"
-                        CornerRadius="20"
-                        HasShadow="True"
-                        HeightRequest="420"
-                        WidthRequest="690"
-                        Margin="10,0,5,5">      
-                        <ScrollView BackgroundColor="Beige">
-                            <Grid
-                                Padding="20"
-                                ColumnDefinitions="Auto,*"
-                                RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"
-                                RowSpacing="10">
-
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="First Name:" />
-                                <Label
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="{Binding FirstName}" />
-
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Last Name:" />
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Text="{Binding LastName}" />
-
-                                <Label
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Address:" />
-                                <Label
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Text="{Binding Address}" />
-
-                                <Label
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="City:" />
-                                <Label
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    Text="{Binding City}" />
-
-                                <Label
-                                    Grid.Row="4"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Postal Code:" />
-                                <Label
-                                    Grid.Row="4"
-                                    Grid.Column="1"
-                                    Text="{Binding PostalCode}" />
-
-                                <Label
-                                    Grid.Row="5"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Email:" />
-                                <Label
-                                    Grid.Row="5"
-                                    Grid.Column="1"
-                                    Text="{Binding Email}" />
-
-                                <Label
-                                    Grid.Row="6"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Phone:" />
-                                <Label
-                                    Grid.Row="6"
-                                    Grid.Column="1"
-                                    Text="{Binding Phone}" />
-
-                                <Label
-                                    Grid.Row="7"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Cabin:" />
-                                <Label
-                                    Grid.Row="7"
-                                    Grid.Column="1"
-                                    Text="{Binding Cabin}" />
-                                <Label
-                                    Grid.Row="8"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Start Day" />
-                                <Label
-                                    Grid.Row="9"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="End Day"
-                                />
-                                <Label
-                                    x:Name="StartDay"
-                                    Grid.Row="8"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    HorizontalTextAlignment="End"
-                                    Text="Start Day" />
-                                <Label
-                                    x:Name="EndDay"
-                                    Grid.Row="9"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    HorizontalTextAlignment="End"
-                                    Text="End Day" />
-
-                                <Label
-                                    Grid.Row="10"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Cabin Price:" />
-                                <Label
-                                    Grid.Row="10"
-                                    Grid.Column="1"
-                                    Text="{Binding StreetAddress}" />
-                               
-                                <Label
-                                    Grid.Row="11"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Services:" />
-                                <Label
-                                    Grid.Row="11"
-                                    Grid.Column="1"
-                                    Text="{Binding Services}" />
-
-                                <Label
-                                    Grid.Row="12"
-                                    Grid.Column="0"
-                                    FontAttributes="Bold"
-                                    Text="Total Price:" />
-                                <Label
-                                    Grid.Row="12"
-                                    Grid.Column="0"
-                                    Text="{Binding TotalPrice}" />
-                            </Grid>
-                        </ScrollView>
-
                     </Frame>
-                </HorizontalStackLayout>
+                    
+                    
+                    
+                    <Button
+                                Grid.Row="25"
+                                Grid.Column="0"
+                                Margin="0,20,0,0"
+                                Clicked="OnBookNowClicked"
+                                
+                                Style="{StaticResource buttonStyle}"
+                                Text="Book Now" />
 
-            </VerticalStackLayout>
-        </ScrollView>
-    </Frame>
+                    <Button
+                                Grid.Row="25"
+                                Grid.Column="2"
+                                Margin="0,20,0,0"
+                                Clicked="OnCancelClicked"
+                                
+                                Style="{StaticResource buttonStyle}"
+                                Text="Cancel" />
+                </VerticalStackLayout>
+
+
+
+            </HorizontalStackLayout>
+        </Frame>
+    </ScrollView>
 </ContentPage>

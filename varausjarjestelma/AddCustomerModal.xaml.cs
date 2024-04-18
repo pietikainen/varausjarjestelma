@@ -5,10 +5,10 @@ using System.Diagnostics;
 
 public partial class AddCustomerModal : ContentPage
 {
-	public AddCustomerModal()
-	{
-		InitializeComponent();
-	}
+    public AddCustomerModal()
+    {
+        InitializeComponent();
+    }
 
     public AddCustomerModal(CustomerData customer)
     {
@@ -30,6 +30,7 @@ public partial class AddCustomerModal : ContentPage
 
     private async void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
     {
+        Debug.WriteLine("CustomerFormSubmitButton_Clicked");
         var formDataisValid = await ValidateFormData();
         if (formDataisValid)
         {
@@ -42,10 +43,15 @@ public partial class AddCustomerModal : ContentPage
                 CustomerSubmitButtonClicked(sender, e);
             }
         }
+        else
+        {
+            Debug.WriteLine("Form data is not valid.");
+        }
     }
 
     private async void CustomerSubmitButtonClicked(object sender, EventArgs e)
     {
+        Debug.WriteLine("Inside CustomerSubmitButtonClicked");
         var firstName = firstNameEntry.Text;
         var lastName = lastNameEntry.Text;
         var address = addressEntry.Text;
@@ -81,6 +87,7 @@ public partial class AddCustomerModal : ContentPage
                 await PostalCodeController.InsertPostalCodeAsync(cityData);
                 await CustomerController.InsertAndModifyCustomerAsync(customer, "add");
                 ResetCustomerForm();
+                Debug.WriteLine("Customer inserted to database. Closing modal.");
                 await Navigation.PopModalAsync();
             }
         }
@@ -137,50 +144,77 @@ public partial class AddCustomerModal : ContentPage
 
     private async Task<bool> ValidateFormData()
     {
+        Debug.WriteLine("Validating form data");
         List<string> errorString = new List<string>();
         bool isValid = true;
+
+        foreach (var entry in this.FindByName<VerticalStackLayout>("CustomerDetails").Children)
+        {
+            Debug.WriteLine("inside entry foreach");
+            if (entry is Entry)
+            {
+                var entryValue = (Entry)entry;
+                Debug.WriteLine("entryValue: " + entryValue.Text);
+                if (entryValue.Text == null || entryValue.Text.Length == 0)
+                {
+                    entryValue.Placeholder = "Field is required.";
+                    return false;
+                }
+            }
+            
+        }
+
 
         // Tried to do this with foreach loop but it didn't work if user
         // previously modified customer data and then tried to add new customer
         // Because of isvisible property of customerIdEntry
         // Sorry.
 
-        if (firstNameEntry.Text == null || firstNameEntry.Text.Length == 0)
+        // Try/catch for handling for null errors
+        try
         {
-            errorString.Add("First name cannot be empty.");
-        }
+            Debug.WriteLine("Catching null errors!");
+            if (firstNameEntry.Text == null || firstNameEntry.Text.Length == 0)
+            {
+                errorString.Add("First name cannot be empty.");
+            }
 
-        if (lastNameEntry.Text == null || lastNameEntry.Text.Length == 0)
+            if (lastNameEntry.Text == null || lastNameEntry.Text.Length == 0)
+            {
+                errorString.Add("Last name cannot be empty.");
+            }
+
+            if (addressEntry.Text == null || addressEntry.Text.Length == 0)
+            {
+                errorString.Add("Address cannot be empty.");
+            }
+
+            if (!postalCodeEntry.Text.All(char.IsDigit) || postalCodeEntry.Text.Length != 5)
+            {
+                errorString.Add("Postal code must be numeric and 5 characters long.");
+            }
+
+            if (!phoneNumberEntry.Text.All(char.IsDigit))
+            {
+                errorString.Add("Phone number must be in numeric form.");
+            }
+
+            if (!IsEmailValid(emailEntry.Text))
+            {
+                errorString.Add("Email is not valid.");
+            }
+
+            if (errorString.Count > 0)
+            {
+                isValid = false;
+                await DisplayAlert("Error", string.Join("\n", errorString), "OK");
+            }
+        }
+        catch (Exception ex)
         {
-            errorString.Add("Last name cannot be empty.");
+            Debug.WriteLine(ex.Message);
         }
-
-        if (addressEntry.Text == null || addressEntry.Text.Length == 0)
-        {
-            errorString.Add("Address cannot be empty.");
-        }
-
-        if (!postalCodeEntry.Text.All(char.IsDigit) || postalCodeEntry.Text.Length != 5)
-        {
-            errorString.Add("Postal code must be numeric and 5 characters long.");
-        }
-
-        if (!phoneNumberEntry.Text.All(char.IsDigit))
-        {
-            errorString.Add("Phone number must be in numeric form.");
-        }
-
-        if (!IsEmailValid(emailEntry.Text))
-        {
-            errorString.Add("Email is not valid.");
-        }
-
-        if (errorString.Count > 0)
-        {
-            isValid = false;
-            await DisplayAlert("Error", string.Join("\n", errorString), "OK");
-        }
-
+        Debug.WriteLine("isvalid?: " + isValid);
         return isValid;
     }
 
@@ -206,7 +240,7 @@ public partial class AddCustomerModal : ContentPage
             var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
             if (city != null)
             {
-                cityEntry.IsReadOnly = true;                
+                cityEntry.IsReadOnly = true;
                 cityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
                 cityEntry.Text = city;
 

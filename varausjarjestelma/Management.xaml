@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Management"
-             Title="Management">
+<ContentPage
+    x:Class="varausjarjestelma.Management"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Management">
 
     <ContentPage.Resources>
         <Style x:Key="buttonStyle" TargetType="Button">
@@ -29,8 +30,8 @@
     <ScrollView>
 
         <VerticalStackLayout>
-            
-                <HorizontalStackLayout>
+
+            <HorizontalStackLayout>
 
                 <Picker Margin="10,10,10,10" SelectedIndexChanged="Picker_SelectedIndexChanged">
                     <Picker.ItemsSource>
@@ -38,7 +39,7 @@
                             <x:String>Areas</x:String>
                             <x:String>Cabins</x:String>
                             <x:String>Services</x:String>
-                            
+
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
@@ -47,36 +48,45 @@
                 <Button
                     x:Name="addCabinButton"
                     Margin="10,10,0,10"
+                    Clicked="addCabinButton_Clicked"
                     IsVisible="false"
                     Style="{StaticResource buttonStyle}"
-                    Text="Add cabins"
-                    Clicked="addCabinButton_Clicked"/>
+                    Text="Add cabins" />
 
-                    <Button
+                <Button
                     x:Name="addServiceButton"
                     Margin="10,10,0,10"
+                    Clicked="addServiceButton_Clicked"
                     IsVisible="false"
                     Style="{StaticResource buttonStyle}"
-                    Text="Add services" 
-                    Clicked="addServiceButton_Clicked"/>
+                    Text="Add services" />
 
 
 
-                    <Button
+                <Button
                     x:Name="addAreaButton"
                     Margin="10,10,0,10"
+                    Clicked="addAreaButton_Clicked"
                     IsVisible="false"
                     Style="{StaticResource buttonStyle}"
-                    Text="Add areas" 
-                    Clicked="addAreaButton_Clicked"/>
+                    Text="Add areas" />
 
-                </HorizontalStackLayout>
+                <SearchBar
+                    x:Name="searchBar"
+                    Margin="600,10,0,10"
+                    Placeholder="Search..."
+                    WidthRequest="300" />
 
-            
-            
+            </HorizontalStackLayout>
+
+
+
 
             <HorizontalStackLayout>
-                <Frame BackgroundColor="#f7f7f7" MinimumWidthRequest="1100" Margin="10,0,0,0">
+                <Frame
+                    Margin="10,0,0,0"
+                    BackgroundColor="#f7f7f7"
+                    MinimumWidthRequest="1100">
                     <Grid Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -119,12 +129,12 @@
                             Text="Email" />
                     </Grid>
                 </Frame>
-                
+
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Frame MinimumWidthRequest="1100" Margin="10,0,0,0">
+                <Frame Margin="10,0,0,0" MinimumWidthRequest="1100">
 
-                    <ListView x:Name="CustomerListView" >
+                    <ListView x:Name="CustomerListView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

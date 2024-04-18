@@ -20,7 +20,7 @@
         </Style>
     </ContentPage.Resources>
     <Frame>
-        <VerticalStackLayout>
+        <VerticalStackLayout x:Name="CustomerDetails">
 
 
             <Label
@@ -35,10 +35,7 @@
                 x:Name="customerIdLabel"
                 IsVisible="False"
                 Text="Customer ID:" />
-            <Entry
-                x:Name="customerIdEntry"
-                IsReadOnly="True"
-                IsVisible="False" />
+            <Label x:Name="customerIdEntry" IsVisible="False" />
             <Label Text="First name:" />
             <Entry x:Name="firstNameEntry" />
             <Label Text="Last name:" />
@@ -46,7 +43,10 @@
             <Label Text="Address:" />
             <Entry x:Name="addressEntry" />
             <Label Text="Postal code:" />
-            <Entry x:Name="postalCodeEntry" Unfocused="PostalCodeEntryUnfocused" />
+            <Entry
+                x:Name="postalCodeEntry"
+                Placeholder=""
+                Unfocused="PostalCodeEntryUnfocused" />
             <Label Text="City:" />
             <Entry x:Name="cityEntry" />
             <Label Text="Email: " />

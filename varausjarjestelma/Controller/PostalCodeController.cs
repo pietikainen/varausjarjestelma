@@ -65,6 +65,9 @@ namespace varausjarjestelma.Controller
             }
         }
 
+
+        // Fetch postal code from Posti API
+        // OBS : API TOKEN VALID ONLY FOR 11 YEARS, SORRY.
         public static async Task<string> FetchPostalCodeFromApi(string postalCode)
         {
             var apiToken = ConfigurationManager.AppSettings["PostalCodeAPIToken"];

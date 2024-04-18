@@ -5,34 +5,38 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:varausjarjestelma"
     Title="varausjarjestelma"
-    BackgroundColor="#bbbbbc"
+    BackgroundColor="#dddddd"
     FlyoutBehavior="Disabled">
     <Shell.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Clicked="RequestMainMenuPage" Text="Main Menu" />
             <MenuFlyoutItem Text="Quit" />
         </MenuBarItem>
-        <MenuBarItem Text="Customer">
-            <MenuFlyoutItem Text="Add..." />
-            <MenuFlyoutItem Clicked="RequestCustomerPage" Text="View..." />
+        <MenuBarItem Text="Customers">
+            <MenuFlyoutItem Clicked="RequestCustomerPage" Text="Manage" />
+        </MenuBarItem>
+        <MenuBarItem Text="Invoices">
+            <MenuFlyoutItem Text="Add" />
+            <MenuFlyoutItem Clicked="RequestInvoicePage" Text="View all" />
         </MenuBarItem>
         <MenuBarItem Text="Area">
             <MenuFlyoutItem Text="Add..." />
-            <MenuFlyoutItem Clicked="RequestAreaPage" Text="View..." />
+            <MenuFlyoutItem Clicked="RequestAreaPage" Text="View" />
         </MenuBarItem>
         <MenuBarItem Text="Booking">
-            <MenuFlyoutItem Text="Add..." />
-            <MenuFlyoutItem Clicked="RequestBookingPage" Text="View..." />
+            <MenuFlyoutItem Clicked="RequestBookingPage" Text="Add" />
+            <MenuFlyoutItem Text="View" />
         </MenuBarItem>
-        <MenuBarItem Text="TESTI">
-            <MenuFlyoutItem Text="Add..." />
+        <MenuBarItem Text="Management">
+
+            <MenuFlyoutItem Text="Area" />
+            <MenuFlyoutItem Text="Cabin" />
+            <MenuFlyoutItem Text="Service" />
+
             <MenuFlyoutItem Clicked="RequestManagementPage" Text="Testi_management" />
         </MenuBarItem>
-        <MenuBarItem Text="Invoices">
-            <MenuFlyoutItem Text="Add..." />
-            <MenuFlyoutItem Clicked="RequestInvoicePage" Text="View all..." />
 
-        </MenuBarItem>
+        <MenuBarItem Text="Reporting" />
         <MenuBarItem Text="Help">
             <MenuFlyoutItem Clicked="RequestAboutPage" Text="About" />
         </MenuBarItem>
