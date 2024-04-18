@@ -26,9 +26,7 @@ public partial class AddCustomerModal : ContentPage
         customerIdLabel.IsVisible = true;
     }
 
-
-
-    private async void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
+   private async void CustomerFormSubmitButton_Clicked(object sender, EventArgs e)
     {
         Debug.WriteLine("CustomerFormSubmitButton_Clicked");
         var formDataisValid = await ValidateFormData();
@@ -138,10 +136,6 @@ public partial class AddCustomerModal : ContentPage
             await Navigation.PopModalAsync();
         }
     }
-
-
-
-
     private async Task<bool> ValidateFormData()
     {
         Debug.WriteLine("Validating form data");
@@ -163,7 +157,6 @@ public partial class AddCustomerModal : ContentPage
             }
             
         }
-
 
         // Tried to do this with foreach loop but it didn't work if user
         // previously modified customer data and then tried to add new customer
@@ -259,16 +252,6 @@ public partial class AddCustomerModal : ContentPage
             cityEntry.Text = "";
         }
     }
-
-
-
-
-
-    /*      City Entry params
-     *          BackgroundColor="#f7f7f7"
-     *          IsReadOnly="True"
-     */
-
 
     private void ResetCustomerForm()
     {

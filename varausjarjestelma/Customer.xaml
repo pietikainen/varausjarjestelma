@@ -25,8 +25,8 @@
             <Setter Property="MinimumWidthRequest" Value="900" />
 
         </Style>
-        
-        
+
+
         <!--  Sort button styles ready to go  -->
 
         <Style x:Key="sortButtonStyle" TargetType="Button">
@@ -47,6 +47,12 @@
     <ScrollView>
 
         <VerticalStackLayout>
+            <Label
+                Margin="10,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Customer management" />
             <HorizontalStackLayout>
 
                 <Button
@@ -54,11 +60,11 @@
                     Margin="10,10,0,10"
                     Clicked="AddCustomerButton_Clicked"
                     Style="{StaticResource buttonStyle}"
-                    Text="Add customer" />
+                    Text="+ Add customer" />
 
                 <SearchBar
                     x:Name="SearchCustomerEntry"
-                    Margin="670,10,0,10"
+                    Margin="780,10,0,10"
                     HorizontalOptions="End"
                     MinimumWidthRequest="300"
                     Placeholder="Search by name..."
