@@ -79,6 +79,39 @@ public partial class Customer : ContentPage
         }
     }
 
+    // Search bar to filter customers
+
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var keyword = SearchCustomerEntry.Text;
+
+        var allCustomers = await CustomerController.GetAllCustomerDataAsync();
+
+        if (string.IsNullOrEmpty(keyword))
+        {
+            CustomerListView.ItemsSource = allCustomers;
+        }
+        else
+        {
+            var filteredCustomers = allCustomers.Where(customer => customer.FullName.ToLower().Contains(keyword.ToLower()));
+            CustomerListView.ItemsSource = filteredCustomers;
+        }
+
+    }
+
+    // OBS!! WORK IN PROGRESS
+
+
+    // Sort customers by name
+
+    //private async void SortButton_Clicked(object sender, EventArgs e)
+    //{
+    //    var allCustomers = await CustomerController.GetAllCustomerDataAsync();
+    //    var sortedCustomers = allCustomers.OrderBy(customer => customer.FullName);
+    //    CustomerListView.ItemsSource = sortedCustomers;
+    //}
+
+
 
     // Modal for adding customer
 
