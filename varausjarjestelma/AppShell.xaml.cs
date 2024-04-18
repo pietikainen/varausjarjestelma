@@ -44,7 +44,20 @@
             await Shell.Current.GoToAsync("//About");
         }
 
+        private async void RequestAreaPageNew(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Area");
+        }
 
+        private async void RequestCabinPage(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Cabin");
+        }
+
+        private async void RequestServicePage(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Services");
+        }
     }
 }
 
