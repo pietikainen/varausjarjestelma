@@ -44,6 +44,10 @@
             await Shell.Current.GoToAsync("//About");
         }
 
+        private void RequestQuit(object sender, EventArgs e)
+        {
+            Application.Current.Quit();
+        }
         private async void RequestAreaPageNew(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//Area");

@@ -10,7 +10,7 @@
     <Shell.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem Clicked="RequestMainMenuPage" Text="Main Menu" />
-            <MenuFlyoutItem Text="Quit" />
+            <MenuFlyoutItem Clicked="RequestQuit" Text="Quit" />
         </MenuBarItem>
         <MenuBarItem Text="Customers">
             <MenuFlyoutItem Clicked="RequestCustomerPage" Text="Manage" />
