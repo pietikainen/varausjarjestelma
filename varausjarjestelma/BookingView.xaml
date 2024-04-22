@@ -215,7 +215,7 @@
                                                 Grid.Column="9"
                                                 Padding="0,0,0,0"
                                                 BackgroundColor="Transparent"
-                                                Clicked="SendInvoiceButtonClicked"
+                                                Clicked="CreateInvoiceButtonClicked"
                                                 Scale="0.5"
                                                 Source="invoice.png" />
 

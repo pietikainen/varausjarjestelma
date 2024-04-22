@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="AddReservationModal"
-    MaximumHeightRequest="800"
+    MaximumHeightRequest="600"
     MaximumWidthRequest="400">
     <ContentPage.Resources>
         <Style TargetType="Entry">
@@ -57,14 +57,10 @@
 
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
-
-
-
 
                 <Label
                     Grid.Row="0"
@@ -74,7 +70,6 @@
                     FontSize="20"
                     HorizontalOptions="Center"
                     Text="Reservation details" />
-
 
                 <!--  Customer information  -->
                 <!--  1. column  -->

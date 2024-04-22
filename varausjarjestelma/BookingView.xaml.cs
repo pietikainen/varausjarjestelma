@@ -128,7 +128,27 @@ public partial class BookingView : ContentPage
 
     private async void ModifyReservationButtonClicked(object sender, EventArgs e) { }
 
-    private async void SendInvoiceButtonClicked(object sender, EventArgs e) { }
+    private async void CreateInvoiceButtonClicked(object sender, EventArgs e) {
+
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+
+        var reservation = button.BindingContext as ReservationListViewItems;
+        if (reservation == null)
+        {
+            Debug.WriteLine("Reservation is null");
+            return;
+        }
+
+        //TÄMÄ ON KESKEN
+
+        //await InvoiceController.CreateInvoiceAsync(reservation.reservationId);
+
+    }
 
     private async void RemoveReservationButtonClicked(object sender, EventArgs e)
     {
@@ -165,11 +185,9 @@ public partial class BookingView : ContentPage
 
 
 
-
-
-
     private async void AddBookingButtonClicked(object sender, EventArgs e)
     {
+
         await Navigation.PushAsync(new Booking());
     }
 

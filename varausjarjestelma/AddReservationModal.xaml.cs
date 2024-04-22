@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using varausjarjestelma.Controller;
 using varausjarjestelma.Database;
@@ -7,7 +8,7 @@ namespace varausjarjestelma;
 public partial class AddReservationModal : ContentPage
 {
     private ReservationInfo reservationInfo;
-
+    private Booking bookingPage;
 
     public AddReservationModal(ReservationInfo reservationInfo)
     {
@@ -39,7 +40,7 @@ public partial class AddReservationModal : ContentPage
             PhoneLabel.Text = "Loading...";
             AddressLabel.Text = "Loading...";
             PostalCodeLabel.Text = "Loading...";
-            CityLabel.Text = "Loading...";
+            CityLabel.Text = "Loading..."; 
             CabinLabel.Text = "Loading...";
             PriceLabel.Text = "Loading...";
             StartDateLabel.Text = "Loading...";
@@ -94,10 +95,30 @@ public partial class AddReservationModal : ContentPage
             Dictionary<int, int> servicesOrdered = new Dictionary<int, int>();
             double serviceGrandTotal = 0;
 
+            if (reservationInfo.Services.IsNullOrEmpty())
+            {
+                Label servicesNullLabel = new Label
+                {
+                    Text = "No services on order",
+                    HorizontalOptions = LayoutOptions.Start
+                };
+
+                StackLayout serviceNullLayout = new StackLayout
+                {
+                    Orientation = StackOrientation.Horizontal,
+                    Children = { servicesNullLabel }
+                };
+
+                ServicesOnReservationList.Children.Add(serviceNullLayout);
+            }
+
             foreach (KeyValuePair<int, int> service in reservationInfo.Services)
             {
                 Debug.WriteLine("Service id: " + service.Key);
                 Debug.WriteLine("Service amount: " + service.Value);
+
+
+
 
                 if (service.Value != 0)
                 {
@@ -228,19 +249,6 @@ public partial class AddReservationModal : ContentPage
         LoadingIndicator.IsVisible = false;
     }
 
-    //public class ReservationInfo
-    //{
-    //    public int CustomerId { get; set; }
-    //    public int CabinId { get; set; }
-    //    public DateTime StartDate { get; set; }
-    //    public DateTime EndDate { get; set; }
-    //    public Dictionary<int, int> Services { get; set; }
-
-    //}
-
-
-
-
     private async void SaveButtonClicked(object sender, EventArgs e)
     {
         // Varmista, että reservationInfo on käytettävissä tässä vaiheessa
@@ -253,6 +261,12 @@ public partial class AddReservationModal : ContentPage
         {
             Debug.WriteLine("reservationInfo is null");
         }
+    }
+
+    private async void CreateInvoice(ReservationInfo reservationInfo)
+    {
+        // Create an invoice for the reservation
+       
     }
 
     private async Task SaveReservation(ReservationInfo reservationInfo)
@@ -293,17 +307,21 @@ public partial class AddReservationModal : ContentPage
 
             if (servicesAdded)
             {
-                await DisplayAlert("Success", @"Reservation @id added successfully", "OK");
+                await DisplayAlert("Success", $"Reservation #{reservationId} added successfully", "OK");
                 await Navigation.PopModalAsync();
+
             }
             else
             {
                 await DisplayAlert("Error", "Failed to add services on reservation", "OK");
+                return;
             }
         }
         else
         {
+            
             await DisplayAlert("Error", "Failed to add reservation", "OK");
+            return;
         }
 
     }

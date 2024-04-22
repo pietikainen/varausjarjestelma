@@ -22,7 +22,7 @@ public partial class Booking : ContentPage
         InitializeComponent();
 
         // Clear forms
-        CustomerListView.ItemsSource = null;
+        ResetAllFields();
 
         // Populate all customers
         GetAllCustomersData();
@@ -164,6 +164,17 @@ public partial class Booking : ContentPage
 
             Debug.WriteLine("Services count: " + services.Count);
 
+            if (services.Count == 0)
+            {
+                Label noServicesLabel = new Label
+                {
+                    Text = "No services found",
+                    HorizontalOptions = LayoutOptions.Center
+                };
+                ServicesPicker.Children.Add(noServicesLabel);
+            }
+
+
             foreach (ServiceData service in services)
             {
                 Stepper serviceStepper = new Stepper
@@ -292,12 +303,45 @@ public partial class Booking : ContentPage
         // Open a modal with details + confirmation button
         Debug.WriteLine("Reservation info: " + reservationInfo.CustomerId + " " + reservationInfo.CabinId + " " + reservationInfo.StartDate + " " + reservationInfo.EndDate);
         await Navigation.PushModalAsync(new AddReservationModal(reservationInfo));
+        ResetAllFields();
     }
+
+    public void ResetAllFields()
+    {
+        // Reset Entries
+        firstNameEntry.Text = string.Empty;
+        lastNameEntry.Text = string.Empty;
+        addressEntry.Text = string.Empty;
+        postalCodeEntry.Text = string.Empty;
+        cityEntry.Text = string.Empty;
+        emailEntry.Text = string.Empty;
+        phoneNumberEntry.Text = string.Empty;
+
+
+        // Reset Pickers
+        AreaPicker.SelectedIndex = -1; // Reset Picker to default selection
+        listViewCabinMain.SelectedItem = null; // Deselect ListView item
+        ServicesPicker.Children.Clear(); // Clear the StackLayout that contains services
+
+        // Reset DatePickers
+        CheckInDatePicker.Date = DateTime.Today;
+        CheckOutDatePicker.Date = DateTime.Today;
+
+        // Reset cabin listview
+        listViewCabinMain.SelectedItem = null;
+
+        // Reset ListView
+        CustomerListView.SelectedItem = null;
+    }
+
+
+
+
 
 
     private void OnCancelClicked(object sender, EventArgs e)
     {
-        // Tyhjennä lomake
+        ResetAllFields();
     }
 
 }
