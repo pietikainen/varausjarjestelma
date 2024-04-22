@@ -10,6 +10,7 @@ using System.Net.Cache;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Data;
 
 
 namespace varausjarjestelma.Controller
@@ -62,6 +63,46 @@ namespace varausjarjestelma.Controller
                 Debug.WriteLine("Error inserting postal code to database:");
                 Debug.WriteLine(e.Message);
                 return false;
+            }
+        }
+
+        // Get postal code from MYSQL:
+
+        public static async Task<string> GetCityNameAsync(string postalcode)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            
+            try
+            {
+                await connection.OpenAsync();
+
+               using (var command = new MySqlCommand(
+                                      @"SELECT toimipaikka FROM posti WHERE postinro = @postinro", connection))
+                {
+                    command.Parameters.AddWithValue("@postinro", postalcode);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (reader.HasRows)
+                        {
+                            await reader.ReadAsync();
+                            return reader.GetString("toimipaikka");
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+            } 
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error fetching postal code from database");
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
             }
         }
 
