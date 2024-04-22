@@ -18,30 +18,30 @@ namespace varausjarjestelma.Controller
 
             await connection.OpenAsync();
 
-                using (var command = new MySqlCommand("SELECT * FROM palvelu;", connection))
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    List<ServiceData> serviceDataList = new List<ServiceData>();
+            using (var command = new MySqlCommand("SELECT * FROM palvelu;", connection))
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                List<ServiceData> serviceDataList = new List<ServiceData>();
 
-                    while (await reader.ReadAsync())
+                while (await reader.ReadAsync())
+                {
+                    ServiceData serviceData = new ServiceData
                     {
-                        ServiceData serviceData = new ServiceData
-                        {
-                            ServiceId = reader.GetInt32("palvelu_id"),
-                            AreaId = reader.GetInt32("alue_id"),
-                            Name = reader.GetString("nimi"),
-                            Type = reader.GetInt32("tyyppi"),
-                            Description = reader.GetString("kuvaus"),
-                            Price = reader.GetDouble("hinta"),
-                            Vat = reader.GetDouble("alv")
-                        };
-                        serviceDataList.Add(serviceData);
-                    }
-                    await connection.CloseAsync();
-                    return serviceDataList;
+                        ServiceId = reader.GetInt32("palvelu_id"),
+                        AreaId = reader.GetInt32("alue_id"),
+                        Name = reader.GetString("nimi"),
+                        Type = reader.GetInt32("tyyppi"),
+                        Description = reader.GetString("kuvaus"),
+                        Price = reader.GetDouble("hinta"),
+                        Vat = reader.GetDouble("alv")
+                    };
+                    serviceDataList.Add(serviceData);
                 }
+                await connection.CloseAsync();
+                return serviceDataList;
             }
-        
+        }
+
 
         public async Task<List<ServiceData>> GetServiceDataByAreaId(int id)
         {
@@ -74,7 +74,7 @@ namespace varausjarjestelma.Controller
                         await connection.CloseAsync();
                         return serviceDataList;
                     }
-                }       
+                }
             }
             catch (Exception ex)
             {
@@ -83,9 +83,86 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        
+        public static async Task<ServiceData> GetServiceDataById(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
 
+                using (var command = new MySqlCommand("SELECT * FROM palvelu WHERE palvelu_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            ServiceData serviceData = new ServiceData
+                            {
+
+                                AreaId = reader.GetInt32("alue_id"),
+                                Name = reader.GetString("nimi"),
+                                Type = reader.GetInt32("tyyppi"),
+                                Description = reader.GetString("kuvaus"),
+                                Price = reader.GetDouble("hinta"),
+                                Vat = reader.GetDouble("alv")
+                            };
+                            return serviceData;
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Great problem in Mysql when fetching service data.");
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        public static async Task<int> GetServiceIdByServiceName(string name)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            try
+            {
+                await connection.OpenAsync();
+                Debug.WriteLine("Service name: " + name);   
+                using (var command = new MySqlCommand(@"
+                    SELECT palvelu_id FROM palvelu WHERE nimi = @name", connection))
+                {
+                    command.Parameters.AddWithValue("@name", name);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return reader.GetInt32("palvelu_id");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Great problem in Mysql when fetching service data.");
+                            return 0;
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return 0;
+            }
+            finally { await connection.CloseAsync(); }
+        }
     }
+
 
 
     public class ServiceData
@@ -98,5 +175,5 @@ namespace varausjarjestelma.Controller
         public double Price { get; set; }
         public double Vat { get; set; }
     }
-
 }
+

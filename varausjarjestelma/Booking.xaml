@@ -91,26 +91,19 @@
                                     Text="Choose services: " />
 
                                 <StackLayout
-                                    x:Name="ServicesCheckboxFrame"
+                                    x:Name="ServicesPicker"
                                     Margin="0,10,0,10"
-                                    BackgroundColor="#fafafa"
+                                    BackgroundColor="AliceBlue"
                                     WidthRequest="200" />
+
                             </StackLayout>
 
                             <StackLayout>
-                                <!--  Tähän joku ikkuna, jossa mökin tiedot tarjolla kivasti  -->
-                                <!--  Entä jos mökkiin on jo varaus ko. ajalle?  -->
+                             
                             </StackLayout>
 
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
-
-
-
-
-
-
-
                 </VerticalStackLayout>
 
 
@@ -123,36 +116,60 @@
                         FontSize="12"
                         Text="Select customer:" />
                     <SearchBar
+                        x:Name="CustomerSearchBar"
                         Placeholder="Search..."
-                        SearchCommand="{Binding SearchCommand}"
-                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
-
+                        TextChanged="CustomerSearchBar_TextChanged" />
                     <Frame Margin="0,10,0,10" BackgroundColor="#fafafa">
-                        <ListView x:Name="CustomerListView" HeightRequest="75">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextCell Detail="{Binding Email}" Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <ScrollView>
+                            <StackLayout>
+                                <ListView x:Name="CustomerListView" HeightRequest="75">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextCell Detail="{Binding Email}" Text="{Binding FullName}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackLayout>
+                        </ScrollView>
                     </Frame>
 
                     <Frame>
                         <VerticalStackLayout x:Name="CustomerDetails">
 
-                            <Label Text="First name:" FontSize="12" Margin="0,0,0,5"/>
-                            <Entry x:Name="firstNameEntry"/>
-                            <Label Text="Last name:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,0,0,5"
+                                FontSize="12"
+                                Text="First name:" />
+                            <Entry x:Name="firstNameEntry" />
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Last name:" />
                             <Entry x:Name="lastNameEntry" />
-                            <Label Text="Address:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Address:" />
                             <Entry x:Name="addressEntry" />
-                            <Label Text="Postal code:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Postal code:" />
                             <Entry x:Name="postalCodeEntry" />
-                            <Label Text="City:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="City:" />
                             <Entry x:Name="cityEntry" />
-                            <Label Text="Email: " FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Email: " />
                             <Entry x:Name="emailEntry" />
-                            <Label Text="Phone: " FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Phone: " />
                             <Entry x:Name="phoneNumberEntry" />
 
 
@@ -165,7 +182,12 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Button x:Name="AddCustomerButton" Style="{StaticResource buttonStyle}" Text="Save new customer" Margin="0,20,0,0" Grid.ColumnSpan="2"/>
+                                <Button
+                                    x:Name="AddCustomerButton"
+                                    Grid.ColumnSpan="2"
+                                    Margin="0,20,0,0"
+                                    Style="{StaticResource buttonStyle}"
+                                    Text="Save new customer" />
                             </Grid>
                         </VerticalStackLayout>
                     </Frame>
@@ -393,26 +415,24 @@
 
                         </Grid>
                     </Frame>
-                    
-                    
-                    
-                    <Button
-                                Grid.Row="25"
-                                Grid.Column="0"
-                                Margin="0,20,0,0"
-                                Clicked="OnBookNowClicked"
-                                
-                                Style="{StaticResource buttonStyle}"
-                                Text="Book Now" />
+
+
 
                     <Button
-                                Grid.Row="25"
-                                Grid.Column="2"
-                                Margin="0,20,0,0"
-                                Clicked="OnCancelClicked"
-                                
-                                Style="{StaticResource buttonStyle}"
-                                Text="Cancel" />
+                        Grid.Row="25"
+                        Grid.Column="0"
+                        Margin="0,20,0,0"
+                        Clicked="OnBookNowClicked"
+                        Style="{StaticResource buttonStyle}"
+                        Text="Book Now" />
+
+                    <Button
+                        Grid.Row="25"
+                        Grid.Column="2"
+                        Margin="0,20,0,0"
+                        Clicked="OnCancelClicked"
+                        Style="{StaticResource buttonStyle}"
+                        Text="Cancel" />
                 </VerticalStackLayout>
 
 

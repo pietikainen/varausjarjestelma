@@ -20,12 +20,18 @@
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout Margin="10,0,0,10">
+        <StackLayout>
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                IsEnabled="False"
+                IsRunning="False" />
+        </StackLayout>
+
         <Frame
             BackgroundColor="#fafafa"
             HorizontalOptions="EndAndExpand"
             IsVisible="True"
             WidthRequest="390">
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -62,9 +68,10 @@
 
                 <Label
                     Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Margin="0,0,0,20"
+                    Grid.ColumnSpan="3"
+                    Margin="0,0,0,30"
                     FontAttributes="Bold"
+                    FontSize="20"
                     HorizontalOptions="Center"
                     Text="Reservation details" />
 
@@ -76,26 +83,17 @@
                     Grid.Row="1"
                     FontSize="12"
                     Text="Customer ID: " />
-                <Label
-                    x:Name="CustomerIDEntry"
-                    Grid.Row="2"
-                    Text="binding ID" />
+                <Label x:Name="CustomerIDLabel" Grid.Row="2" />
                 <Label
                     Grid.Row="3"
                     FontSize="12"
                     Text="Name: " />
-                <Label
-                    x:Name="NameEntry"
-                    Grid.Row="4"
-                    Text="binding name" />
+                <Label x:Name="FullNameLabel" Grid.Row="4" />
                 <Label
                     Grid.Row="5"
                     FontSize="12"
                     Text="Email: " />
-                <Label
-                    x:Name="EmailEntry"
-                    Grid.Row="6"
-                    Text="binding email" />
+                <Label x:Name="EmailLabel" Grid.Row="6" />
 
                 <!--  2. column  -->
 
@@ -105,111 +103,148 @@
                     FontSize="12"
                     Text="Phone: " />
                 <Label
-                    x:Name="PhoneEntry"
+                    x:Name="PhoneLabel"
                     Grid.Row="8"
-                    Grid.Column="0"
-                    Text="binding phone" />
+                    Grid.Column="0" />
                 <Label
                     Grid.Row="3"
                     Grid.Column="1"
                     FontSize="12"
                     Text="Address: " />
                 <Label
-                    x:Name="AddressEntry"
+                    x:Name="AddressLabel"
                     Grid.Row="4"
-                    Grid.Column="1"
-                    Text="binding address" />
+                    Grid.Column="1" />
                 <Label
                     Grid.Row="5"
                     Grid.Column="1"
                     FontSize="12"
                     Text="Postal code: " />
                 <Label
-                    x:Name="PostalCodeEntry"
+                    x:Name="PostalCodeLabel"
                     Grid.Row="6"
-                    Grid.Column="1"
-                    Text="binding postalcode" />
+                    Grid.Column="1" />
                 <Label
                     Grid.Row="7"
                     Grid.Column="1"
                     FontSize="12"
                     Text="City: " />
                 <Label
-                    x:Name="CityEntry"
+                    x:Name="CityLabel"
                     Grid.Row="8"
-                    Grid.Column="1"
-                    Text="binding City" />
+                    Grid.Column="1" />
 
                 <!--  Reservation details  -->
                 <!--  1. column  -->
 
-
-                <!--  Cabin details  -->
                 <Label
                     Grid.Row="9"
                     Margin="0,0,0,0"
                     FontSize="12"
                     Text="Cabin: " />
-                <Label
-                    x:Name="CabinEntry"
-                    Grid.Row="10"
-                    Text="binding cabinname" />
+                <Label x:Name="CabinLabel" Grid.Row="10" />
 
-                <!--  Date picker  -->
+                <!--  Start Date  -->
                 <Label
                     Grid.Row="11"
                     FontSize="12"
                     Text="Start date:" />
+                <Label x:Name="StartDateLabel" Grid.Row="12" />
+
+                <!--  Services here  -->
+
+                <Label
+                    Grid.Row="15"
+                    Grid.ColumnSpan="2"
+                    FontSize="12"
+                    Text="Services: " />
+                <StackLayout x:Name="ServicesOnReservationList" Grid.Row="16" />
+
+                <!--  1. column end  -->
+
+
+                <!--  2. column  -->
+                <!--  End Date  -->
+                <Label
+                    x:Name="EndDateLabel"
+                    Grid.Row="12"
+                    Grid.Column="1" />
                 <Label
                     Grid.Row="11"
                     Grid.Column="1"
                     FontSize="12"
                     Text="End date:" />
-                <Label
-                    x:Name="DatesEntry"
-                    Grid.Row="12"
-                    Text="binding dates" />
-
-                <!--  ¨Service details  -->
+                <StackLayout
+                    x:Name="ServicesOnReservationList2"
+                    Grid.Row="16"
+                    Grid.Column="1" />
 
                 <Label
-                    Grid.Row="13"
-                    FontSize="12"
-                    Text="Services: " />
-                <ListView x:Name="ServicesSelectedForReservation" Grid.Row="14">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    Grid.Row="20"
+                    Grid.Column="1"
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    HorizontalOptions="End"
+                    Text="Total price: " />
+
+                <!--  2.column end  -->
 
 
 
                 <!--  3. column  -->
                 <!--  Price  -->
                 <Label
-                    x:Name="PriceEntry"
+                    x:Name="PriceLabel"
                     Grid.Row="10"
                     Grid.Column="2"
                     FontAttributes="Bold"
                     HorizontalOptions="EndAndExpand"
-                    Text="€ / Night" />
+                    Text="... €" />
                 <Label
-                    x:Name="DatesTotalEntry"
+                    x:Name="DatesTotalLabel2"
                     Grid.Row="12"
                     Grid.Column="2"
                     FontAttributes="Bold"
                     HorizontalOptions="EndAndExpand"
-                    Text="x Days" />
+                    Text="x .." />
+
+                <StackLayout
+                    x:Name="ServicesOnReservationList3"
+                    Grid.Row="16"
+                    Grid.Column="2" />
+
+                <BoxView
+                    Grid.Row="13"
+                    Grid.Column="2"
+                    BackgroundColor="Black"
+                    HeightRequest="1"
+                    HorizontalOptions="End"
+                    WidthRequest="50" />
                 <Label
-                    x:Name="ServicesTotalEntry"
-                    Grid.Row="15"
+                    x:Name="CabinTotalLabel"
+                    Grid.Row="14"
                     Grid.Column="2"
                     FontAttributes="Bold"
                     HorizontalOptions="EndAndExpand"
-                    Text="Total €" />
+                    Text="Total ... €" />
 
+                <BoxView
+                    Grid.Row="17"
+                    Grid.Column="2"
+                    BackgroundColor="Black"
+                    HeightRequest="1"
+                    HorizontalOptions="End"
+                    WidthRequest="50" />
+
+                <StackLayout
+                    x:Name="ServicesTotalCell"
+                    Grid.Row="18"
+                    Grid.Column="2" />
+                <StackLayout
+                    x:Name="GrandTotalCell"
+                    Grid.Row="20"
+                    Grid.Column="2"
+                    Margin="0,10,0,0" />
 
 
                 <!--  Listview tähän? populoituu checkboxeista, vai listviewstä?  -->
@@ -220,20 +255,24 @@
 
 
                 <Button
+                    x:Name="BookingConfirmationButton"
                     Grid.Row="25"
                     Grid.Column="0"
-                    Margin="0,20,0,0"
+                    Margin="0,40,0,0"
+                    Clicked="SaveButtonClicked"
+                    CommandParameter="{Binding Source={x:Reference Name=AddReservationModal}, Path=BindingContext.reservationInfo}"
                     HorizontalOptions="Start"
                     Style="{StaticResource buttonStyle}"
-                    Text="Book Now" />
+                    Text="Book now" />
 
                 <Button
                     Grid.Row="25"
                     Grid.Column="2"
-                    Margin="0,20,0,0"
+                    Margin="0,40,0,0"
+                    Clicked="CancelButtonClicked"
                     HorizontalOptions="End"
                     Style="{StaticResource buttonStyle}"
-                    Text="Cancel" />
+                    Text="Go back" />
 
             </Grid>
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Data;
 
 namespace varausjarjestelma.Controller
 {
@@ -27,11 +28,95 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        public async Task<int> InsertReservationAsync(Reservation reservation)
+        public static async Task<List<ReservationListViewItems>> GetAllReservationDataAsync()
         {
             MySqlConnection connection = MySqlController.GetConnection();
 
-            try {
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(@"
+                    SELECT v.*, concat(m.mokkinimi, ', ', al.nimi) AS cabinName, concat(a.sukunimi, ' ', a.etunimi) AS customerName
+                        FROM varaus v
+                        INNER JOIN asiakas a ON v.asiakas_id = a.asiakas_id
+                        INNER JOIN mokki m ON v.mokki_mokki_id = m.mokki_id
+                        INNER JOIN alue al ON m.alue_id = al.alue_id;
+                        ", connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        List<ReservationListViewItems> reservations = new List<ReservationListViewItems>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            ReservationListViewItems reservation = new ReservationListViewItems()
+                            {
+                                reservationId = reader.GetInt32("varaus_id"),
+                                customerId = reader.GetInt32("asiakas_id"),
+                                cabinId = reader.GetInt32("mokki_mokki_id"),
+                                reservedDate = reader.GetDateTime("varattu_pvm"),
+                                confirmationDate = reader.GetDateTime("vahvistus_pvm"),
+                                startDate = reader.GetDateTime("varattu_alkupvm"),
+                                endDate = reader.GetDateTime("varattu_loppupvm"),
+                                customerName = reader.GetString("customerName"),
+                                cabinName = reader.GetString("cabinName")
+                                //areaName = readerGetString("areaName")
+                            };
+
+                            reservations.Add(reservation);
+                        }
+
+                        return reservations;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        // Delete reservation
+
+        public static async Task<bool> DeleteReservationAsync(int reservationId)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("DELETE FROM varaus WHERE varaus_id = @reservationId;", connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+
+        public static async Task<int> InsertReservationAsync(Reservation reservation)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
                 await connection.OpenAsync();
 
                 using (var command = new MySqlCommand(@"INSERT INTO varaus 
@@ -65,12 +150,14 @@ namespace varausjarjestelma.Controller
                         return id;
                     }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return 0;
 
-            } finally
+            }
+            finally
             {
                 await connection.CloseAsync();
             }
@@ -79,6 +166,36 @@ namespace varausjarjestelma.Controller
         // Inserrt service on reservation
 
 
+        //AddServicesOnReservation(int reservationId, List<int> serviceIds, List<int> amounts)
+
+
+
+
+
+    }
+
+    public class ReservationListViewItems
+    {
+        public int reservationId { get; set; }
+        public int customerId { get; set; }
+        public string customerName { get; set; }
+        public int cabinId { get; set; }
+        public string AreaName { get; set; }
+        public string cabinName { get; set; }
+        public DateTime reservedDate { get; set; }
+        public DateTime confirmationDate { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+
+    }
+
+    public class ReservationInfo
+    {
+        public int CustomerId { get; set; }
+        public int CabinId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public Dictionary<int, int> Services { get; set; }
 
     }
 }

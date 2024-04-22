@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="varausjarjestelma.BookingView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#fafafa">
+    <ContentPage.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#519EDA" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="MinimumWidthRequest" Value="120" />
+            <Setter Property="MaximumWidthRequest" Value="150" />
+
+            <Setter Property="BorderColor" Value="Gray" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+        <Style x:Key="listViewStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="BackgroundColor" Value="#BCBCBC" />
+            <Setter Property="MaximumHeightRequest" Value="500" />
+            <Setter Property="MinimumWidthRequest" Value="900" />
+
+        </Style>
+
+
+        <!--  Sort button styles ready to go  -->
+
+        <Style x:Key="sortButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+
+        <Style x:Key="sortButtonDescendedStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#a0a0a0" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
+
+
+
+    </ContentPage.Resources>
+    <ScrollView>
+
+        <VerticalStackLayout>
+            <Label
+                Margin="10,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Booking management" />
+            <HorizontalStackLayout>
+
+                <Button
+                    x:Name="AddBookingButton"
+                    Margin="10,10,0,10"
+                    Clicked="AddBookingButtonClicked"
+                    Style="{StaticResource buttonStyle}"
+                    Text="+ Add booking" />
+
+
+                <SearchBar
+                    x:Name="SearchCustomerEntry"
+                    Margin="780,10,0,10"
+                    HorizontalOptions="End"
+                    MinimumWidthRequest="300"
+                    Placeholder="Search by name..."
+                    TextChanged="SearchBar_TextChanged" />
+
+
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Frame
+                    Margin="10,0,0,0"
+                    BackgroundColor="#f7f7f7"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="135" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label FontAttributes="Bold" Text="Res. #" />
+
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Customer Name" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Cabin name" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Booked" />
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="Confirmed" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="Start date" />
+                        <Label
+                            Grid.Column="6"
+                            FontAttributes="Bold"
+                            Text="End Date" />
+                        <Label
+                            Grid.Column="7"
+                            Grid.ColumnSpan="2"
+                            FontAttributes="Bold"
+                            HorizontalOptions="Center"
+                            Text="Actions" />
+
+
+                    </Grid>
+                </Frame>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame
+                    Margin="10,0,0,0"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="BookingListActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
+                        <ListView x:Name="BookingListView">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Margin="10,0,0,0" VerticalOptions="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="130" />
+                                                <ColumnDefinition Width="130" />
+                                                <ColumnDefinition Width="130" />
+                                                <ColumnDefinition Width="130" />
+                                                <ColumnDefinition Width="45" />
+                                                <ColumnDefinition Width="45" />
+                                                <ColumnDefinition Width="45" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label
+                                                Grid.Column="0"
+                                                Text="{Binding reservationId}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Text="{Binding customerName}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="2"
+                                                Text="{Binding cabinName}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="3"
+                                                Text="{Binding reservedDate, StringFormat='{0:d}'}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="4"
+                                                Text="{Binding confirmationDate, StringFormat='{0:d}'}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="5"
+                                                Text="{Binding startDate, StringFormat='{0:d}'}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Column="6"
+                                                Text="{Binding endDate, StringFormat='{0:d}'}"
+                                                VerticalOptions="Center" />
+
+                                            <ImageButton
+                                                x:Name="ModifyReservationButton"
+                                                Grid.Column="7"
+                                                Padding="0,0,0,0"
+                                                BackgroundColor="Transparent"
+                                                Clicked="ModifyReservationButtonClicked"
+                                                Scale="0.5"
+                                                Source="modify.png" />
+
+                                            <ImageButton
+                                                x:Name="OpenInvoiceButton"
+                                                Grid.Column="8"
+                                                Padding="0,0,0,0"
+                                                BackgroundColor="Transparent"
+                                                Clicked="SendInvoiceButtonClicked"
+                                                Scale="0.5"
+                                                Source="invoice.png" />
+
+                                            <ImageButton
+                                                x:Name="RemoveReservationButton"
+                                                Grid.Column="9"
+                                                Padding="0,0,0,0"
+                                                BackgroundColor="Transparent"
+                                                Clicked="RemoveReservationButtonClicked"
+                                                Scale="0.5"
+                                                Source="remove.png" />
+
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+                    </StackLayout>
+                </Frame>
+
+
+                <Image
+                    x:Name="listViewSpinner"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    IsAnimationPlaying="True"
+                    IsVisible="false"
+                    Source="black_hole.gif" />
+
+
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+
+
+    </ScrollView>
+</ContentPage>
