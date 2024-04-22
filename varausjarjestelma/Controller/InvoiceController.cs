@@ -345,7 +345,60 @@ namespace varausjarjestelma.Controller
                 }
             }
         }
+
+
+
+        // TÄMÄ ON KESKEN
+        public static async Task<bool> CreateInvoiceAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+                // kantaan menee ALV euroissa, koska ei ole selvyyttä puhutaanko alv-prosentista vai alv-summasta.
+                using (var command = new MySqlCommand(
+                    @"INSERT INTO lasku (varaus_id, summa, alv, maksettu)
+                    SELECT varaus_id, SUM(total_sum) AS summa, SUM(total_sum * 0.24) AS alv, 0 AS maksettu
+                    FROM (
+                        SELECT varaus_id, SUM(mokki_summa) AS total_sum
+                        FROM (
+                            SELECT v.varaus_id, SUM(m.hinta * DATEDIFF(v.varattu_loppupvm, v.varattu_alkupvm)) AS mokki_summa
+                            FROM varaus v
+                            JOIN mokki m ON v.mokki_mokki_id = m.mokki_id
+                            WHERE v.varaus_id = @id
+                            GROUP BY v.varaus_id
+                    
+                            UNION ALL
+                    
+                            SELECT vp.varaus_id, SUM(p.hinta * vp.lkm) AS palvelu_summa
+                            FROM varauksen_palvelut vp
+                            JOIN palvelu p ON vp.palvelu_id = p.palvelu_id
+                            WHERE vp.varaus_id = @id
+                            GROUP BY vp.varaus_id
+                        ) AS subquery
+                        GROUP BY varaus_id
+                    ) AS laskutiedot
+                    GROUP BY varaus_id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
     }
+
 
 
     public class InvoiceData

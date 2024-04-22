@@ -146,7 +146,14 @@ public partial class BookingView : ContentPage
 
         //TÄMÄ ON KESKEN
 
-        //await InvoiceController.CreateInvoiceAsync(reservation.reservationId);
+        var isCreated = await InvoiceController.CreateInvoiceAsync(reservation.reservationId);
+        if (!isCreated) {
+            await DisplayAlert("Error", "An error occurred while creating invoice", "OK");
+        }
+        else
+        {
+            await DisplayAlert("Confirmation", $"Invoice for reservation # {reservation.reservationId} has been created.", "OK");
+        }
 
     }
 
