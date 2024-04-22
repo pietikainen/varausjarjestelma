@@ -25,8 +25,6 @@
             <Setter Property="MinimumWidthRequest" Value="900" />
 
         </Style>
-
-
         <!--  Sort button styles ready to go  -->
 
         <Style x:Key="sortButtonStyle" TargetType="Button">
@@ -40,8 +38,6 @@
             <Setter Property="FontAttributes" Value="Bold" />
             <Setter Property="Padding" Value="5,0,0,0" />
         </Style>
-
-
 
     </ContentPage.Resources>
     <ScrollView>
@@ -69,7 +65,6 @@
                     MinimumWidthRequest="300"
                     Placeholder="Search by name..."
                     TextChanged="SearchBar_TextChanged" />
-
 
             </HorizontalStackLayout>
 
@@ -159,20 +154,7 @@
 
                     </ListView>
                 </Frame>
-                <Image
-                    x:Name="listViewSpinner"
-                    HeightRequest="50"
-                    HorizontalOptions="Center"
-                    IsAnimationPlaying="True"
-                    IsVisible="false"
-                    Source="black_hole.gif" />
-
-
             </HorizontalStackLayout>
-
-
         </VerticalStackLayout>
-
-
     </ScrollView>
 </ContentPage>
