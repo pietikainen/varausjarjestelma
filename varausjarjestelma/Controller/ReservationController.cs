@@ -28,6 +28,7 @@ namespace varausjarjestelma.Controller
             }
         }
 
+        // get all reservation data
         public static async Task<List<ReservationListViewItems>> GetAllReservationDataAsync()
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -110,7 +111,7 @@ namespace varausjarjestelma.Controller
             }
         }
 
-
+        // insert new reservation to database
         public static async Task<int> InsertReservationAsync(Reservation reservation)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -163,13 +164,36 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        // Inserrt service on reservation
+        // set reservation as confirmed
 
+        public static async Task<bool> SetReservationConfirmedAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
 
-        //AddServicesOnReservation(int reservationId, List<int> serviceIds, List<int> amounts)
+            try
+            {
+                await connection.OpenAsync();
 
-
-
+                using (var command = new MySqlCommand(@"UPDATE varaus SET vahvistus_pvm = @confirmationDate WHERE varaus_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@confirmationDate", DateTime.Now);
+                    command.Parameters.AddWithValue("@id", id);
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+            
+                    
+        }
 
 
     }

@@ -15,7 +15,6 @@ public partial class Customer : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        ListViewPlaceholder();
         GetAllCustomersData();
     }
 
@@ -65,20 +64,8 @@ public partial class Customer : ContentPage
             }
 
         }
-    }
 
-    private void ListViewPlaceholder()
-    {
-        if (!CustomerListView.IsVisible)
-        {
-            listViewSpinner.IsVisible = true;
-        }
-        else
-        {
-            listViewSpinner.IsVisible = false;
-        }
     }
-
     // Search bar to filter customers
 
     private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)

@@ -16,7 +16,6 @@ public partial class BookingView : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        ListViewPlaceholder();
         GetAllBookingData();
     }
 
@@ -46,69 +45,21 @@ public partial class BookingView : ContentPage
         }
     }
 
-    //  Delete reservation button clicked:
 
-    private async void DeleteReservationButtonClicked(object sender, EventArgs e) {
-            var reservation = (sender as Button).CommandParameter as Reservation;
-           var isAccepted = await DisplayAlert("Confirm deletion", "This deletion is permanent.", "Yes", "No");
-    
-           if (isAccepted && reservation != null)
+    // Delete reservation
+
+    private async void DeleteReservation(int id)
+    {
+        var isDeleted = await ReservationController.DeleteReservationAsync(id);
+
+        if (isDeleted)
         {
-            try { 
-            await ServicesOnReservationController.DeleteAllServicesOnReservationByReservationIdAsync(reservation.varaus_id);
-            await ReservationController.DeleteReservationAsync(reservation.varaus_id);
-                }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-            await RefreshListView();
+            await DisplayAlert("Success", "Reservation deleted successfully", "OK");
+            
         }
         else
         {
-            await DisplayAlert("Error", "Reservation is null. Cannot delete.", "OK");
-        }
-    }
-
-
-    private async void BookingListViewItemTapped(object sender, ItemTappedEventArgs e)
-    {
-        string action = await DisplayActionSheet("Choose action for customer: ", "Cancel", null, "Modify", "Delete");
-        var customer = e.Item as varausjarjestelma.Controller.CustomerData;
-
-        if (action == "Modify" && customer != null)
-        {
-            await Navigation.PushModalAsync(new AddCustomerModal(customer));
-        }
-        else if (action == "Delete" && customer != null)
-        {
-            var confirmationMessage = $"Name: {customer.FullName}\nAddress: {customer.Address}\nPostal Code: {customer.PostalCode}" +
-                $"\nPhone: {customer.Phone}\nEmail: {customer.Email}\n";
-            var isAccepted = await DisplayAlert("Confirm deletion", "This deletion is permanent.", "Yes", "No");
-
-            if (isAccepted && customer != null)
-            {
-                await CustomerController.DeleteCustomerAsync(customer.CustomerId);
-                await RefreshListView();
-            }
-            else
-            {
-                await DisplayAlert("Error", "Customer is null. Cannot delete.", "OK");
-            }
-
-        }
-    }
-
-    private void ListViewPlaceholder()
-    {
-        if (!BookingListView.IsVisible)
-        {
-            listViewSpinner.IsVisible = true;
-        }
-        else
-        {
-            listViewSpinner.IsVisible = false;
+            await DisplayAlert("Error", "An error occurred while deleting reservation", "OK");
         }
     }
 
@@ -145,12 +96,68 @@ public partial class BookingView : ContentPage
     //}
 
 
+    private async void SetConfirmedButtonClicked(object sender, EventArgs e) 
+    {
+
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+
+        var reservation = button.BindingContext as ReservationListViewItems;
+        if (reservation == null)
+        {
+            Debug.WriteLine("Reservation is null");
+            return;
+        }
+
+        var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to confirm this reservation?", "Yes", "No");
+
+        if (!isAccepted)
+        {
+            Debug.WriteLine("Confirmation cancelled");
+            return;
+        }
+
+        await ReservationController.SetReservationConfirmedAsync(reservation.reservationId);
+        await RefreshListView();
+    }
+
 
     private async void ModifyReservationButtonClicked(object sender, EventArgs e) { }
 
     private async void SendInvoiceButtonClicked(object sender, EventArgs e) { }
 
     private async void RemoveReservationButtonClicked(object sender, EventArgs e)
+    {
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+
+        var reservation = button.BindingContext as ReservationListViewItems;
+        if (reservation == null)
+        {
+            Debug.WriteLine("Reservation is null");
+            return;
+        }
+
+
+        var isAccepted = await DisplayAlert("Delete", "Are you sure you want to delete this reservation?", "Yes", "No");
+
+        if (!isAccepted)
+        {
+            Debug.WriteLine("Deletion cancelled");
+            return;
+        }
+
+        DeleteReservation(reservation.reservationId);
+        await RefreshListView();
+    }
 
 
 

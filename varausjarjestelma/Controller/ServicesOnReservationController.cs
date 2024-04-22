@@ -10,7 +10,7 @@ namespace varausjarjestelma.Controller
     public class ServicesOnReservationController
     {
 
-        // Add Services on Reservation
+        // Add one service on Reservation
 
         public static async Task<bool> AddOneServiceOnReservationAsync(int reservationId, int serviceId, int amount)
         {
