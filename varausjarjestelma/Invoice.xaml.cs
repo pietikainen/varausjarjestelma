@@ -25,8 +25,19 @@ public partial class Invoice : ContentPage
     {
         try
         {
-            var controller = new InvoiceController();
-            invoices = await controller.GetAllInvoicesPreviewAsync();
+            invoices = await InvoiceController.GetAllInvoicesPreviewAsync();
+
+            foreach (InvoiceData invoice in invoices)
+            {
+                if (invoice.IsPaid == 1)
+                {
+                    invoice.IsPaidString = "Paid";
+                }
+                else
+                {
+                    invoice.IsPaidString = "";
+                }
+            }
             InvoicesListView.ItemsSource = invoices;
         }
         catch (AggregateException ae)
@@ -69,7 +80,7 @@ public partial class Invoice : ContentPage
             for (int i = 0; i < 5; i++)
             {
                 var columnDefinition = new ColumnDefinition();
-                columnDefinition.Width = new GridLength(160);
+                columnDefinition.Width = new GridLength(128);
                 InvoiceGrid_ContentPart.ColumnDefinitions.Add(columnDefinition);
             }
 
@@ -80,12 +91,12 @@ public partial class Invoice : ContentPage
             {
                 int row = 0;
 
-                var cabinNameLabel = new Label { Text = "Mökki: " + cabin.CabinName };
-                var cabinAmountLabel = new Label { Text = cabin.CabinAmount.ToString() + " vrk" };
-                var cabinPriceLabel = new Label { Text = cabin.CabinPrice.ToString("C") };
-                var cabinVatLabel = new Label { Text = cabin.CabinVat.ToString() };
+                var cabinNameLabel = new Label { Text = "Mökki: " + cabin.CabinName, FontSize = 11 };
+                var cabinAmountLabel = new Label { Text = cabin.CabinAmount.ToString() + " vrk", FontSize = 11 };
+                var cabinPriceLabel = new Label { Text = cabin.CabinPrice.ToString("C"), FontSize = 11 };
+                var cabinVatLabel = new Label { Text = (cabin.CabinPrice * 0.24).ToString("C"), FontSize = 11 };
                 var cabinTotal = (double)cabin.CabinAmount * (double)cabin.CabinPrice;
-                var cabinTotalLabel = new Label { Text = cabinTotal.ToString("C") };
+                var cabinTotalLabel = new Label { Text = cabinTotal.ToString("C"), FontSize = 11 };
 
                 // Generate new row to the grid
                 var rowDefinition = new RowDefinition();
@@ -126,12 +137,12 @@ public partial class Invoice : ContentPage
             {
                 int row = InvoiceGrid_ContentPart.RowDefinitions.Count - 1; // Seuraava rivi
 
-                var serviceNameLabel = new Label { Text = service.ServiceName };
-                var serviceAmountLabel = new Label { Text = service.ServiceAmount.ToString() + " kpl" };
-                var servicePriceLabel = new Label { Text = service.ServicePrice.ToString() };
-                var serviceVatLabel = new Label { Text = service.ServiceVat.ToString() };
+                var serviceNameLabel = new Label { Text = service.ServiceName, FontSize = 11 };
+                var serviceAmountLabel = new Label { Text = service.ServiceAmount.ToString() + " kpl", FontSize = 11 };
+                var servicePriceLabel = new Label { Text = service.ServicePrice.ToString("C"), FontSize = 11 };
+                var serviceVatLabel = new Label { Text = (service.ServicePrice * 0.24).ToString("C"), FontSize = 11 };
                 var serviceTotal = (double)service.ServiceAmount * (double)service.ServicePrice;
-                var serviceTotalLabel = new Label { Text = serviceTotal.ToString() };
+                var serviceTotalLabel = new Label { Text = serviceTotal.ToString("C"), FontSize = 11 };
 
                 // Generate new row to the grid
                 var rowDefinition = new RowDefinition();
@@ -169,41 +180,121 @@ public partial class Invoice : ContentPage
     }
 
 
-
-    // Code to filter invoices by customer name and/or invoice number using List<InvoiceData> invoices
-    private void FilterInvoicesByNumber(object sender, EventArgs e)
+    private async void SearchInvoiceByCustomerNameEntryChanged(object sender, TextChangedEventArgs e)
     {
-        var filterParameter = InvoiceNumberEntry.Text;
-        var filteredInvoices = invoices.Where(i => i.InvoiceNumber.ToString().Contains(filterParameter)).ToList();
-        InvoicesListView.ItemsSource = filteredInvoices;
-    }
+        var keyword = SearchInvoiceByCustomerNameEntry.Text;
 
-    private void FilterInvoicesByName(object sender, EventArgs e)
-    {
-        var filterParameter = CustomerNameEntry.Text;
-        var filteredInvoices = invoices.Where(i => i.CustomerName.Contains(filterParameter)).ToList();
-        InvoicesListView.ItemsSource = filteredInvoices;
-    }
+        var allInvoices = await InvoiceController.GetAllInvoicesPreviewAsync();
 
-
-    // Button clicked event handlers start here
-    public void OnSearchButtonClicked(object sender, EventArgs e)
-    {
-        if (InvoiceNumberEntry.Text != null)
+        if (string.IsNullOrEmpty(keyword))
         {
-            FilterInvoicesByNumber(sender, e);
-        }
-        else if (CustomerNameEntry.Text != null)
-        {
-            FilterInvoicesByName(sender, e);
+            InvoicesListView.ItemsSource = allInvoices;
         }
         else
         {
-            InvoicesListView.ItemsSource = null;
-            GetInvoicesPreviewData();
-            // =?=
+            var filteredInvoices = allInvoices.Where(i => i.CustomerName.Contains(keyword)).ToList();
+            InvoicesListView.ItemsSource = filteredInvoices;
+        }
+    }
+
+
+    // Code to filter invoices by customer name and/or invoice number using List<InvoiceData> invoices
+    //private void FilterInvoicesByNumber(object sender, EventArgs e)
+    //{
+    //    var filterParameter = InvoiceNumberEntry.Text;
+    //    var filteredInvoices = invoices.Where(i => i.InvoiceNumber.ToString().Contains(filterParameter)).ToList();
+    //    InvoicesListView.ItemsSource = filteredInvoices;
+    //}
+
+    //private void FilterInvoicesByName(object sender, EventArgs e)
+    //{
+    //    var filterParameter = CustomerNameEntry.Text;
+    //    var filteredInvoices = invoices.Where(i => i.CustomerName.Contains(filterParameter)).ToList();
+    //    InvoicesListView.ItemsSource = filteredInvoices;
+    //}
+
+
+    // Button clicked event handlers start here
+    //public void OnSearchButtonClicked(object sender, EventArgs e)
+    //{
+    //    if (InvoiceNumberEntry.Text != null)
+    //    {
+    //        FilterInvoicesByNumber(sender, e);
+    //    }
+    //    else if (CustomerNameEntry.Text != null)
+    //    {
+    //        FilterInvoicesByName(sender, e);
+    //    }
+    //    else
+    //    {
+    //        InvoicesListView.ItemsSource = null;
+    //        GetInvoicesPreviewData();
+    //        // =?=
+    //    }
+
+    //}
+
+    private async void SetIsPaidButtonClicked(object sender, EventArgs e)
+    {
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+        var invoice = button.BindingContext as InvoiceData;
+        if (invoice == null)
+        {
+            Debug.WriteLine("Invoice is null");
+            return;
         }
 
+        var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to mark this invoice as paid?", "Yes", "No");
+
+        if (!isAccepted)
+        {
+            Debug.WriteLine("Confirmation cancelled");
+            return;
+        }
+
+        await InvoiceController.SetInvoicePaidAsync(invoice.InvoiceNumber);
+        await RefreshListView();
+
+
+    }
+    private async void RemoveInvoiceButtonClicked(object sender, EventArgs e)
+    {
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+        var invoice = button.BindingContext as InvoiceData;
+        if (invoice == null)
+        {
+            Debug.WriteLine("Invoice is null");
+            return;
+        }
+
+        var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to delete this invoice?", "Yes", "No");
+
+        if (!isAccepted)
+        {
+            Debug.WriteLine("Deletion cancelled");
+            return;
+        }
+
+        await InvoiceController.DeleteInvoiceAsync(invoice.InvoiceNumber);
+        await RefreshListView();
+
+    }
+
+
+
+    public async Task RefreshListView()
+    {
+        InvoicesListView.ItemsSource = await InvoiceController.GetAllInvoicesPreviewAsync();
     }
 
     async void MainMenuButtonClicked(object sender, EventArgs e)

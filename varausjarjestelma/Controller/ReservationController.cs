@@ -65,7 +65,7 @@ namespace varausjarjestelma.Controller
                                 //areaName = readerGetString("areaName")
                             };
 
-                            reservations.Add(reservation);
+                            reservations.Add(reservation);  
                         }
 
                         return reservations;

@@ -37,14 +37,14 @@ namespace varausjarjestelma.Controller
 
 
 
-        public async Task<List<InvoiceData>> GetAllInvoicesPreviewAsync()
+        public static async Task<List<InvoiceData>> GetAllInvoicesPreviewAsync()
         {
 
             MySqlConnection connection = MySqlController.GetConnection();
             await connection.OpenAsync();
 
             using (var command = new MySqlCommand(
-                @"SELECT l.lasku_id, a.sukunimi, a.etunimi, l.summa, l.maksettu
+                @"SELECT l.lasku_id, a.asiakas_id, a.sukunimi, a.etunimi, l.summa, l.maksettu
                     FROM lasku l
                     JOIN varaus v ON l.varaus_id = v.varaus_id
                     JOIN asiakas a ON v.asiakas_id = a.asiakas_id;", connection))
@@ -57,6 +57,7 @@ namespace varausjarjestelma.Controller
                 {
                     InvoiceData invoiceData = new InvoiceData
                     {
+                        CustomerId = reader.GetInt32("asiakas_id"),
                         InvoiceNumber = reader.GetInt32("lasku_id"),
                         FirstName = reader.GetString("etunimi"),
                         LastName = reader.GetString("sukunimi"),
@@ -222,6 +223,33 @@ namespace varausjarjestelma.Controller
         }
 
 
+        public static async Task<bool> DeleteInvoiceAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(
+                    @"DELETE FROM lasku WHERE lasku_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
 
         public async Task<List<Database.Invoice>> GetInvoiceByNumber(int id)
         {
@@ -306,7 +334,7 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        public async Task<bool> AlterInvoicePaidStatus(int id)
+        public static async Task<bool> SetInvoicePaidAsync(int id)
         {
             using (var context = new Database.AppContext())
             {
@@ -348,7 +376,7 @@ namespace varausjarjestelma.Controller
 
 
 
-        // TÄMÄ ON KESKEN
+        // Method to create invoice. Does calculations and queries in database, since it's a complex operation.
         public static async Task<bool> CreateInvoiceAsync(int id)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -403,6 +431,7 @@ namespace varausjarjestelma.Controller
 
     public class InvoiceData
     {
+        public int CustomerId { get; set; }
         public int InvoiceNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -410,6 +439,7 @@ namespace varausjarjestelma.Controller
         public double InvoiceAmount { get; set; }
         public int Vat { get; set; }
         public int IsPaid { get; set; }
+        public string IsPaidString { get; set; }
     }
 
     public class InvoiceContentsCabin
@@ -442,6 +472,7 @@ namespace varausjarjestelma.Controller
         public DateTime EndDate { get; set; }
         public int Days { get; set; }
         public double CabinPrice { get; set; }
+        public double CabinVat { get; set; }
         public double TotalCabinPrice { get; set; }
 
         // Invoice
