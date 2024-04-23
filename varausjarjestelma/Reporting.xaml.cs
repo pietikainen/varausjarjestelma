@@ -4,8 +4,6 @@ namespace varausjarjestelma;
 
 public partial class Reporting : ContentPage
 {
-
-    AreaController areaController = new AreaController();
     List<AreaData>? areas;
 
     public Reporting()
@@ -22,7 +20,7 @@ public partial class Reporting : ContentPage
     {
         try
         {
-            areas = await areaController.GetAllAreaDataAsync();
+            areas = await AreaController.GetAllAreaDataAsync();
 
             AreaPicker.Items.Add("All");
 
