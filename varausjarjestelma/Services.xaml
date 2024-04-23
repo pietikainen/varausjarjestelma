@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="varausjarjestelma.Services"
-             Title="Services" BackgroundColor="#fafafa">
+              BackgroundColor="#fafafa">
     <ContentPage.Resources>
         <Style x:Key="buttonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#519EDA" />
@@ -18,16 +18,34 @@
         </Style>
         <Style x:Key="listViewStyle" TargetType="ListView">
             <Setter Property="Margin" Value="5" />
-
             <Setter Property="BackgroundColor" Value="#BCBCBC" />
             <Setter Property="MaximumHeightRequest" Value="500" />
             <Setter Property="MinimumWidthRequest" Value="900" />
 
         </Style>
+        <!--  Sort button styles ready to go  -->
+
+        <Style x:Key="sortButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+
+        <Style x:Key="sortButtonDescendedStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#a0a0a0" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
     </ContentPage.Resources>
     <ScrollView>
 
         <VerticalStackLayout>
+            <Label
+             Margin="10,10,0,30"
+             FontAttributes="Bold"
+             FontSize="Large"
+             HorizontalOptions="Start"
+             Text="Service management" />
             <HorizontalStackLayout>
 
                 <Button
@@ -35,7 +53,7 @@
                 Margin="10,10,0,10"
                 Clicked="AddServicesButton_Clicked" 
                 Style="{StaticResource buttonStyle}"
-                Text="Add Service" />
+                Text="+ Add Service" />
 
                 <SearchBar
                 x:Name="SearchServicesEntry"
@@ -56,8 +74,8 @@
                 MinimumWidthRequest="1200">
                     <Grid Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
                             <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="50" />
                             <ColumnDefinition Width="200" />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="150" />
@@ -69,31 +87,17 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label FontAttributes="Bold" Text="ID" />
+                        <Label FontAttributes="Bold" Text="Name" />
+ 
                         <Label
                         Grid.Column="1"
                         FontAttributes="Bold"
-                        Text="Name" />
+                        Text="Price" />
                         <Label
                         Grid.Column="2"
                         FontAttributes="Bold"
-                        Text="Address" />
-                        <Label
-                        Grid.Column="3"
-                        FontAttributes="Bold"
-                        Text="Postal Code" />
-                        <Label
-                        Grid.Column="4"
-                        FontAttributes="Bold"
-                        Text="City" />
-                        <Label
-                        Grid.Column="5"
-                        FontAttributes="Bold"
-                        Text="Phone" />
-                        <Label
-                        Grid.Column="6"
-                        FontAttributes="Bold"
-                        Text="Email" />
+                        Text="Vat" />
+   
                     </Grid>
                 </Frame>
             </HorizontalStackLayout>
@@ -101,7 +105,8 @@
                 <Frame
                 Margin="10,0,0,0"
                 HorizontalOptions="Center"
-                MinimumWidthRequest="1200">
+                MinimumWidthRequest="1200"
+                    MinimumHeightRequest="1000">
 
                     <ListView x:Name="ServicesListView" ItemTapped="ServicesListView_ItemTapped">
                         <ListView.ItemTemplate>
@@ -109,8 +114,8 @@
                                 <ViewCell>
                                     <Grid Margin="10,0,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50" />
                                             <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="50" />
                                             <ColumnDefinition Width="200" />
                                             <ColumnDefinition Width="100" />
                                             <ColumnDefinition Width="150" />
@@ -120,13 +125,11 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
-                                        <Label Grid.Column="1" Text="{Binding FullName}" />
-                                        <Label Grid.Column="2" Text="{Binding Address}" />
-                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
-                                        <Label Grid.Column="4" Text="{Binding City}" />
-                                        <Label Grid.Column="5" Text="{Binding Phone}" />
-                                        <Label Grid.Column="6" Text="{Binding Email}" />
+                                        <Label Grid.Column="0" Text="{Binding Name}" />
+                                        
+                                        <Label Grid.Column="1" Text="{Binding Price}" />
+                                        <Label Grid.Column="2" Text="{Binding Vat}" />
+
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>

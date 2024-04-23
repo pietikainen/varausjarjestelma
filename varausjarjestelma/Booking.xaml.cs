@@ -32,7 +32,7 @@ public partial class Booking : ContentPage
     {
         try
         {
-            areas = await areaController.GetAllAreaDataAsync();
+            areas = await AreaController.GetAllAreaDataAsync();
             foreach (AreaData area in areas)
             {
                 AreaPicker.Items.Add(area.Name);

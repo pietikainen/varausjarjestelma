@@ -1,4 +1,6 @@
-﻿namespace varausjarjestelma
+﻿using System.Globalization;
+
+namespace varausjarjestelma
 {
     public partial class App : Application
     {
@@ -20,7 +22,7 @@
         public App()
         {
             InitializeComponent();
-
+            CultureInfo.CurrentCulture = new CultureInfo("fi-FI");
             MainPage = new AppShell();
         }
     }

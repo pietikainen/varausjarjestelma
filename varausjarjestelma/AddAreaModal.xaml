@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.AddServiceModal"
-             Title="AddServiceModal"
+             x:Class="varausjarjestelma.AddAreaModal"
+             Title="AddAreaModal"            
              MaximumHeightRequest="800"
-             MaximumWidthRequest="400" >
-    
+             MaximumWidthRequest="400">
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="0,0,0,10" />
@@ -26,34 +25,23 @@
                 FontAttributes="Bold"
                 FontSize="25"
                 HorizontalOptions="Center"
-                Text="Add new service"
+                Text="Add new area"
                 VerticalOptions="Center" />
-
             <Label
-                x:Name="serviceIdLabel"
-                IsVisible="False"
-                Text="Service ID:" />
+                x:Name="areaNameLabel"
+                
+                Text="Area name:" />
             <Entry
-                x:Name="serviceIdEntry"
-                IsReadOnly="True"
-                IsVisible="False" />
+                x:Name="areaNameEntry"
+                 />
             <Label
-                x:Name="AreaIdLabel"
-                IsVisible="False"
-                Text="Area ID:" />
+    x:Name="areaId"
+    Text="Area ID:"
+                IsVisible="false"/>
             <Entry
-                x:Name="AreaIdEntry"
-                IsReadOnly="True"
-                IsVisible="False" />
-            <Label Text="Name:" />
-            <Entry x:Name="serviceNameEntry" />
-            <Label Text="Service Type:" />
-            <Entry x:Name="serviceTypeEntry" />
-            <Label Text="Price:" />
-            <Entry x:Name="servicePriceEntry" />
-            <Label Text="Description:" />
-            <Entry x:Name="serviceDescriptionEntry" HeightRequest="100" />
-
+    x:Name="areaIdEntry"
+                IsVisible="false"
+     />
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -63,14 +51,13 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button
-                    x:Name="SaveServiceButton"
-                    Text="Save"
-                    Clicked="SaveServiceButton_Clicked"/>
+                    x:Name="addAreaButton"
+                    Text="Save" Clicked="addAreaButton_Clicked"/>
                 <Button
-                    x:Name="CancelServiceButton"
+                    x:Name="cancelAreaButton"
                     Grid.Column="1"
-                    Text="Close" 
-                    Clicked="CancelServiceButton_Clicked"/>
+                    Text="Cancel" Clicked="cancelAreaButton_Clicked"
+                    />
             </Grid>
         </VerticalStackLayout>
     </Frame>

@@ -12,7 +12,7 @@ namespace varausjarjestelma.Controller
 {
     public class ServiceController
     {
-        public async Task<List<ServiceData>> GetAllServiceDataAsync()
+        public static async Task<List<ServiceData>> GetAllServiceDataAsync()
         {
             MySqlConnection connection = MySqlController.GetConnection();
 
@@ -127,14 +127,55 @@ namespace varausjarjestelma.Controller
                 await connection.CloseAsync();
             }
         }
+        public static async Task<bool> InsertAndModifyServiceAsync(Database.Service service, string option)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            await connection.OpenAsync();
+            string optionText;
+            try
+            {
 
+                switch (option)
+                {
+                    case "modify":
+                        optionText = @"UPDATE service SET nimi = @nimi, tyyppi = @tyyppi, 
+                                        hinta = @hinta, kuvaus = @kuvaus
+                                         WHERE palvelu_id = @id";
+                        break;
+
+                    default: // add
+                        optionText = @"INSERT INTO palvelu (nimi, tyyppi, hinta, kuvaus)
+                                        VALUES (@nimi, @tyyppi, @hinta, @kuvaus)";
+                        break;
+                }
+
+                using (var command = new MySqlCommand(optionText, connection))
+                {
+                    if (option == "modify")
+                    {
+                        command.Parameters.AddWithValue("@id", service.palvelu_id);
+                    }
+                    command.Parameters.AddWithValue("@nimi", service.nimi);
+                    command.Parameters.AddWithValue("@tyyppi", service.tyyppi);
+                    command.Parameters.AddWithValue("@hinta", service.hinta);
+                    command.Parameters.AddWithValue("@kuvaus", service.kuvaus);
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
         public static async Task<int> GetServiceIdByServiceName(string name)
         {
             MySqlConnection connection = MySqlController.GetConnection();
             try
             {
                 await connection.OpenAsync();
-                Debug.WriteLine("Service name: " + name);   
+                Debug.WriteLine("Service name: " + name);
                 using (var command = new MySqlCommand(@"
                     SELECT palvelu_id FROM palvelu WHERE nimi = @name", connection))
                 {
@@ -161,9 +202,32 @@ namespace varausjarjestelma.Controller
             }
             finally { await connection.CloseAsync(); }
         }
+
+        public static async Task<bool> DeleteServiceAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            await connection.OpenAsync();
+
+            try
+            {
+                using (var command = new MySqlCommand(
+                    @"DELETE FROM palvelu WHERE palvelu_id = @id", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    await command.ExecuteNonQueryAsync();
+
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
     }
-
-
 
     public class ServiceData
     {
@@ -176,4 +240,3 @@ namespace varausjarjestelma.Controller
         public double Vat { get; set; }
     }
 }
-
