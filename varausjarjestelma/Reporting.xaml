@@ -1,12 +1,291 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Reporting"
-             Title="Reporting">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    x:Class="varausjarjestelma.Reporting"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ContentPage.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#519EDA" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="MinimumWidthRequest" Value="120" />
+            <Setter Property="MaximumWidthRequest" Value="150" />
+
+            <Setter Property="BorderColor" Value="Gray" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+        <Style x:Key="listViewStyle" TargetType="ListView">
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="BackgroundColor" Value="#BCBCBC" />
+            <Setter Property="MaximumHeightRequest" Value="500" />
+            <Setter Property="MinimumWidthRequest" Value="900" />
+
+        </Style>
+    </ContentPage.Resources>
+    <HorizontalStackLayout>
+
+
+        <VerticalStackLayout Margin="10,0,0,0">
+            <Label
+                Margin="0,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Reporting" />
+
+
+            <Label Text="Select start date" />
+            <DatePicker
+                x:Name="StartDate"
+                Margin="0,10,0,30"
+                Date="{Binding StartDate}"
+                Format="d"
+                HorizontalOptions="Start"
+                VerticalOptions="Center" />
+            <Label Text="Select end date" />
+
+            <DatePicker
+                x:Name="EndDate"
+                Margin="0,10,0,30"
+                Date="{Binding EndDate}"
+                Format="d"
+                HorizontalOptions="Start"
+                VerticalOptions="Center" />
+
+            <Picker
+                x:Name="AreaPicker"
+                Title="Select area"
+                Margin="0,10,0,30"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                WidthRequest="120" />
+
+
+            <Button
+                x:Name="GenerateReportButton"
+                Margin="0,10,0,30"
+                Clicked="GenerateReportButtonClicked"
+                Style="{StaticResource buttonStyle}"
+                Text="Generate report" />
+
+            <Button
+                x:Name="ClearReportsButton"
+                Margin="0,0,0,0"
+                Clicked="ClearReportsButtonClicked"
+                Style="{StaticResource buttonStyle}"
+                Text="Clear Page" />
+
+
+        </VerticalStackLayout>
+        <VerticalStackLayout Margin="150,80,0,0">
+            <HorizontalStackLayout>
+                <Label
+                    Margin="10,0,0,10"
+                    FontSize="Medium"
+                    Text="Cabin usage" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Frame
+                    Margin="10,0,0,0"
+                    BackgroundColor="#fafafa"
+                    WidthRequest="850">
+
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="200" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label FontAttributes="Bold" Text="ID" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Name" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Price" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Reservations" />
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="% of all" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="Nights" />
+
+                        <Label
+                            Grid.Column="6"
+                            FontAttributes="Bold"
+                            Text="Usage %" />
+
+                    </Grid>
+                </Frame>
+
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame Margin="10,0,0,0" WidthRequest="850">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="CabinReportingActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
+                        <ListView x:Name="CabinReportingListViewResult" HeightRequest="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+
+                                        <Grid Margin="10,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="120" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding CabinId}" />
+                                            <Label Grid.Column="1" Text="{Binding CabinName}" />
+                                            <Label Grid.Column="2" Text="{Binding CabinPrice, StringFormat='{0:C}'}" />
+                                            <Label Grid.Column="3" Text="{Binding ReservationCount}" />
+                                            <Label Grid.Column="4" Text="{Binding ReservationPercentage, StringFormat='{0:P}'}" />
+                                            <Label Grid.Column="5" Text="{Binding TotalDaysReserved}" />
+                                            <Label Grid.Column="6" Text="{Binding CabinUsePercentage, StringFormat='{0:P}'}" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+                    </StackLayout>
+                </Frame>
+
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Label
+                    x:Name="CabinTotalRevenueLabel"
+                    Margin="10,0,0,0"
+                    FontAttributes="Bold" />
+
+            </HorizontalStackLayout>
+            <!--  Palvelujen seuranta  -->
+
+            <HorizontalStackLayout>
+                <Label
+                    Margin="10,20,0,10"
+                    FontSize="Medium"
+                    Text="Service usage" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Frame
+                    Margin="10,0,0,0"
+                    BackgroundColor="#fafafa"
+                    WidthRequest="850">
+
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="200" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label FontAttributes="Bold" Text="ID" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Name" />
+                        <Label
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Price" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Used amount" />
+
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="Avg per reservation" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="% of all services" />
+
+                    </Grid>
+                </Frame>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame Margin="10,0,0,0" WidthRequest="850">
+
+                    <ListView x:Name="ServiceReportingListView" HeightRequest="200">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="10,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="200" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding ServiceId}" />
+                                        <Label Grid.Column="1" Text="{Binding ServiceName}" />
+                                        <Label Grid.Column="2" Text="{Binding ServicePrice}" />
+                                        <Label Grid.Column="3" Text="{Binding ServiceCount}" />
+                                        <Label Grid.Column="3" Text="{Binding ServiceAverageCountPerReservation}" />
+                                        <Label Grid.Column="4" Text="{Binding ServicePercentageCountOfAllServices}" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+                </Frame>
+            </HorizontalStackLayout>
+
+            <Label
+                x:Name="ServiceTotalRevenueLabel"
+                Margin="10,0,0,0"
+                FontAttributes="Bold" />
+
+
+
+        </VerticalStackLayout>
+
+    </HorizontalStackLayout>
 </ContentPage>

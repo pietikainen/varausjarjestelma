@@ -36,7 +36,9 @@
             <MenuFlyoutItem Clicked="RequestManagementPage" Text="Testi_management" />
         </MenuBarItem>
 
-        <MenuBarItem Text="Reporting" />
+        <MenuBarItem Text="Reporting">
+            <MenuFlyoutItem Clicked="RequestReportingPage" Text="View" />
+        </MenuBarItem>
         <MenuBarItem Text="Help">
             <MenuFlyoutItem Clicked="RequestAboutPage" Text="About" />
         </MenuBarItem>
@@ -52,4 +54,5 @@
     <ShellContent ContentTemplate="{DataTemplate local:Cabin}" Route="Cabin" />
     <ShellContent ContentTemplate="{DataTemplate local:Services}" Route="Services" />
     <ShellContent ContentTemplate="{DataTemplate local:BookingView}" Route="BookingView" />
+    <ShellContent ContentTemplate="{DataTemplate local:Reporting}" Route="Reporting" />
 </Shell>

@@ -48,6 +48,11 @@
             await Shell.Current.GoToAsync("//About");
         }
 
+        private async void RequestReportingPage(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Reporting");
+        }
+
         private void RequestQuit(object sender, EventArgs e)
         {
             Application.Current.Quit();
