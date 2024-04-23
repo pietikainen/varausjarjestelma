@@ -30,6 +30,10 @@
             await Shell.Current.GoToAsync("//Booking");
         }
 
+        private async void RequestBookingViewPage(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//BookingView");
+        }
         private async void RequestManagementPage(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//Management");

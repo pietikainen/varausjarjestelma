@@ -50,6 +50,57 @@ namespace varausjarjestelma.Controller
             }
         }
 
+        public static async Task<CustomerData> GetCustomerDataAsync(int id)
+        { 
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+                using (var command = new MySqlCommand(@"
+                    SELECT * FROM asiakas WHERE asiakas_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            CustomerData customerData = new CustomerData
+                            {
+                                CustomerId = reader.GetInt32("asiakas_id"),
+                                PostalCode = reader.GetString("postinro"),
+                                FirstName = reader.GetString("etunimi"),
+                                LastName = reader.GetString("sukunimi"),
+                                FullName = reader.GetString("sukunimi") + " " + reader.GetString("etunimi"),
+                                Address = reader.GetString("lahiosoite"),
+                                Email = reader.GetString("email"),
+                                Phone = reader.GetString("puhelinnro")
+                            };
+
+                            return customerData;
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Great problem in Mysql when fetching customer data.");
+                            return null;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ERROR: " + e.Message);
+                return null;
+
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+        
+
+
         public static async Task<bool> InsertAndModifyCustomerAsync(Database.Customer customer, string option)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -118,6 +169,8 @@ namespace varausjarjestelma.Controller
                 return false;
             }
         }
+
+
 
 
     }

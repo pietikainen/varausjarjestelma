@@ -27,9 +27,16 @@
         </Style>
     </ContentPage.Resources>
     <ScrollView>
+        <VerticalStackLayout Margin="10,0,0,0">
+            <Label
+                Margin="0,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Add Booking" />
 
 
-        <Frame>
+
 
 
             <HorizontalStackLayout>
@@ -48,7 +55,28 @@
                                     Text="{Binding reservationNumber}" />-->
                                 <!--  joo ei oo kiva kovakoodata marginaaleja, koska ei tule responsiivisuutta - voisit korjata  -->
                             </HorizontalStackLayout>
+
+                            <Label FontSize="12" Text="Check-in date: " />
+                            <DatePicker
+                                x:Name="CheckInDatePicker"
+                                Date="{Binding CheckInDate}"
+                                HorizontalOptions="Start"
+                                WidthRequest="200" />
+                            <Label FontSize="12" Text="Check-out date: " />
+                            <DatePicker
+                                x:Name="CheckOutDatePicker"
+                                Date="{Binding CheckOutDate}"
+                                HorizontalOptions="Start"
+                                WidthRequest="200" />
+
+
+
+
                             <!--  Area selection  -->
+
+
+
+
                             <Label
                                 Margin="0,0,0,10"
                                 FontSize="12"
@@ -86,73 +114,101 @@
 
                             <StackLayout>
                                 <Label
-                                    Margin="0,10,0,10"
+                                    Margin="0,0,0,10"
                                     FontSize="12"
                                     Text="Choose services: " />
-
-                                <StackLayout
-                                    x:Name="ServicesCheckboxFrame"
-                                    Margin="0,10,0,10"
+                                <Frame
+                                    Margin="0,0,0,0"
                                     BackgroundColor="#fafafa"
-                                    WidthRequest="200" />
-                            </StackLayout>
+                                    WidthRequest="200">
+                                    <StackLayout
+                                        x:Name="ServicesPicker"
+                                        Margin="0,10,0,10"
+                                        BackgroundColor="#fafafa"
+                                        WidthRequest="200" />
 
-                            <StackLayout>
-                                <!--  Tähän joku ikkuna, jossa mökin tiedot tarjolla kivasti  -->
-                                <!--  Entä jos mökkiin on jo varaus ko. ajalle?  -->
+                                </Frame>
                             </StackLayout>
+                            <StackLayout />
 
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
-
-
-
-
-
-
-
                 </VerticalStackLayout>
 
 
                 <!--  2.palsta  -->
 
 
-                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="300">
+                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="400">
                     <Label
                         Margin="0,0,0,10"
                         FontSize="12"
                         Text="Select customer:" />
                     <SearchBar
+                        x:Name="CustomerSearchBar"
                         Placeholder="Search..."
-                        SearchCommand="{Binding SearchCommand}"
-                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
-
-                    <Frame Margin="0,10,0,10" BackgroundColor="#fafafa">
-                        <ListView x:Name="CustomerListView" HeightRequest="75">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextCell Detail="{Binding Email}" Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        TextChanged="CustomerSearchBar_TextChanged" />
+                    <Frame
+                        Margin="0,10,0,10"
+                        BackgroundColor="#fafafa"
+                        HeightRequest="500">
+                        <ScrollView>
+                            <StackLayout>
+                                <ListView x:Name="CustomerListView" HeightRequest="500">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextCell Detail="{Binding Email}" Text="{Binding FullName}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackLayout>
+                        </ScrollView>
                     </Frame>
 
-                    <Frame>
+
+
+                </VerticalStackLayout>
+
+
+                <!--  3. palsta  -->
+                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="300">
+                    <Frame HorizontalOptions="Center" WidthRequest="300">
                         <VerticalStackLayout x:Name="CustomerDetails">
 
-                            <Label Text="First name:" FontSize="12" Margin="0,0,0,5"/>
-                            <Entry x:Name="firstNameEntry"/>
-                            <Label Text="Last name:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,0,0,5"
+                                FontSize="12"
+                                Text="First name:" />
+                            <Entry x:Name="firstNameEntry" />
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Last name:" />
                             <Entry x:Name="lastNameEntry" />
-                            <Label Text="Address:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Address:" />
                             <Entry x:Name="addressEntry" />
-                            <Label Text="Postal code:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Postal code:" />
                             <Entry x:Name="postalCodeEntry" />
-                            <Label Text="City:" FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="City:" />
                             <Entry x:Name="cityEntry" />
-                            <Label Text="Email: " FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Email: " />
                             <Entry x:Name="emailEntry" />
-                            <Label Text="Phone: " FontSize="12" Margin="0,10,0,5"/>
+                            <Label
+                                Margin="0,10,0,5"
+                                FontSize="12"
+                                Text="Phone: " />
                             <Entry x:Name="phoneNumberEntry" />
 
 
@@ -165,259 +221,33 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Button x:Name="AddCustomerButton" Style="{StaticResource buttonStyle}" Text="Save new customer" Margin="0,20,0,0" Grid.ColumnSpan="2"/>
+                                <Button
+                                    Grid.Row="25"
+                                    Grid.Column="0"
+                                    Margin="0,20,5,0"
+                                    Clicked="OnBookNowClicked"
+                                    Style="{StaticResource buttonStyle}"
+                                    Text="Book Now" />
+
+                                <Button
+                                    Grid.Row="25"
+                                    Grid.Column="2"
+                                    Margin="0,20,5,0"
+                                    Clicked="OnCancelClicked"
+                                    Style="{StaticResource buttonStyle}"
+                                    Text="Cancel" />
                             </Grid>
                         </VerticalStackLayout>
                     </Frame>
-
-                </VerticalStackLayout>
-
-
-                <!--  3. palsta  -->
-                <VerticalStackLayout Margin="10,0,0,10" WidthRequest="300">
-                    <Label FontSize="12" Text="Check-in date: " />
-                    <DatePicker
-                        x:Name="CheckInDatePicker"
-                        Date="{Binding CheckInDate}"
-                        HorizontalOptions="Start"
-                        WidthRequest="200" />
-                    <Label FontSize="12" Text="Check-out date: " />
-                    <DatePicker
-                        x:Name="CheckOutDatePicker"
-                        Date="{Binding CheckOutDate}"
-                        HorizontalOptions="Start"
-                        WidthRequest="200" />
                 </VerticalStackLayout>
                 <!--  4. palsta  -->
 
-                <VerticalStackLayout Margin="10,0,0,10">
-                    <Frame
-                        BackgroundColor="#fafafa"
-                        HorizontalOptions="EndAndExpand"
-                        IsVisible="True"
-                        WidthRequest="390">
 
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="40" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-
-
-
-
-                            <Label
-                                Grid.Row="0"
-                                Grid.ColumnSpan="2"
-                                Margin="0,0,0,20"
-                                FontAttributes="Bold"
-                                HorizontalOptions="Center"
-                                Text="Reservation details" />
-
-
-                            <!--  Customer information  -->
-                            <!--  1. column  -->
-
-                            <Label
-                                Grid.Row="1"
-                                FontSize="12"
-                                Text="Customer ID: " />
-                            <Label
-                                x:Name="CustomerIDEntry"
-                                Grid.Row="2"
-                                Text="binding ID" />
-                            <Label
-                                Grid.Row="3"
-                                FontSize="12"
-                                Text="Name: " />
-                            <Label
-                                x:Name="NameEntry"
-                                Grid.Row="4"
-                                Text="binding name" />
-                            <Label
-                                Grid.Row="5"
-                                FontSize="12"
-                                Text="Email: " />
-                            <Label
-                                x:Name="EmailEntry"
-                                Grid.Row="6"
-                                Text="binding email" />
-
-                            <!--  2. column  -->
-
-                            <Label
-                                Grid.Row="7"
-                                Grid.Column="0"
-                                FontSize="12"
-                                Text="Phone: " />
-                            <Label
-                                x:Name="PhoneEntry"
-                                Grid.Row="8"
-                                Grid.Column="0"
-                                Text="binding phone" />
-                            <Label
-                                Grid.Row="3"
-                                Grid.Column="1"
-                                FontSize="12"
-                                Text="Address: " />
-                            <Label
-                                x:Name="AddressEntry"
-                                Grid.Row="4"
-                                Grid.Column="1"
-                                Text="binding address" />
-                            <Label
-                                Grid.Row="5"
-                                Grid.Column="1"
-                                FontSize="12"
-                                Text="Postal code: " />
-                            <Label
-                                x:Name="PostalCodeEntry"
-                                Grid.Row="6"
-                                Grid.Column="1"
-                                Text="binding postalcode" />
-                            <Label
-                                Grid.Row="7"
-                                Grid.Column="1"
-                                FontSize="12"
-                                Text="City: " />
-                            <Label
-                                x:Name="CityEntry"
-                                Grid.Row="8"
-                                Grid.Column="1"
-                                Text="binding City" />
-
-                            <!--  Reservation details  -->
-                            <!--  1. column  -->
-
-
-                            <!--  Cabin details  -->
-                            <Label
-                                Grid.Row="9"
-                                Margin="0,0,0,0"
-                                FontSize="12"
-                                Text="Cabin: " />
-                            <Label
-                                x:Name="CabinEntry"
-                                Grid.Row="10"
-                                Text="binding cabinname" />
-
-                            <!--  Date picker  -->
-                            <Label
-                                Grid.Row="11"
-                                FontSize="12"
-                                Text="Start date:" />
-                            <Label
-                                Grid.Row="11"
-                                Grid.Column="1"
-                                FontSize="12"
-                                Text="End date:" />
-                            <Label
-                                x:Name="DatesEntry"
-                                Grid.Row="12"
-                                Text="binding dates" />
-
-                            <!--  ¨Service details  -->
-
-                            <Label
-                                Grid.Row="13"
-                                FontSize="12"
-                                Text="Services: " />
-                            <ListView x:Name="ServicesSelectedForReservation" Grid.Row="14">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextCell Text="" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-
-
-
-                            <!--  3. column  -->
-                            <!--  Price  -->
-                            <Label
-                                x:Name="PriceEntry"
-                                Grid.Row="10"
-                                Grid.Column="2"
-                                FontAttributes="Bold"
-                                HorizontalOptions="EndAndExpand"
-                                Text="€ / Night" />
-                            <Label
-                                x:Name="DatesTotalEntry"
-                                Grid.Row="12"
-                                Grid.Column="2"
-                                FontAttributes="Bold"
-                                HorizontalOptions="EndAndExpand"
-                                Text="x Days" />
-                            <Label
-                                x:Name="ServicesTotalEntry"
-                                Grid.Row="15"
-                                Grid.Column="2"
-                                FontAttributes="Bold"
-                                HorizontalOptions="EndAndExpand"
-                                Text="Total €" />
-
-
-
-                            <!--  Listview tähän? populoituu checkboxeista, vai listviewstä?  -->
-
-
-
-                            <!--  Buttons for form  -->
-
-
-
-                        </Grid>
-                    </Frame>
-                    
-                    
-                    
-                    <Button
-                                Grid.Row="25"
-                                Grid.Column="0"
-                                Margin="0,20,0,0"
-                                Clicked="OnBookNowClicked"
-                                
-                                Style="{StaticResource buttonStyle}"
-                                Text="Book Now" />
-
-                    <Button
-                                Grid.Row="25"
-                                Grid.Column="2"
-                                Margin="0,20,0,0"
-                                Clicked="OnCancelClicked"
-                                
-                                Style="{StaticResource buttonStyle}"
-                                Text="Cancel" />
-                </VerticalStackLayout>
 
 
 
             </HorizontalStackLayout>
-        </Frame>
+
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

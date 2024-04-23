@@ -25,13 +25,13 @@
         </MenuBarItem>
         <MenuBarItem Text="Booking">
             <MenuFlyoutItem Clicked="RequestBookingPage" Text="Add" />
-            <MenuFlyoutItem Text="View" />
+            <MenuFlyoutItem Clicked="RequestBookingViewPage" Text="View" />
         </MenuBarItem>
         <MenuBarItem Text="Management">
 
-            <MenuFlyoutItem Text="Area" Clicked="RequestAreaPageNew" />
-            <MenuFlyoutItem Text="Cabin" Clicked="RequestCabinPage" />
-            <MenuFlyoutItem Text="Service" Clicked="RequestServicePage" />
+            <MenuFlyoutItem Clicked="RequestAreaPageNew" Text="Area" />
+            <MenuFlyoutItem Clicked="RequestCabinPage" Text="Cabin" />
+            <MenuFlyoutItem Clicked="RequestServicePage" Text="Service" />
 
             <MenuFlyoutItem Clicked="RequestManagementPage" Text="Testi_management" />
         </MenuBarItem>
@@ -51,4 +51,5 @@
     <ShellContent ContentTemplate="{DataTemplate local:Area}" Route="Area" />
     <ShellContent ContentTemplate="{DataTemplate local:Cabin}" Route="Cabin" />
     <ShellContent ContentTemplate="{DataTemplate local:Services}" Route="Services" />
+    <ShellContent ContentTemplate="{DataTemplate local:BookingView}" Route="BookingView" />
 </Shell>

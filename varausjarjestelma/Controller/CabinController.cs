@@ -44,6 +44,56 @@ namespace varausjarjestelma.Controller
             }
         }
 
+        public static async Task<CabinData> GetCabinDataAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+                using (var command = new MySqlCommand(@"
+                    SELECT * FROM mokki WHERE mokki_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            CabinData cabinData = new CabinData
+                            {
+                                CabinId = reader.GetInt32("mokki_id"),
+                                AreaId = reader.GetInt32("alue_id"),
+                                PostalCode = reader.GetInt32("postinro"),
+                                CabinName = reader.GetString("mokkinimi"),
+                                Address = reader.GetString("katuosoite"),
+                                Price = reader.GetDouble("hinta"),
+                                Description = reader.GetString("kuvaus"),
+                                Beds = reader.GetInt32("henkilomaara"),
+                                Features = reader.GetString("varustelu")
+                            };
+
+                            return cabinData;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }           
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ERROR: " + e.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+
+
         public async Task<List<CabinData>> GetCabinsByAreaIdAsync(int id)
         {
             MySqlConnection connection = MySqlController.GetConnection();
