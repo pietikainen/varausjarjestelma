@@ -63,7 +63,7 @@ namespace varausjarjestelma.Controller
                             {
                                 CabinId = reader.GetInt32("mokki_id"),
                                 AreaId = reader.GetInt32("alue_id"),
-                                PostalCode = reader.GetInt32("postinro"),
+                                PostalCode = reader.GetString("postinro"),
                                 CabinName = reader.GetString("mokkinimi"),
                                 Address = reader.GetString("katuosoite"),
                                 Price = reader.GetDouble("hinta"),
