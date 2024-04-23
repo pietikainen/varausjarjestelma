@@ -172,7 +172,8 @@
                 <StackLayout
                     x:Name="ServicesOnReservationList2"
                     Grid.Row="16"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    />
 
                 <Label
                     Grid.Row="20"
@@ -206,6 +207,7 @@
                 <StackLayout
                     x:Name="ServicesOnReservationList3"
                     Grid.Row="16"
+                    HorizontalOptions="End"
                     Grid.Column="2" />
 
                 <BoxView
@@ -220,7 +222,7 @@
                     Grid.Row="14"
                     Grid.Column="2"
                     FontAttributes="Bold"
-                    HorizontalOptions="EndAndExpand"
+                    HorizontalOptions="End"
                     Text="Total ... €" />
 
                 <BoxView
@@ -234,12 +236,14 @@
                 <StackLayout
                     x:Name="ServicesTotalCell"
                     Grid.Row="18"
-                    Grid.Column="2" />
+                    Grid.Column="2"
+                    HorizontalOptions="End" />
                 <StackLayout
                     x:Name="GrandTotalCell"
                     Grid.Row="20"
                     Grid.Column="2"
-                    Margin="0,10,0,0" />
+                    Margin="0,10,0,0"
+                    HorizontalOptions="End" />
 
 
                 <!--  Listview tähän? populoituu checkboxeista, vai listviewstä?  -->

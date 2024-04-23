@@ -135,7 +135,10 @@ public partial class AddReservationModal : ContentPage
                         servicesOrdered.Add(service.Key, service.Value);
                         serviceGrandTotal += serviceTotal;
 
+
                         // create a new label for each service and price
+
+
 
                         Label serviceNameLabel = new Label
                         {
@@ -151,7 +154,8 @@ public partial class AddReservationModal : ContentPage
                         Label serviceAmountLabel = new Label
                         {
                             Text = "x" + service.Value.ToString(),
-                            HorizontalOptions = LayoutOptions.Start
+                            HorizontalOptions = LayoutOptions.Start,
+                            Margin = new Thickness(0, 0, 10, 0)
                         };
 
                         Label serviceTotalLabel = new Label
