@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="varausjarjestelma.Area"
-             Title="Area" BackgroundColor="#fafafa">
+              BackgroundColor="#fafafa">
     <ContentPage.Resources>
         <Style x:Key="buttonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#519EDA" />
@@ -24,10 +24,31 @@
             <Setter Property="MinimumWidthRequest" Value="900" />
 
         </Style>
+
+        <!--  Sort button styles ready to go  -->
+
+        <Style x:Key="sortButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+        </Style>
+
+        <Style x:Key="sortButtonDescendedStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#a0a0a0" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
+
     </ContentPage.Resources>
     <ScrollView>
 
         <VerticalStackLayout>
+            <Label
+                Margin="10,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Area management" />
             <HorizontalStackLayout>
 
                 <Button
@@ -35,7 +56,7 @@
                 Margin="10,10,0,10"
                 Clicked="AddAreaButton_Clicked"
                 Style="{StaticResource buttonStyle}"
-                Text="Add Area" />
+                Text="+ Add Area" />
 
                 <SearchBar
                 x:Name="SearchAreaEntry"
@@ -73,27 +94,8 @@
                         <Label
                         Grid.Column="1"
                         FontAttributes="Bold"
-                        Text="Name" />
-                        <Label
-                        Grid.Column="2"
-                        FontAttributes="Bold"
-                        Text="Address" />
-                        <Label
-                        Grid.Column="3"
-                        FontAttributes="Bold"
-                        Text="Postal Code" />
-                        <Label
-                        Grid.Column="4"
-                        FontAttributes="Bold"
                         Text="City" />
-                        <Label
-                        Grid.Column="5"
-                        FontAttributes="Bold"
-                        Text="Phone" />
-                        <Label
-                        Grid.Column="6"
-                        FontAttributes="Bold"
-                        Text="Email" />
+    
                     </Grid>
                 </Frame>
             </HorizontalStackLayout>
@@ -120,13 +122,10 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
-                                        <Label Grid.Column="1" Text="{Binding FullName}" />
-                                        <Label Grid.Column="2" Text="{Binding Address}" />
-                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
-                                        <Label Grid.Column="4" Text="{Binding City}" />
-                                        <Label Grid.Column="5" Text="{Binding Phone}" />
-                                        <Label Grid.Column="6" Text="{Binding Email}" />
+                                        <Label Grid.Column="0" Text="{Binding AreaId}" />
+                                        <Label Grid.Column="1" Text="{Binding Name}" />
+                                        
+
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>
