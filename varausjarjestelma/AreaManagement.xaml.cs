@@ -19,8 +19,8 @@ public partial class AreaManagement : ContentPage
     {
         try
         {
-            var dataB = new ServiceController();
-            var services = await dataB.GetAllServiceDataAsync();
+            
+            var services = await ServiceController.GetAllServiceDataAsync();
             ServicesListView.ItemsSource = services;
             AddServicesListView.ItemsSource = services;
         }
