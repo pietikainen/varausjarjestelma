@@ -171,7 +171,6 @@ public partial class Invoice : ContentPage
                 Grid.SetRow(serviceTotalLabel, InvoiceGrid_ContentPart.RowDefinitions.Count - 1);
                 Grid.SetColumn(serviceTotalLabel, 4);
             }
-
         }
         catch (Exception ex)
         {
@@ -196,43 +195,6 @@ public partial class Invoice : ContentPage
             InvoicesListView.ItemsSource = filteredInvoices;
         }
     }
-
-
-    // Code to filter invoices by customer name and/or invoice number using List<InvoiceData> invoices
-    //private void FilterInvoicesByNumber(object sender, EventArgs e)
-    //{
-    //    var filterParameter = InvoiceNumberEntry.Text;
-    //    var filteredInvoices = invoices.Where(i => i.InvoiceNumber.ToString().Contains(filterParameter)).ToList();
-    //    InvoicesListView.ItemsSource = filteredInvoices;
-    //}
-
-    //private void FilterInvoicesByName(object sender, EventArgs e)
-    //{
-    //    var filterParameter = CustomerNameEntry.Text;
-    //    var filteredInvoices = invoices.Where(i => i.CustomerName.Contains(filterParameter)).ToList();
-    //    InvoicesListView.ItemsSource = filteredInvoices;
-    //}
-
-
-    // Button clicked event handlers start here
-    //public void OnSearchButtonClicked(object sender, EventArgs e)
-    //{
-    //    if (InvoiceNumberEntry.Text != null)
-    //    {
-    //        FilterInvoicesByNumber(sender, e);
-    //    }
-    //    else if (CustomerNameEntry.Text != null)
-    //    {
-    //        FilterInvoicesByName(sender, e);
-    //    }
-    //    else
-    //    {
-    //        InvoicesListView.ItemsSource = null;
-    //        GetInvoicesPreviewData();
-    //        // =?=
-    //    }
-
-    //}
 
     private async void SetIsPaidButtonClicked(object sender, EventArgs e)
     {
@@ -259,9 +221,8 @@ public partial class Invoice : ContentPage
 
         await InvoiceController.SetInvoicePaidAsync(invoice.InvoiceNumber);
         await RefreshListView();
-
-
     }
+
     private async void RemoveInvoiceButtonClicked(object sender, EventArgs e)
     {
         var button = sender as ImageButton;
@@ -287,10 +248,7 @@ public partial class Invoice : ContentPage
 
         await InvoiceController.DeleteInvoiceAsync(invoice.InvoiceNumber);
         await RefreshListView();
-
     }
-
-
 
     public async Task RefreshListView()
     {

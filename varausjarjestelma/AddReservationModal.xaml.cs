@@ -8,7 +8,6 @@ namespace varausjarjestelma;
 public partial class AddReservationModal : ContentPage
 {
     private ReservationInfo reservationInfo;
-    private Booking bookingPage;
 
     public AddReservationModal(ReservationInfo reservationInfo)
     {
@@ -146,7 +145,7 @@ public partial class AddReservationModal : ContentPage
                         Label servicePriceLabel = new Label
                         {
                             Text = serviceDetails.Price + " €",
-                            HorizontalOptions = LayoutOptions.EndAndExpand
+                            HorizontalOptions = LayoutOptions.End
                         };
 
                         Label serviceAmountLabel = new Label
@@ -159,7 +158,7 @@ public partial class AddReservationModal : ContentPage
                         {
                             Text = serviceTotal + " €",
                             FontAttributes = FontAttributes.Bold,
-                            HorizontalOptions = LayoutOptions.EndAndExpand
+                            HorizontalOptions = LayoutOptions.End
                         };
 
                         StackLayout serviceListStackLayout = new StackLayout
@@ -211,7 +210,7 @@ public partial class AddReservationModal : ContentPage
                 {
                     Text = serviceGrandTotal + " €",
                     FontAttributes = FontAttributes.Bold,
-                    HorizontalOptions = LayoutOptions.EndAndExpand
+                    HorizontalOptions = LayoutOptions.End
                 };
 
                 StackLayout serviceTotalCombinedLayout = new StackLayout
@@ -234,7 +233,7 @@ public partial class AddReservationModal : ContentPage
         {
             Text = grandTotal + " €",
             FontAttributes = FontAttributes.Bold,
-            HorizontalOptions = LayoutOptions.EndAndExpand
+            HorizontalOptions = LayoutOptions.End
         };
 
         StackLayout grandTotalStackLayout = new StackLayout
@@ -261,12 +260,6 @@ public partial class AddReservationModal : ContentPage
         {
             Debug.WriteLine("reservationInfo is null");
         }
-    }
-
-    private async void CreateInvoice(ReservationInfo reservationInfo)
-    {
-        // Create an invoice for the reservation
-       
     }
 
     private async Task SaveReservation(ReservationInfo reservationInfo)
