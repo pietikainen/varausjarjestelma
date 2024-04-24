@@ -24,17 +24,35 @@ namespace varausjarjestelma
         {  
             string username = usernameEntry.Text;
             string password = passwordEntry.Text;
-            if (username == "testikayttaja" && password == "salasana")
+            if (username == "testuser" && password == "salasana")
             {
                 MessagingCenter.Send<MainPage>(this, "EnableMenu");
-                await DisplayAlert("login successful", "welcome to mökkimaster!", "ok");
+                await DisplayAlert("Login successful", "Welcome to Mökkimaster!", "ok");
                 usernameEntry.Text = "";
                 passwordEntry.Text = "";
+                usernameEntry.IsVisible = false;
+                passwordEntry.IsVisible = false;
+                logOutButton.IsVisible = true;
+                logInLabel.IsVisible = false;
+                welcomeLabels.IsVisible = true;
+                signInButton.IsVisible = false;
             }
             else
             {
-                await DisplayAlert("login failed", "incorrect username or password.", "ok");
+                await DisplayAlert("Login failed", "incorrect username or password.", "ok");
             }
+        }
+
+        private void logOutButton_Clicked(object sender, EventArgs e)
+        {
+            signInButton.IsVisible = false;
+            usernameEntry.IsVisible = true;
+            passwordEntry.IsVisible = true;
+            signInButton.IsVisible = true;
+            logOutButton.IsVisible = false;
+            welcomeLabels.IsVisible = false;
+            logInLabel.IsVisible= true;
+            MessagingCenter.Send<MainPage>(this, "LockMenu");
         }
     }
 }

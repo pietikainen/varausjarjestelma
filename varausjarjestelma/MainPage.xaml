@@ -7,7 +7,6 @@
     WidthRequest="500" BackgroundImageSource="alpinecabin.png">
 
     <Grid>
-       
         <ScrollView>
             <VerticalStackLayout>
                 <Image
@@ -15,19 +14,20 @@
                     HeightRequest="185"
                     SemanticProperties.Description="dot net bot in a race car number eight"
                     Source="mokkimasterlogo.png" HorizontalOptions="Center"  Margin="0,50,0,0" />
-                <Label Text="MÖKKIMASTER" HorizontalOptions="Center" FontAttributes="Bold" FontFamily="Mongolian Baiti" TextColor="#519EDA" FontSize="Header"></Label>
-                <Label Text="Welcome" FontSize="Title" FontFamily="" HorizontalOptions="Center"></Label>
-                <Label Text="To use the Mökkimaster product family's cabin" 
-                       FontSize="Default" WidthRequest="300" FontFamily="" HorizontalOptions="Center"></Label>
-                <Label Text="and service reservation program." 
-                        FontSize="Default" WidthRequest="300" FontFamily="" Margin="100,5,0,0" HorizontalOptions="Center"></Label>
-                <StackLayout>
-                    <HorizontalStackLayout>
-                    </HorizontalStackLayout>
-                    <Entry x:Name="usernameEntry" Placeholder="Username" BackgroundColor="LightSlateGrey" Margin="0,60,0,12" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
-                    <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="LightSlateGrey" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
-                    <Button x:Name="signInButton" BackgroundColor="#519EDA" Clicked="signInButton_Clicked" Text="Sign In" WidthRequest="250" Margin="0,12,0,12"></Button>
-                </StackLayout>
+                <Label  Text="MÖKKIMASTER" HorizontalOptions="Center" FontAttributes="Bold" FontFamily="Mongolian Baiti" TextColor="#519EDA" FontSize="Header"></Label>
+                <Label x:Name="logInLabel"  Text="Log in with your test account" FontSize="Title"  HorizontalOptions="Center" Margin="0,30,0,0" IsVisible="true"></Label>
+                <VerticalStackLayout x:Name="welcomeLabels" IsVisible="false">
+                    <Label  Text="Welcome" FontSize="Title"  HorizontalOptions="Center"></Label>
+                <Label  Text="To use the Mökkimaster product family's " 
+                       FontSize="Default" WidthRequest="300" HorizontalOptions="Center" Margin="40,5,0,0"></Label>
+                <Label Text="cabin and service reservation program." 
+                        FontSize="Default" WidthRequest="300" Margin="55,5,0,0" HorizontalOptions="Center"></Label>
+                    
+                </VerticalStackLayout>
+            <Entry x:Name="usernameEntry" Placeholder="Username" BackgroundColor="LightSlateGrey" Margin="0,60,0,12" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
+            <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="LightSlateGrey" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
+            <Button x:Name="signInButton" BackgroundColor="#519EDA" Clicked="signInButton_Clicked" Text="Sign In" WidthRequest="250" FontAttributes="Bold" Margin="0,12,0,12"></Button>
+            <Button x:Name="logOutButton" BackgroundColor="#519EDA" Clicked="logOutButton_Clicked" Text="Log out" FontAttributes="Bold" WidthRequest="250" Margin="0,100,0,12" IsVisible="False"></Button>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
