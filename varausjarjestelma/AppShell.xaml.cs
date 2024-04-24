@@ -15,6 +15,16 @@
             menubarManagement.IsEnabled = true;
             menubarReporting.IsEnabled = true;      
             });
+            MessagingCenter.Subscribe<MainPage>(this, "LockMenu", (sender) =>
+            {
+                menubarCustomer.IsEnabled = false;
+                menubarBooking.IsEnabled = false;
+                menubarFile.IsEnabled = false;
+                menubarHelp.IsEnabled = false;
+                menubarInvoice.IsEnabled = false;
+                menubarManagement.IsEnabled = false;
+                menubarReporting.IsEnabled = false;
+            });
 
         }
         protected override void OnDisappearing()
