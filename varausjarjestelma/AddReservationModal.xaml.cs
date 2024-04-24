@@ -269,6 +269,7 @@ public partial class AddReservationModal : ContentPage
     private async Task SaveReservation(ReservationInfo reservationInfo)
     {
         // get the reservation info from the modal
+        Debug.WriteLine("Reservation info on save: " + reservationInfo.CustomerId + " " + reservationInfo.CabinId + " " + reservationInfo.StartDate + " " + reservationInfo.EndDate);
 
         Reservation newReservation = new Reservation
         {
@@ -287,6 +288,7 @@ public partial class AddReservationModal : ContentPage
 
         foreach (KeyValuePair<int, int> service in reservationInfo.Services)
         {
+            Debug.WriteLine("Inside foreach for services");
             if (service.Value != 0)
             {
                 serviceIds.Add(service.Key);
@@ -304,6 +306,7 @@ public partial class AddReservationModal : ContentPage
 
             if (servicesAdded)
             {
+                Debug.WriteLine("AddReservationModal) Reservation added successfully.");
                 await DisplayAlert("Success", $"Reservation #{reservationId} added successfully", "OK");
                 await Navigation.PopModalAsync();
 

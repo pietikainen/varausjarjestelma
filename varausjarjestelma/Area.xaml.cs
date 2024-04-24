@@ -16,6 +16,10 @@ public partial class Area : ContentPage
 
     private async void GetAllAreaData()
     {
+        ActivityIndicator.IsVisible = true;
+        ActivityIndicator.IsRunning = true;
+
+
         try
         {
             var areas = await AreaController.GetAllAreaDataAsync();
@@ -25,6 +29,28 @@ public partial class Area : ContentPage
         {
             System.Diagnostics.Debug.WriteLine("Virhe ladattaessa mökkitietoja: " + ex.Message);
         }
+
+        ActivityIndicator.IsVisible = false;
+        ActivityIndicator.IsRunning = false;
+    }
+
+
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var keyword = SearchAreaEntry.Text;
+
+        var allAreas = await AreaController.GetAllAreaDataAsync();
+
+        if (string.IsNullOrEmpty(keyword))
+        {
+            AreaListView.ItemsSource = allAreas;
+        }
+        else
+        {
+            var filteredAreas = allAreas.Where(area => area.Name.ToLower().Contains(keyword.ToLower()));
+            AreaListView.ItemsSource = filteredAreas;
+        }
+
     }
 
     private async void AddAreaButton_Clicked(object sender, EventArgs e)

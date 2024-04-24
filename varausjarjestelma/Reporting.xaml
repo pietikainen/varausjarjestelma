@@ -169,9 +169,9 @@
                                             <Label Grid.Column="1" Text="{Binding CabinName}" />
                                             <Label Grid.Column="2" Text="{Binding CabinPrice, StringFormat='{0:C}'}" />
                                             <Label Grid.Column="3" Text="{Binding ReservationCount}" />
-                                            <Label Grid.Column="4" Text="{Binding ReservationPercentage, StringFormat='{0:P}'}" />
+                                            <Label Grid.Column="4" Text="{Binding ReservationPercentage, StringFormat='{0:P1}'}" />
                                             <Label Grid.Column="5" Text="{Binding TotalDaysReserved}" />
-                                            <Label Grid.Column="6" Text="{Binding CabinUsePercentage, StringFormat='{0:P}'}" />
+                                            <Label Grid.Column="6" Text="{Binding CabinUsePercentage, StringFormat='{0:P1}'}" />
                                         </Grid>
                                     </ViewCell>
                                 </DataTemplate>
@@ -231,7 +231,6 @@
                             Grid.Column="3"
                             FontAttributes="Bold"
                             Text="Used amount" />
-
                         <Label
                             Grid.Column="4"
                             FontAttributes="Bold"
@@ -246,35 +245,40 @@
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Frame Margin="10,0,0,0" WidthRequest="850">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="ServiceReportingActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
+                        <ListView x:Name="ServiceReportingListView" HeightRequest="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Margin="10,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding ServiceId}" />
+                                            <Label Grid.Column="1" Text="{Binding ServiceName}" />
+                                            <Label Grid.Column="2" Text="{Binding ServicePrice, StringFormat='{0:C}'}" />
+                                            <Label Grid.Column="3" Text="{Binding ServiceCount}" />
+                                            <Label Grid.Column="4" Text="{Binding ServiceAverageCountIfSelected, StringFormat='{0:F1}'}" />
+                                            <Label Grid.Column="5" Text="{Binding ServicePercentageCountOfAllServices, StringFormat='{0:P1}'}" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-                    <ListView x:Name="ServiceReportingListView" HeightRequest="200">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Grid Margin="10,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="200" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding ServiceId}" />
-                                        <Label Grid.Column="1" Text="{Binding ServiceName}" />
-                                        <Label Grid.Column="2" Text="{Binding ServicePrice}" />
-                                        <Label Grid.Column="3" Text="{Binding ServiceCount}" />
-                                        <Label Grid.Column="3" Text="{Binding ServiceAverageCountPerReservation}" />
-                                        <Label Grid.Column="4" Text="{Binding ServicePercentageCountOfAllServices}" />
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
+                        </ListView>
+                    </StackLayout>
                 </Frame>
             </HorizontalStackLayout>
 

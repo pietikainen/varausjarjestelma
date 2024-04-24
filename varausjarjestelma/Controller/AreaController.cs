@@ -95,11 +95,11 @@ namespace varausjarjestelma.Controller
                 switch (option)
                 {
                     case "modify":
-                        optionText = @"UPDATE alue SET nimi = @nimi, alue_id = @id";
+                        optionText = @"UPDATE alue SET nimi = @nimi where alue_id = @id";
                         break;
 
                     default:
-                        optionText = @"INSERT INTO (nimi)
+                        optionText = @"INSERT INTO alue (nimi)
                                         VALUES (@nimi)";
                         break;
                 }
