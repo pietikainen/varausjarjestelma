@@ -30,7 +30,7 @@
             <Label
                 x:Name="cabinIdLabel"
                 IsVisible="False"
-                Text="Customer ID:" />
+                Text="Cabin ID:" />
             <Entry
                 x:Name="cabinIdEntry"
                 IsReadOnly="True"

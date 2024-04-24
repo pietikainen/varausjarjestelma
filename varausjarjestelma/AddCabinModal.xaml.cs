@@ -24,6 +24,8 @@ public partial class AddCabinModal : ContentPage
         cabinIdLabel.IsVisible = true;
         areaIdEntry.IsVisible = true;
         areaIdLabel.IsVisible = true;
+        cabinIdEntry.IsVisible = false;
+        areaIdEntry.IsVisible = false;
     }
     private async void addCabinButton_Clicked(object sender, EventArgs e)
     {
