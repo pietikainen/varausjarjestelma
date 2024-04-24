@@ -16,6 +16,9 @@ public partial class Cabin : ContentPage
 
     private async void GetAllCabinData()
     {
+        ActivityIndicator.IsRunning = true;
+        ActivityIndicator.IsVisible = true;
+
         try
         {     
             var cabins = await CabinController.GetAllCabinDataAsync();
@@ -25,9 +28,28 @@ public partial class Cabin : ContentPage
         {
             System.Diagnostics.Debug.WriteLine("Virhe ladattaessa mökkitietoja: " + ex.Message);
         }
+
+        ActivityIndicator.IsRunning = false;
+        ActivityIndicator.IsVisible = false;
     }
 
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var keyword = SearchCabinEntry.Text;
 
+        var allCabins = await CabinController.GetAllCabinDataAsync();
+
+        if (string.IsNullOrEmpty(keyword))
+        {
+            CabinListView.ItemsSource = allCabins;
+        }
+        else
+        {
+            var filteredCabins = allCabins.Where(cabin => cabin.CabinName.ToLower().Contains(keyword.ToLower()));
+            CabinListView.ItemsSource = filteredCabins;
+        }
+
+    }
     private async void AddCabinButton_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushModalAsync(new AddCabinModal());
@@ -56,7 +78,7 @@ public partial class Cabin : ContentPage
     }
     private async Task RefreshListView()
     {
-        CabinListView.ItemsSource = await CustomerController.GetAllCustomerDataAsync();
+        CabinListView.ItemsSource = await CabinController.GetAllCabinDataAsync();
     }
 
 }

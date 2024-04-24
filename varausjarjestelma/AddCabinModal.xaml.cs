@@ -5,9 +5,14 @@ namespace varausjarjestelma;
 
 public partial class AddCabinModal : ContentPage
 {
+
+    AreaController areaController = new AreaController();
+    List<AreaData>? areas;
+
     public AddCabinModal()
     {
         InitializeComponent();
+        InitializeAreaPicker();
     }
     public AddCabinModal(CabinData cabin)
     {
@@ -19,52 +24,67 @@ public partial class AddCabinModal : ContentPage
         cabinDescriptionEntry.Text = cabin.Description;
         cabinBedsEntry.Text = cabin.Beds.ToString();
         cabinPostalCodeEntry.Text = cabin.PostalCode;
-        cabinPriceEntry.Text = cabin.Price.ToString(); ;
+        cabinPriceEntry.Text = cabin.Price.ToString();
+        AreaIdLabelHidden.Text = cabin.AreaId.ToString();
+        
+        AreaPicker.IsVisible = false;
+
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
-        areaIdEntry.IsVisible = true;
-        areaIdLabel.IsVisible = true;
     }
-    private async void addCabinButton_Clicked(object sender, EventArgs e)
+    private async void InitializeAreaPicker()
     {
-        Debug.WriteLine("CabinFormSubmitButton_Clicked");
-        var formDataisValid = await ValidateFormData();
-        if (formDataisValid)
+        try
         {
-            if (cabinIdEntry.IsVisible)
+            areas = await AreaController.GetAllAreaDataAsync();
+            foreach (AreaData area in areas)
             {
-                CabinSaveButton_Clicked (sender, e);
-            }
-            else
-            {
-                CabinSaveButton_Clicked(sender, e);
+                AreaPicker.Items.Add(area.Name);
             }
         }
-        else
+        catch (Exception ex)
         {
-            Debug.WriteLine("Form data is not valid.");
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    private async void AreaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            if (AreaPicker.SelectedIndex != -1)
+            {
+                string selectedArea = AreaPicker.SelectedItem.ToString();
+                int selectedAreaId = 0;
+
+                if (areas != null)
+                {
+                    foreach (AreaData area in areas)
+                    {
+                        if (area.Name == selectedArea)
+                        {
+                            selectedAreaId = area.AreaId;
+                            AreaIdLabelHidden.Text = selectedAreaId.ToString();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
         }
 
-        //var cabinName = cabinNameEntry.Text;
-        //var cabinAddress = cabinAddressEntry.Text;
-        //var cabinCity = cabinCityEntry.Text;
-        //var cabinPostalCode = cabinPostalCodeEntry.Text;
-        //var cabinBeds = cabinBedsEntry.Text;
-        //var cabinFeatures = cabinFeaturesEntry.Text;
-        //var cabinDescription = cabinDescriptionEntry.Text;
-        //var cabinPrice = cabinPriceEntry.Text;
-
-        //var confirmationMessage = $"Name: {cabinName}\nAddress: " +
-        //$"{cabinAddress}\nPostal Code: {cabinPostalCode}\nCity: {cabinCity}\nBeds: " +
-        //$"{cabinBeds}\nFeatures: {cabinFeatures}\nDescription: {cabinDescription}\nPrice: " +
-        //$"{cabinPrice}\n";
-        //var isAccepted = await DisplayAlert("Confirm cabin information", confirmationMessage, "Yes", "No");
 
     }
 
     private async void CabinSaveButton_Clicked(object sender, EventArgs e)
     {
+        Debug.WriteLine("CustomerModifyButtonClicked");
 
+        var cabinAreaId = AreaIdLabelHidden.Text;
+        Debug.WriteLine("AreaIDLabelHGidden: " + cabinAreaId);
         var cabinName = cabinNameEntry.Text;
         var cabinAddress = cabinAddressEntry.Text;
         var cabinCity = cabinCityEntry.Text;
@@ -73,6 +93,7 @@ public partial class AddCabinModal : ContentPage
         var cabinFeatures = cabinFeaturesEntry.Text;
         var cabinDescription = cabinDescriptionEntry.Text;
         var cabinPrice = cabinPriceEntry.Text;
+        Debug.WriteLine("Populated vars in modal");
 
 
         var confirmationMessage = $"Cabin name: {cabinName} {cabinAddress}\nAddress: {cabinAddress}\n" +
@@ -82,10 +103,16 @@ public partial class AddCabinModal : ContentPage
 
         try
         {
+            Debug.WriteLine("Inside try: Trying to insert cabin to database");
+
             if (isAccepted)
             {
+
+                Debug.WriteLine("Inside if isAccepted: Trying to insert cabin to database");
                 var cabin = new varausjarjestelma.Database.Cabin
-                {
+                {                  
+
+                    alue_id = int.Parse(cabinAreaId),
                     mokkinimi = cabinName,
                     katuosoite = cabinAddress,
                     postinro = cabinPostalCode,
@@ -95,6 +122,15 @@ public partial class AddCabinModal : ContentPage
                     hinta = int.Parse(cabinPrice)
 
                 };
+                Debug.WriteLine("class instance created");
+
+                if (cabinIdEntry.IsVisible)
+                {
+                    cabin.mokki_id = int.Parse(cabinIdEntry.Text);
+                }
+                Debug.WriteLine("After if id entry statement");
+
+                Debug.WriteLine("await PostalCodeController.InsertPostalCodeAsync(cityData)");
 
                 var cityData = new varausjarjestelma.Database.PostalCode
                 {
@@ -102,7 +138,19 @@ public partial class AddCabinModal : ContentPage
                     toimipaikka = cabinCity
                 };
                 await PostalCodeController.InsertPostalCodeAsync(cityData);
-                await CabinController.InsertAndModifyCabinAsync(cabin, "add");
+
+
+                if (cabinIdEntry.IsVisible)
+                {
+                    cabin.mokki_id = int.Parse(cabinIdEntry.Text);
+                    Debug.WriteLine("await CabinController.InsertAndModifyCabinAsync(cabin, modify)");
+
+                    await CabinController.InsertAndModifyCabinAsync(cabin, "modify");
+                }
+                else
+                {
+                    await CabinController.InsertAndModifyCabinAsync(cabin, "add");
+                }
                 ResetCabinForm();
                 await Navigation.PopModalAsync();
             }
@@ -114,6 +162,8 @@ public partial class AddCabinModal : ContentPage
     }
     private async void CustomerModifyButtonClicked(object sender, EventArgs e)
     {
+        Debug.WriteLine("CustomerModifyButtonClicked");
+        var cabinAreaId = AreaIdLabelHidden.Text;
         var cabinId = cabinIdEntry.Text;
         var cabinName = cabinNameEntry.Text;
         var cabinBeds  = cabinBedsEntry.Text;
@@ -123,15 +173,17 @@ public partial class AddCabinModal : ContentPage
         var cabinDescription = cabinDescriptionEntry.Text;
         var cabinCity = cabinCityEntry.Text;
         var cabinPrice = cabinPriceEntry.Text;
-
+        Debug.WriteLine("Populated vars in modal");
         var confirmationMessage = $"Cabin Id: {cabinId}\nCabin name: {cabinName}\nAddress {cabinAddress}\nPostal Code: {cabinpostalCode}\n" +
             $"City: {cabinCity}\nBeds: {cabinBeds}\nFeatures: {cabinFeatures}\nDescription: {cabinDescription}\nPrice: {cabinPrice}";
         var isAccepted = await DisplayAlert("Confirm modification", confirmationMessage, "Yes", "No");
 
         if (isAccepted)
         {
+            Debug.WriteLine("Inside try: Trying to insert cabin to database");
             var cabin = new varausjarjestelma.Database.Cabin
             {
+                alue_id = int.Parse(cabinAreaId),
                 mokki_id = int.Parse(cabinId),
                 mokkinimi = cabinNameEntry.Text,
                 henkilomaara = int.Parse(cabinBedsEntry.Text),
@@ -142,14 +194,7 @@ public partial class AddCabinModal : ContentPage
                 hinta = int.Parse(cabinPriceEntry.Text),
                 
             };
-
-            var cityData = new varausjarjestelma.Database.PostalCode
-            {
-                postinro = cabinPostalCodeEntry.Text,
-                toimipaikka = cabinCityEntry.Text
-            };
-
-            await PostalCodeController.InsertPostalCodeAsync(cityData);
+            Debug.WriteLine("await CabinController.InsertAndModifyCabinAsync(cabin, modify)");
             await CabinController.InsertAndModifyCabinAsync(cabin, "modify");
             ResetCabinForm();
             await Navigation.PopModalAsync();

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.AddCabinModal"
-             Title="AddCabinModal"
-             MaximumHeightRequest="1000"
-             MaximumWidthRequest="400">
+<ContentPage
+    x:Class="varausjarjestelma.AddCabinModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="AddCabinModal"
+    MaximumHeightRequest="1000"
+    MaximumWidthRequest="400">
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="0,0,0,10" />
@@ -30,35 +31,44 @@
             <Label
                 x:Name="cabinIdLabel"
                 IsVisible="False"
-                Text="Customer ID:" />
+                Text="Cabin ID:" />
             <Entry
                 x:Name="cabinIdEntry"
                 IsReadOnly="True"
                 IsVisible="False" />
-            <Label
-                x:Name="areaIdLabel"
-                IsVisible="False"
-                Text="Area ID:" />
-            <Entry
-                x:Name="areaIdEntry"
-                IsReadOnly="True"
-                IsVisible="False" />
+
+            <Label x:Name="AreaPickerLabel" Text="Area:" />
+            <Picker
+                x:Name="AreaPicker"
+                HorizontalOptions="Start"
+                SelectedIndexChanged="AreaPicker_SelectedIndexChanged"
+                WidthRequest="150" />
+            <Label x:Name="AreaIdLabelHidden" IsVisible="False" />
+
             <Label Text="Name:" />
             <Entry x:Name="cabinNameEntry" />
+            
             <Label Text="Address:" />
             <Entry x:Name="cabinAddressEntry" />
+            
             <Label Text="Postal Code" />
             <Entry x:Name="cabinPostalCodeEntry" Unfocused="cabinPostalCodeEntryUnfocused" />
+            
             <Label Text="City" />
             <Entry x:Name="cabinCityEntry" />
+            
             <Label Text="Beds: " />
             <Entry x:Name="cabinBedsEntry" />
+            
             <Label Text="Features" />
-            <Entry x:Name="cabinFeaturesEntry" HeightRequest="100"/>
+            <Entry x:Name="cabinFeaturesEntry" HeightRequest="100" />
+            
             <Label Text="Description: " />
             <Entry x:Name="cabinDescriptionEntry" HeightRequest="100" />
+            
             <Label Text="Price: " />
             <Entry x:Name="cabinPriceEntry" />
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -70,13 +80,13 @@
                 <Button
                     x:Name="cabinSaveButton"
                     Grid.Column="0"
-                    Text="Save" Clicked="CabinSaveButton_Clicked"
-                    />
+                    Clicked="CabinSaveButton_Clicked"
+                    Text="Save" />
                 <Button
                     x:Name="cabinCloseButton"
                     Grid.Column="1"
-                    Text="Close" Clicked="cabinCloseButton_Clicked"
-                    />
+                    Clicked="cabinCloseButton_Clicked"
+                    Text="Close" />
             </Grid>
         </VerticalStackLayout>
     </Frame>
