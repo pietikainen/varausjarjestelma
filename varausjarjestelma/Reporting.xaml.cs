@@ -39,28 +39,50 @@ public partial class Reporting : ContentPage
 
     private async void GenerateReportButtonClicked(object sender, EventArgs eventArgs)
     {
+        // Enable loading indicators
+        CabinReportingActivityIndicator.IsRunning = true;
+        CabinReportingActivityIndicator.IsVisible = true;
+        ServiceReportingActivityIndicator.IsRunning = true;
+        ServiceReportingActivityIndicator.IsVisible = true;
 
-
+        // Do the work
         var area = AreaPicker.SelectedItem.ToString();
-
-
-        Debug.WriteLine("Area: " + area);
-
         var cabinReports = await ReportingController.GetCabinReportingDataByAreaAsync(area, StartDate.Date, EndDate.Date);
+        var serviceReports = await ReportingController.GetServiceReportingDataByAreaAsync(area, StartDate.Date, EndDate.Date);
 
-
-        double CabinTotalRevenueSum = 0;
+        double cabinTotalRevenueSum = 0;
         if (cabinReports != null)
         {
             CabinReportingListViewResult.ItemsSource = cabinReports;
 
             foreach (CabinReporting cabinReport in cabinReports)
             {
-                CabinTotalRevenueSum += cabinReport.CabinTotalRevenue;
+                cabinTotalRevenueSum += cabinReport.CabinTotalRevenue;
             }
         }
 
-        CabinTotalRevenueLabel.Text = "Total revenue: " + CabinTotalRevenueSum + "€";
+        double serviceTotalRevenueSum = 0;
+        if (serviceReports != null)
+        {
+            ServiceReportingListView.ItemsSource = serviceReports;
+
+            foreach (ServiceReporting serviceReporting in serviceReports)
+            {
+                serviceTotalRevenueSum += serviceReporting.ServiceTotalRevenue;
+            }
+        }
+
+        CabinTotalRevenueLabel.Text = "Total revenue: " + cabinTotalRevenueSum + "€";
+        ServiceTotalRevenueLabel.Text = "Total revenue: " + serviceTotalRevenueSum + "€";
+
+
+        // Disable loading indicators
+        CabinReportingActivityIndicator.IsRunning = false;
+        CabinReportingActivityIndicator.IsVisible = false;
+        ServiceReportingActivityIndicator.IsRunning = false;
+        ServiceReportingActivityIndicator.IsVisible = false;
+
+
     }
 
     private async void PopulateCabinReport(string area, DateTime start, DateTime end)
@@ -73,13 +95,22 @@ public partial class Reporting : ContentPage
 
         CabinReportingActivityIndicator.IsRunning = false;
         CabinReportingActivityIndicator.IsVisible = false;
+
     }
 
-    private async void ClearReportsButtonClicked(object sender, EventArgs eventArgs) { }
-    private async void ClearPage()
+    private void ClearReportsButtonClicked(object sender, EventArgs eventArgs) {
+        ClearPage();
+    }
+    private void ClearPage()
     {
         AreaPicker.SelectedIndex = 0;
         CabinReportingListViewResult.ItemsSource = null;
         ServiceReportingListView.ItemsSource = null;
+
+        EndDate.Date = DateTime.Now;
+        StartDate.Date = DateTime.Now;
+
+        CabinTotalRevenueLabel.Text = "";
+        ServiceTotalRevenueLabel.Text = "";
     }
 }
