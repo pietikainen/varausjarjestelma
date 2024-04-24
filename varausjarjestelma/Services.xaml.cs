@@ -18,8 +18,32 @@ public partial class Services : ContentPage
     {
         await Navigation.PushModalAsync(new AddServiceModal());
     }
+
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var keyword = SearchServicesEntry.Text;
+
+        var allServices = await ServiceController.GetAllServiceDataAsync();
+
+        if (string.IsNullOrEmpty(keyword))
+        {
+            ServicesListView.ItemsSource = allServices;
+        }
+        else
+        {
+            var filteredServices = allServices.Where(service => service.Name.ToLower().Contains(keyword.ToLower()));
+            ServicesListView.ItemsSource = filteredServices;
+        }
+
+    }
+
+
+
     private async void GetAllServiceData()
     {
+        ActivityIndicator.IsRunning = true;
+        ActivityIndicator.IsVisible = true;
+
         try
         {
             var services = await ServiceController.GetAllServiceDataAsync();
@@ -29,6 +53,9 @@ public partial class Services : ContentPage
         {
             System.Diagnostics.Debug.WriteLine("Virhe ladattaessa palvelun tietoja: " + ex.Message);
         }
+
+        ActivityIndicator.IsRunning = false;
+        ActivityIndicator.IsVisible = false;
     }
     private async void ServicesListView_ItemTapped(object sender, ItemTappedEventArgs e)
     {

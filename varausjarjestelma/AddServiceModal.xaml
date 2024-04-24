@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.AddServiceModal"
-             Title="AddServiceModal"
-             MaximumHeightRequest="800"
-             MaximumWidthRequest="400" >
-    
+<ContentPage
+    x:Class="varausjarjestelma.AddServiceModal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="AddServiceModal"
+    MaximumHeightRequest="800"
+    MaximumWidthRequest="400">
+
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="0,0,0,10" />
@@ -29,6 +30,10 @@
                 Text="Add new service"
                 VerticalOptions="Center" />
 
+            <Label x:Name="areaLabel" Text="Area:" />
+            <Picker x:Name="AreaPicker" SelectedIndexChanged="AreaPicker_SelectedIndexChanged" />
+            <Label x:Name="AreaIdLabelHidden" IsVisible="False" />
+
             <Label
                 x:Name="serviceIdLabel"
                 IsVisible="False"
@@ -51,6 +56,8 @@
             <Entry x:Name="serviceTypeEntry" />
             <Label Text="Price:" />
             <Entry x:Name="servicePriceEntry" />
+            <Label Text="VAT:" />
+            <Entry x:Name="serviceVatEntry" />
             <Label Text="Description:" />
             <Entry x:Name="serviceDescriptionEntry" HeightRequest="100" />
 
@@ -64,13 +71,13 @@
                 </Grid.ColumnDefinitions>
                 <Button
                     x:Name="SaveServiceButton"
-                    Text="Save"
-                    Clicked="SaveServiceButton_Clicked"/>
+                    Clicked="SaveServiceButton_Clicked"
+                    Text="Save" />
                 <Button
                     x:Name="CancelServiceButton"
                     Grid.Column="1"
-                    Text="Close" 
-                    Clicked="CancelServiceButton_Clicked"/>
+                    Clicked="CancelServiceButton_Clicked"
+                    Text="Close" />
             </Grid>
         </VerticalStackLayout>
     </Frame>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Services"
-              BackgroundColor="#fafafa">
+<ContentPage
+    x:Class="varausjarjestelma.Services"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#fafafa">
     <ContentPage.Resources>
         <Style x:Key="buttonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#519EDA" />
@@ -41,26 +42,28 @@
 
         <VerticalStackLayout>
             <Label
-             Margin="10,10,0,30"
-             FontAttributes="Bold"
-             FontSize="Large"
-             HorizontalOptions="Start"
-             Text="Service management" />
+                Margin="10,10,0,30"
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Start"
+                Text="Service management" />
             <HorizontalStackLayout>
 
                 <Button
-                x:Name="AddServicesButton"
-                Margin="10,10,0,10"
-                Clicked="AddServicesButton_Clicked" 
-                Style="{StaticResource buttonStyle}"
-                Text="+ Add Service" />
+                    x:Name="AddServicesButton"
+                    Margin="10,10,0,10"
+                    Clicked="AddServicesButton_Clicked"
+                    Style="{StaticResource buttonStyle}"
+                    Text="+ Add Service" />
 
                 <SearchBar
-                x:Name="SearchServicesEntry"
-                Margin="780,10,0,10"
-                HorizontalOptions="EndAndExpand"
-                MinimumWidthRequest="300"
-                Placeholder="Search..." />
+                    x:Name="SearchServicesEntry"
+                    Margin="780,10,0,10"
+                    HorizontalOptions="EndAndExpand"
+                    MinimumWidthRequest="300"
+                    Placeholder="Search..."
+                    TextChanged="SearchBar_TextChanged" />
+
 
 
 
@@ -68,74 +71,97 @@
 
             <HorizontalStackLayout>
                 <Frame
-                Margin="10,0,0,0"
-                BackgroundColor="#f7f7f7"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="1200">
+                    Margin="10,0,0,0"
+                    BackgroundColor="#f7f7f7"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
                     <Grid Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200" />
-                            <ColumnDefinition Width="50" />
-                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="200" />
-
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="500" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label FontAttributes="Bold" Text="Name" />
- 
+
+                        <Label FontAttributes="Bold" Text="ID" />
                         <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        Text="Price" />
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Area" />
                         <Label
-                        Grid.Column="2"
-                        FontAttributes="Bold"
-                        Text="Vat" />
-   
+                            Grid.Column="2"
+                            FontAttributes="Bold"
+                            Text="Name" />
+                        <Label
+                            Grid.Column="3"
+                            FontAttributes="Bold"
+                            Text="Price" />
+                        <Label
+                            Grid.Column="4"
+                            FontAttributes="Bold"
+                            Text="Vat %" />
+                        <Label
+                            Grid.Column="5"
+                            FontAttributes="Bold"
+                            Text="Description" />
+                        <Label
+                            Grid.Column="6"
+                            FontAttributes="Bold"
+                            Text="Category" />
                     </Grid>
                 </Frame>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Frame
-                Margin="10,0,0,0"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="1200"
-                    MinimumHeightRequest="1000">
+                    Margin="10,0,0,0"
+                    HeightRequest="600"
+                    HorizontalOptions="Center"
+                    MinimumWidthRequest="1200">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="ActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
 
-                    <ListView x:Name="ServicesListView" ItemTapped="ServicesListView_ItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Grid Margin="10,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="200" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding Name}" />
-                                        
-                                        <Label Grid.Column="1" Text="{Binding Price}" />
-                                        <Label Grid.Column="2" Text="{Binding Vat}" />
+                        <ListView x:Name="ServicesListView" ItemTapped="ServicesListView_ItemTapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Margin="10,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="60" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="500" />
+                                                <ColumnDefinition Width="*" />
 
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding ServiceId}" />
+                                            <Label Grid.Column="1" Text="{Binding AreaName}" />
+                                            <Label Grid.Column="2" Text="{Binding Name}" />
+                                            <Label Grid.Column="3" Text="{Binding Price}" />
+                                            <Label Grid.Column="4" Text="{Binding Vat}" />
+                                            <Label Grid.Column="5" Text="{Binding Description}" />
+                                            <Label Grid.Column="6" Text="{Binding Category}" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-                    </ListView>
+                        </ListView>
+                    </StackLayout>
                 </Frame>
 
             </HorizontalStackLayout>

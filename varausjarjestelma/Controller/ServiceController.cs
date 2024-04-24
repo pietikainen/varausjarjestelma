@@ -18,7 +18,22 @@ namespace varausjarjestelma.Controller
 
             await connection.OpenAsync();
 
-            using (var command = new MySqlCommand("SELECT * FROM palvelu;", connection))
+            using (var command = new MySqlCommand(@"SELECT
+                        p.palvelu_id,
+                        p.alue_id,
+                        p.nimi,
+                        p.tyyppi,
+                        p.kuvaus,
+                        p.hinta,
+                        p.alv,
+                        a.nimi AS alue_nimi
+                    FROM
+                        palvelu p
+                    JOIN
+                        alue a ON p.alue_id = a.alue_id
+                    ORDER BY
+                        p.palvelu_id;
+                    ", connection))
             using (var reader = await command.ExecuteReaderAsync())
             {
                 List<ServiceData> serviceDataList = new List<ServiceData>();
@@ -29,11 +44,14 @@ namespace varausjarjestelma.Controller
                     {
                         ServiceId = reader.GetInt32("palvelu_id"),
                         AreaId = reader.GetInt32("alue_id"),
+                        AreaName = reader.GetString("alue_nimi"),
                         Name = reader.GetString("nimi"),
                         Type = reader.GetInt32("tyyppi"),
                         Description = reader.GetString("kuvaus"),
                         Price = reader.GetDouble("hinta"),
-                        Vat = reader.GetDouble("alv")
+                        Vat = reader.GetDouble("alv"),
+                        Category = reader.GetInt32("tyyppi")
+
                     };
                     serviceDataList.Add(serviceData);
                 }
@@ -132,20 +150,21 @@ namespace varausjarjestelma.Controller
             MySqlConnection connection = MySqlController.GetConnection();
             await connection.OpenAsync();
             string optionText;
+            Debug.WriteLine("service contents: " + "palvid: " + service.palvelu_id + " " + "alue_id" + service.alue_id + " nimi:  " + service.nimi + " typpii:  " + service.tyyppi + " hinta:" + service.hinta + " alv: " + service.alv + " kuvaus: " + service.kuvaus);
+            Debug.WriteLine("MYSQL optiontext" + option);
             try
             {
-
                 switch (option)
                 {
                     case "modify":
-                        optionText = @"UPDATE service SET nimi = @nimi, tyyppi = @tyyppi, 
-                                        hinta = @hinta, kuvaus = @kuvaus
+                        optionText = @"UPDATE palvelu SET alue_id = @alue_id, nimi = @nimi, tyyppi = @tyyppi, 
+                                        hinta = @hinta, alv = @alv, kuvaus = @kuvaus
                                          WHERE palvelu_id = @id";
                         break;
 
                     default: // add
-                        optionText = @"INSERT INTO palvelu (nimi, tyyppi, hinta, kuvaus)
-                                        VALUES (@nimi, @tyyppi, @hinta, @kuvaus)";
+                        optionText = @"INSERT INTO palvelu (alue_id, nimi, tyyppi, hinta, alv, kuvaus)
+                                        VALUES (@alue_id, @nimi, @tyyppi, @hinta, @alv, @kuvaus)";
                         break;
                 }
 
@@ -155,10 +174,13 @@ namespace varausjarjestelma.Controller
                     {
                         command.Parameters.AddWithValue("@id", service.palvelu_id);
                     }
+                    command.Parameters.AddWithValue("@alue_id", service.alue_id);
                     command.Parameters.AddWithValue("@nimi", service.nimi);
                     command.Parameters.AddWithValue("@tyyppi", service.tyyppi);
                     command.Parameters.AddWithValue("@hinta", service.hinta);
+                    command.Parameters.AddWithValue("@alv", service.alv);
                     command.Parameters.AddWithValue("@kuvaus", service.kuvaus);
+                    Debug.WriteLine("command: " + command.ToString());
                     await command.ExecuteNonQueryAsync();
                     return true;
                 }
@@ -233,10 +255,12 @@ namespace varausjarjestelma.Controller
     {
         public int ServiceId { get; set; }
         public int AreaId { get; set; }
+        public string AreaName { get; set; }
         public string Name { get; set; }
         public int Type { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
         public double Vat { get; set; }
+        public int Category { get; set; }
     }
 }
