@@ -6,44 +6,53 @@ using System.Diagnostics;
 using varausjarjestelma.Database;
 using Microsoft.Extensions.Options;
 using System.ComponentModel;
+using Microsoft.Maui.Controls;
 
 
 namespace varausjarjestelma
 {
     public partial class MainPage : ContentPage
     {
+        // Viittaus AppShell-luokan instanssiin
+
         public MainPage()
         {
             InitializeComponent();
-
         }
 
-       private async void NavigateToAreaManagementButtonClicked(object sender, EventArgs e)
-        {
-              await Navigation.PushAsync(new AreaManagement());
-        }
-        private async void NavigateToBookingButtonClicked(object sender, EventArgs e)
-        {
-             await Navigation.PushAsync(new Booking());
-        }
-        private async void NavigateToInvoiceButtonClicked(object sender, EventArgs e)
-        {
-            await  Navigation.PushAsync(new Invoice());
+        private async void signInButton_Clicked(object sender, EventArgs e)
+        {  
+            string username = usernameEntry.Text;
+            string password = passwordEntry.Text;
+            if (username == "testuser" && password == "salasana")
+            {
+                MessagingCenter.Send<MainPage>(this, "EnableMenu");
+                await DisplayAlert("Login successful", "Welcome to Mökkimaster!", "ok");
+                usernameEntry.Text = "";
+                passwordEntry.Text = "";
+                usernameEntry.IsVisible = false;
+                passwordEntry.IsVisible = false;
+                logOutButton.IsVisible = true;
+                logInLabel.IsVisible = false;
+                welcomeLabels.IsVisible = true;
+                signInButton.IsVisible = false;
+            }
+            else
+            {
+                await DisplayAlert("Login failed", "incorrect username or password.", "ok");
+            }
         }
 
-        private async void NavigateToCustomerButtonClicked(object sender, EventArgs e)
+        private void logOutButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Customer());
-        }
-
-        private async void NavigateToReportingButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Reporting());
-        }
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Management());
+            signInButton.IsVisible = false;
+            usernameEntry.IsVisible = true;
+            passwordEntry.IsVisible = true;
+            signInButton.IsVisible = true;
+            logOutButton.IsVisible = false;
+            welcomeLabels.IsVisible = false;
+            logInLabel.IsVisible= true;
+            MessagingCenter.Send<MainPage>(this, "LockMenu");
         }
     }
 }

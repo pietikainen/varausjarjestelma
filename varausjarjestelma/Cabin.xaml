@@ -69,7 +69,7 @@
                     TextChanged="SearchBar_TextChanged" />
 
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
+            <!--<HorizontalStackLayout>
                 <Frame
                     Margin="10,0,0,0"
                     BackgroundColor="#f7f7f7"
@@ -181,6 +181,38 @@
                     </StackLayout>
                 </Frame>
 
+            </HorizontalStackLayout>-->
+            <HorizontalStackLayout>
+                <Frame
+     Margin="10,0,0,0"
+     BackgroundColor="#f7f7f7"
+     HorizontalOptions="Center"
+     MinimumWidthRequest="1200">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="200" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Price" FontAttributes="Bold" />
+                        <Label Grid.Column="2" Text="Name" FontAttributes="Bold" />
+                        <Label Grid.Column="3" Text="Address" FontAttributes="Bold" />
+                        <Label Grid.Column="4" Text="Postal code" FontAttributes="Bold" />
+                        <Label Grid.Column="5" Text="Beds" FontAttributes="Bold" />
+                        <Label Grid.Column="6" Text="Features" FontAttributes="Bold" />
+                    </Grid>
+                </Frame>
+            </HorizontalStackLayout>
             </HorizontalStackLayout>
         </VerticalStackLayout>
 

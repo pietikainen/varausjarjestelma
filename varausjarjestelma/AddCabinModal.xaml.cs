@@ -31,6 +31,8 @@ public partial class AddCabinModal : ContentPage
 
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
+        areaIdEntry.IsVisible = true;
+        areaIdLabel.IsVisible = true;
     }
     private async void InitializeAreaPicker()
     {

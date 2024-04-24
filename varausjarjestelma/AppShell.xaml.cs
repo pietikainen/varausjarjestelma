@@ -2,14 +2,36 @@
 {
     public partial class AppShell : Shell
     {
+        // AppShell-luokan konstruktori
         public AppShell()
         {
             InitializeComponent();
+            MessagingCenter.Subscribe<MainPage>(this, "EnableMenu", (sender) => {
+            menubarCustomer.IsEnabled = true;
+            menubarBooking.IsEnabled = true;
+            menubarFile.IsEnabled = true;
+            menubarHelp.IsEnabled = true;
+            menubarInvoice.IsEnabled = true;
+            menubarManagement.IsEnabled = true;
+            menubarReporting.IsEnabled = true;      
+            });
+            MessagingCenter.Subscribe<MainPage>(this, "LockMenu", (sender) =>
+            {
+                menubarCustomer.IsEnabled = false;
+                menubarBooking.IsEnabled = false;
+                menubarFile.IsEnabled = false;
+                menubarHelp.IsEnabled = false;
+                menubarInvoice.IsEnabled = false;
+                menubarManagement.IsEnabled = false;
+                menubarReporting.IsEnabled = false;
+            });
+
         }
-
-
-        // Navigation for menubar items
-
+        protected override void OnDisappearing()
+        {
+            MessagingCenter.Unsubscribe<MainPage>(this, "EnableMenu");
+            base.OnDisappearing();
+        }
         private async void RequestMainMenuPage(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//MainPage");
