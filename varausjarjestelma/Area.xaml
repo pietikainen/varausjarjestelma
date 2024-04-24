@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="varausjarjestelma.Area"
-              BackgroundColor="#fafafa">
+<ContentPage
+    x:Class="varausjarjestelma.Area"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#fafafa">
     <ContentPage.Resources>
         <Style x:Key="buttonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#519EDA" />
@@ -52,18 +53,19 @@
             <HorizontalStackLayout>
 
                 <Button
-                x:Name="AddAreaButton"
-                Margin="10,10,0,10"
-                Clicked="AddAreaButton_Clicked"
-                Style="{StaticResource buttonStyle}"
-                Text="+ Add Area" />
+                    x:Name="AddAreaButton"
+                    Margin="10,10,0,10"
+                    Clicked="AddAreaButton_Clicked"
+                    Style="{StaticResource buttonStyle}"
+                    Text="+ Add Area" />
 
                 <SearchBar
-                x:Name="SearchAreaEntry"
-                Margin="780,10,0,10"
-                HorizontalOptions="EndAndExpand"
-                MinimumWidthRequest="300"
-                Placeholder="Search..." />
+                    x:Name="SearchAreaEntry"
+                    Margin="280,10,0,10"
+                    HorizontalOptions="EndAndExpand"
+                    MinimumWidthRequest="300"
+                    Placeholder="Search..."
+                    TextChanged="SearchBar_TextChanged" />
 
 
 
@@ -71,10 +73,11 @@
 
             <HorizontalStackLayout>
                 <Frame
-                Margin="10,0,0,0"
-                BackgroundColor="#f7f7f7"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="1200">
+                    Margin="10,0,0,0"
+                    BackgroundColor="#f7f7f7"
+                    HorizontalOptions="Center"
+                    MaximumWidthRequest="700"
+                    MinimumWidthRequest="700">
                     <Grid Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -92,48 +95,55 @@
                         </Grid.RowDefinitions>
                         <Label FontAttributes="Bold" Text="ID" />
                         <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        Text="City" />
-    
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="Area name" />
+
                     </Grid>
                 </Frame>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
                 <Frame
-                Margin="10,0,0,0"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="1200">
+                    Margin="10,0,0,0"
+                    HorizontalOptions="Center"
+                    MaximumWidthRequest="700"
+                    MinimumWidthRequest="700">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="ActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
+                        <ListView x:Name="AreaListView" ItemTapped="AreaListView_ItemTapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Margin="10,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding AreaId}" />
+                                            <Label Grid.Column="1" Text="{Binding Name}" />
 
-                    <ListView x:Name="AreaListView" ItemTapped="AreaListView_ItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Grid Margin="10,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="200" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding AreaId}" />
-                                        <Label Grid.Column="1" Text="{Binding Name}" />
-                                        
 
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-                    </ListView>
+                        </ListView>
+
+                    </StackLayout>
                 </Frame>
-                
+
             </HorizontalStackLayout>
 
 

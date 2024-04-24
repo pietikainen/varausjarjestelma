@@ -12,10 +12,13 @@ public partial class AddAreaModal : ContentPage
     public AddAreaModal(AreaData area)
     {
         InitializeComponent();
+        areaId.IsVisible = true;
+
         areaIdEntry.Text = area.AreaId.ToString();
-        areaNameEntry.Text = area.Name;
         areaIdEntry.IsVisible = true;
+
         areaNameLabel.IsVisible = true;
+        areaNameEntry.Text = area.Name;
 
     }
     private async void addAreaButton_Clicked(object sender, EventArgs e)
@@ -41,6 +44,13 @@ public partial class AddAreaModal : ContentPage
             {
                nimi = areaName
             };
+
+            if (areaIdEntry.IsVisible)
+            {
+                area.alue_id = int.Parse(areaIdEntry.Text);
+                await AreaController.InsertAndModifyAreaAsync(area, "modify");
+            }
+            else
             await AreaController.InsertAndModifyAreaAsync(area, "add");
         }
         catch (Exception ex) 
