@@ -4,52 +4,30 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     HeightRequest="800"
-    WidthRequest="500">
-
-
+    WidthRequest="500" BackgroundImageSource="alpinecabin.png">
 
     <Grid>
-        <Image Aspect="Fill" Source="mokkitausta.png" />
+       
         <ScrollView>
-            <VerticalStackLayout Padding="30,0" Spacing="25">
+            <VerticalStackLayout>
                 <Image
                     Aspect="AspectFit"
                     HeightRequest="185"
                     SemanticProperties.Description="dot net bot in a race car number eight"
-                    Source="mokkilogo.png" />
-
-                <!--  nappijoka suorittaa navigoinnin  -->
-
-                <Button
-                    Clicked="NavigateToAreaManagementButtonClicked"
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Manage"
-                    WidthRequest="300" />
-                <Button
-                    Clicked="NavigateToBookingButtonClicked"
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Booking"
-                    WidthRequest="300" />
-                <Button
-                    Clicked="NavigateToInvoiceButtonClicked"
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Invoice"
-                    WidthRequest="300" />
-                <Button
-                    Clicked="NavigateToCustomerButtonClicked"
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Customer"
-                    WidthRequest="300" />
-                <Button
-                    Clicked="NavigateToReportingButtonClicked"
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Reporting"
-                    WidthRequest="300" />
-                <Button
-                    Clicked="Button_Clicked"            
-                    Style="{StaticResource DarkBrownButtonStyle}"
-                    Text="Management"
-                    WidthRequest="300" />
+                    Source="mokkimasterlogo.png" HorizontalOptions="Center"  Margin="0,50,0,0" />
+                <Label Text="MÖKKIMASTER" HorizontalOptions="Center" FontAttributes="Bold" FontFamily="Mongolian Baiti" TextColor="#519EDA" FontSize="Header"></Label>
+                <Label Text="Welcome" FontSize="Title" FontFamily="" HorizontalOptions="Center"></Label>
+                <Label Text="To use the Mökkimaster product family's cabin" 
+                       FontSize="Default" WidthRequest="300" FontFamily="" HorizontalOptions="Center"></Label>
+                <Label Text="and service reservation program." 
+                        FontSize="Default" WidthRequest="300" FontFamily="" Margin="100,5,0,0" HorizontalOptions="Center"></Label>
+                <StackLayout>
+                    <HorizontalStackLayout>
+                    </HorizontalStackLayout>
+                    <Entry x:Name="usernameEntry" Placeholder="Username" BackgroundColor="LightSlateGrey" Margin="0,60,0,12" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
+                    <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="LightSlateGrey" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
+                    <Button x:Name="signInButton" BackgroundColor="#519EDA" Clicked="signInButton_Clicked" Text="Sign In" WidthRequest="250" Margin="0,12,0,12"></Button>
+                </StackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

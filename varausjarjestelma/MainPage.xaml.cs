@@ -6,44 +6,35 @@ using System.Diagnostics;
 using varausjarjestelma.Database;
 using Microsoft.Extensions.Options;
 using System.ComponentModel;
+using Microsoft.Maui.Controls;
 
 
 namespace varausjarjestelma
 {
     public partial class MainPage : ContentPage
     {
+        // Viittaus AppShell-luokan instanssiin
+
         public MainPage()
         {
             InitializeComponent();
-
         }
 
-       private async void NavigateToAreaManagementButtonClicked(object sender, EventArgs e)
-        {
-              await Navigation.PushAsync(new AreaManagement());
-        }
-        private async void NavigateToBookingButtonClicked(object sender, EventArgs e)
-        {
-             await Navigation.PushAsync(new Booking());
-        }
-        private async void NavigateToInvoiceButtonClicked(object sender, EventArgs e)
-        {
-            await  Navigation.PushAsync(new Invoice());
-        }
-
-        private async void NavigateToCustomerButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Customer());
-        }
-
-        private async void NavigateToReportingButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Reporting());
-        }
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Management());
+        private async void signInButton_Clicked(object sender, EventArgs e)
+        {  
+            string username = usernameEntry.Text;
+            string password = passwordEntry.Text;
+            if (username == "testikayttaja" && password == "salasana")
+            {
+                MessagingCenter.Send<MainPage>(this, "EnableMenu");
+                await DisplayAlert("login successful", "welcome to mökkimaster!", "ok");
+                usernameEntry.Text = "";
+                passwordEntry.Text = "";
+            }
+            else
+            {
+                await DisplayAlert("login failed", "incorrect username or password.", "ok");
+            }
         }
     }
 }
