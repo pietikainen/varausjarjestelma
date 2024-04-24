@@ -65,7 +65,7 @@
                 MinimumWidthRequest="300"
                 Placeholder="Search..." />
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
+            <!--<HorizontalStackLayout>
                 <Frame
                 Margin="10,0,0,0"
                 HorizontalOptions="Start"
@@ -136,8 +136,78 @@
 
                 </Frame>
 
-            </HorizontalStackLayout>
+            </HorizontalStackLayout>-->
+            <HorizontalStackLayout>
+                <Frame
+     Margin="10,0,0,0"
+     BackgroundColor="#f7f7f7"
+     HorizontalOptions="Center"
+     MinimumWidthRequest="1200">
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="200" />
 
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Price" FontAttributes="Bold" />
+                        <Label Grid.Column="2" Text="Name" FontAttributes="Bold" />
+                        <Label Grid.Column="3" Text="Address" FontAttributes="Bold" />
+                        <Label Grid.Column="4" Text="Postal code" FontAttributes="Bold" />
+                        <Label Grid.Column="5" Text="Beds" FontAttributes="Bold" />
+                        <Label Grid.Column="6" Text="Features" FontAttributes="Bold" />
+                    </Grid>
+                </Frame>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Frame
+     Margin="10,0,0,0"
+     HorizontalOptions="Center"
+     MinimumWidthRequest="1200"
+         MinimumHeightRequest="1000">
+
+                    <ListView x:Name="CabinListView" ItemTapped="CabinListView_ItemTapped">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="10,0,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="200" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0" Text="{Binding CabinId}" />
+                                        <Label Grid.Column="1" Text="{Binding Price, StringFormat='{0:C}'}" />
+                                        <Label Grid.Column="2" Text="{Binding CabinName}" />
+                                        <Label Grid.Column="3" Text="{Binding Address}" />
+                                        <Label Grid.Column="4" Text="{Binding PostalCode}" />
+                                        <Label Grid.Column="5" Text="{Binding Beds}" />
+                                        <Label Grid.Column="6" Text="{Binding Features}" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+                </Frame>
+
+            </HorizontalStackLayout>
         </VerticalStackLayout>
 
     </ScrollView>
