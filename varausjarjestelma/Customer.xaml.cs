@@ -20,6 +20,10 @@ public partial class Customer : ContentPage
 
     private async void GetAllCustomersData()
     {
+
+
+
+
         try
         {
             var customers = await CustomerController.GetAllCustomerDataAsync();
@@ -49,8 +53,6 @@ public partial class Customer : ContentPage
         }
         else if (action == "Delete" && customer != null)
         {
-            var confirmationMessage = $"Name: {customer.FullName}\nAddress: {customer.Address}\nPostal Code: {customer.PostalCode}" +
-                $"\nPhone: {customer.Phone}\nEmail: {customer.Email}\n";
             var isAccepted = await DisplayAlert("Confirm deletion", "This deletion is permanent.", "Yes", "No");
 
             if (isAccepted && customer != null)
