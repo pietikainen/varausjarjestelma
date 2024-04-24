@@ -24,7 +24,7 @@ namespace varausjarjestelma
         {  
             string username = usernameEntry.Text;
             string password = passwordEntry.Text;
-            if (username == "testuser" && password == "salasana")
+            if (true)
             {
                 MessagingCenter.Send<MainPage>(this, "EnableMenu");
                 await DisplayAlert("Login successful", "Welcome to Mökkimaster!", "ok");

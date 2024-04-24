@@ -157,7 +157,7 @@
                             MinimumHeightRequest="700"
                             WidthRequest="640">
 
-                            <ScrollView BackgroundColor="Beige">
+                            <ScrollView BackgroundColor="LightSteelBlue">
                                 <StackLayout>
                                     <Grid
                                         x:Name="InvoiceGrid_HeaderPart"
@@ -197,13 +197,13 @@
                                             Margin="0,0,0,0"
                                             Aspect="AspectFit"
                                             HeightRequest="100"
-                                            Source="mokkilogo.png" />
+                                            Source="mokkimasterlogo.png" />
 
                                         <Label
                                             Grid.Row="2"
                                             HorizontalOptions="Center"
                                             Text="Village Newbies"
-                                            VerticalOptions="End" />
+                                            VerticalOptions="End" IsVisible="false" />
 
                                         <!--  Asiakkaan tiedot  -->
                                         <Label Grid.Row="4" Text="{Binding FullName}" />
