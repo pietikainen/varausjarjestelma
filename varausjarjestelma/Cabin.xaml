@@ -69,7 +69,7 @@
                     TextChanged="SearchBar_TextChanged" />
 
             </HorizontalStackLayout>
-            <!--<HorizontalStackLayout>
+            <HorizontalStackLayout>
                 <Frame
                     Margin="10,0,0,0"
                     BackgroundColor="#f7f7f7"
@@ -181,8 +181,8 @@
                     </StackLayout>
                 </Frame>
 
-            </HorizontalStackLayout>-->
-            <HorizontalStackLayout>
+            </HorizontalStackLayout>
+            <!--<HorizontalStackLayout>
                 <Frame
      Margin="10,0,0,0"
      BackgroundColor="#f7f7f7"
@@ -213,7 +213,7 @@
                     </Grid>
                 </Frame>
             </HorizontalStackLayout>
-            </HorizontalStackLayout>
+            </HorizontalStackLayout>-->
         </VerticalStackLayout>
 
     </ScrollView>

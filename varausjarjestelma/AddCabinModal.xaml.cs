@@ -31,8 +31,7 @@ public partial class AddCabinModal : ContentPage
 
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
-        areaIdEntry.IsVisible = true;
-        areaIdLabel.IsVisible = true;
+
     }
     private async void InitializeAreaPicker()
     {
@@ -83,7 +82,6 @@ public partial class AddCabinModal : ContentPage
 
     private async void CabinSaveButton_Clicked(object sender, EventArgs e)
     {
-        Debug.WriteLine("CustomerModifyButtonClicked");
 
         var cabinAreaId = AreaIdLabelHidden.Text;
         Debug.WriteLine("AreaIDLabelHGidden: " + cabinAreaId);
