@@ -135,6 +135,7 @@
             <HorizontalStackLayout>
                 <Frame
                     Margin="10,0,0,0"
+                    HeightRequest="600"
                     HorizontalOptions="Start"
                     MaximumWidthRequest="1200"
                     MinimumWidthRequest="1200">
