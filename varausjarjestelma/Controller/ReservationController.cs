@@ -297,7 +297,7 @@ namespace varausjarjestelma.Controller
         public string AreaName { get; set; }
         public string cabinName { get; set; }
         public DateTime reservedDate { get; set; }
-        public DateTime confirmationDate { get; set; }
+        public DateTime? confirmationDate { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 
