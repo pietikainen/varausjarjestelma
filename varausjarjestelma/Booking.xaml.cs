@@ -15,17 +15,23 @@ public partial class Booking : ContentPage
     // Init search bar
 
 
-    public Booking()
+    public Booking(bool? clearPage)
     {
-        // Initialize
-        InitializeAreaPicker();
-        InitializeComponent();
-
         // Clear forms
-        ResetAllFields();
+        if (clearPage == true)
+        {
+            InitializeComponent();
+            // Initialize
+            InitializeAreaPicker();
+            ResetAllFields();
+            // Set date pickers minimum date to today
+            CheckInDatePicker.MinimumDate = DateTime.Today;
+        }
 
         // Populate all customers
         GetAllCustomersData();
+
+
     }
 
     private async void InitializeAreaPicker()
@@ -42,6 +48,14 @@ public partial class Booking : ContentPage
         {
             Debug.WriteLine(ex.Message);
         }
+    }
+    private void CheckInDatePickerDateSelected(object sender, EventArgs e)
+    {
+        var date = CheckInDatePicker.Date;
+        Debug.WriteLine("Check-in date: " + date);
+
+        // set to End Date picker
+        CheckOutDatePicker.MinimumDate = date;
     }
 
     private async void AreaPicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,7 +78,8 @@ public partial class Booking : ContentPage
                 }
 
                 var cabinController = new CabinController();
-                List<CabinData> cabins = await cabinController.GetCabinsByAreaIdAsync(selectedAreaId);
+                //List<CabinData> cabins = await cabinController.GetCabinsByAreaIdAsync(selectedAreaId);
+                List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(selectedAreaId, CheckInDatePicker.Date, CheckOutDatePicker.Date);
 
 
                 // If no cabins found, show a message in listview
@@ -129,6 +144,7 @@ public partial class Booking : ContentPage
             Debug.WriteLine($"An error occurred: {ex.Message}");
         }
     }
+
 
     // Search for customers
 
@@ -230,6 +246,43 @@ public partial class Booking : ContentPage
         }
     }
 
+    private async void CustomerListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        // Populate customer details frame
+
+        if (e.SelectedItem != null)
+        {
+            CustomerData selectedCustomer = e.SelectedItem as CustomerData;
+
+            firstNameEntry.Text = selectedCustomer.FirstName;
+            lastNameEntry.Text = selectedCustomer.LastName;
+            addressEntry.Text = selectedCustomer.Address;
+            postalCodeEntry.Text = selectedCustomer.PostalCode;
+            cityEntry.Text = selectedCustomer.City;
+            emailEntry.Text = selectedCustomer.Email;
+            phoneNumberEntry.Text = selectedCustomer.Phone;
+        }
+
+    }
+
+
+
+                            //<Entry x:Name="firstNameEntry" />
+
+                            //<Entry x:Name="lastNameEntry" />
+
+                            //<Entry x:Name="addressEntry" />
+
+                            //<Entry x:Name="postalCodeEntry" />
+
+                            //<Entry x:Name="cityEntry" />
+
+                            //<Entry x:Name="emailEntry" />
+
+                            //<Entry x:Name="phoneNumberEntry" />
+
+
+
     // method to gather info from page entries and selections and to send to modal:
 
 
@@ -306,51 +359,55 @@ public partial class Booking : ContentPage
         ResetAllFields();
     }
 
-    public void ResetAllFields()
+
+    public async void ResetAllFields()
     {
-        // Reset Entries
-        firstNameEntry.Text = string.Empty;
-        lastNameEntry.Text = string.Empty;
-        addressEntry.Text = string.Empty;
-        postalCodeEntry.Text = string.Empty;
-        cityEntry.Text = string.Empty;
-        emailEntry.Text = string.Empty;
-        phoneNumberEntry.Text = string.Empty;
+        try
+        {
+            Debug.WriteLine("Tyhjennys alkakoon");
+            // Reset Entries
+            firstNameEntry.Text = string.Empty;
+            lastNameEntry.Text = string.Empty;
+            addressEntry.Text = string.Empty;
+            postalCodeEntry.Text = string.Empty;
+            cityEntry.Text = string.Empty;
+            emailEntry.Text = string.Empty;
+            phoneNumberEntry.Text = string.Empty;
 
+            // Reset searchers
+            CustomerSearchBar.Text = string.Empty;
+            PriceRangeFromSearchBar.Text = string.Empty;
+            PriceRangeToSearchBar.Text = string.Empty;
+            CabinFeaturesSearchBar.Text = string.Empty;
 
-        // Reset Pickers
-        AreaPicker.SelectedIndex = -1; // Reset Picker to default selection
-        listViewCabinMain.SelectedItem = null; // Deselect ListView item
-        ServicesPicker.Children.Clear(); // Clear the StackLayout that contains services
+            // Reset Pickers
+            AreaPicker.SelectedIndex = -1; // Reset Picker to default selection
+            ServicesPicker.Children.Clear(); // Clear the StackLayout that contains services
 
-        // Reset DatePickers
-        CheckInDatePicker.Date = DateTime.Today;
-        CheckOutDatePicker.Date = DateTime.Today;
+            // Reset Cabin listview to null
+            listViewCabinMain.ItemsSource = null;
 
-        // Reset cabin listview
-        listViewCabinMain.SelectedItem = null;
+            // Reset DatePickers
+            CheckInDatePicker.Date = DateTime.Today;
+            CheckOutDatePicker.Date = DateTime.Today;
 
-        // Reset ListView
-        CustomerListView.SelectedItem = null;
+            // Reset ListView selection
+            CustomerListView.SelectedItem = null;
+
+            Debug.WriteLine("Tyhjennys loppu ja valmis");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+        }
     }
-
-
-
 
 
 
     private void OnCancelClicked(object sender, EventArgs e)
     {
+        Debug.WriteLine("CANCEL Nappia painettu");
         ResetAllFields();
     }
 
 }
-//private void StartDatePicker_DateSelected(object sender, DateChangedEventArgs e)
-//{
-//    StartDay.Text = e.NewDate.ToString();
-//}
-
-//private void EndDatePicker_DateSelected(object sender, DateChangedEventArgs e)
-//{
-//    EndDay.Text = e.NewDate.ToString();
-//}

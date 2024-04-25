@@ -68,6 +68,7 @@
                                     <DatePicker
                                         x:Name="CheckInDatePicker"
                                         Date="{Binding CheckInDate}"
+                                        DateSelected="CheckInDatePickerDateSelected"
                                         HorizontalOptions="Start"
                                         WidthRequest="200" />
                                     <Label
@@ -106,11 +107,11 @@
                                         FontSize="12"
                                         Text="Price range: " />
                                     <SearchBar
-                                        x:Name="PriceRangeFromSearch"
+                                        x:Name="PriceRangeFromSearchBar"
                                         Margin="0,0,0,10"
                                         Placeholder="from €" />
                                     <SearchBar
-                                        x:Name="PriceRangeToSearch"
+                                        x:Name="PriceRangeToSearchBar"
                                         Margin="0,0,0,10"
                                         Placeholder="to €" />
 
@@ -119,7 +120,7 @@
                                         FontSize="12"
                                         Text="Cabin features: " />
                                     <SearchBar
-                                        x:Name="FeatureSearchBar"
+                                        x:Name="CabinFeaturesSearchBar"
                                         Margin="0,0,0,10"
                                         Placeholder="Search..." />
 
@@ -226,7 +227,7 @@
                                     HeightRequest="240">
                                     <ScrollView>
                                         <StackLayout>
-                                            <ListView x:Name="CustomerListView" HeightRequest="500">
+                                            <ListView x:Name="CustomerListView" HeightRequest="500" ItemSelected="CustomerListViewItemSelected">
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextCell Detail="{Binding Email}" Text="{Binding FullName}" />

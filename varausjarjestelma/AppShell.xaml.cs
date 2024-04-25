@@ -47,11 +47,6 @@
             await Shell.Current.GoToAsync("//AreaManagement");
         }
 
-        private async void RequestBookingPage(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//Booking");
-        }
-
         private async void RequestBookingViewPage(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//BookingView");

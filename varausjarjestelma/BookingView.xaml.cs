@@ -1,6 +1,7 @@
 using varausjarjestelma.Controller;
 using varausjarjestelma.Database;
 using System.Diagnostics;
+using Microsoft.Maui;
 
 
 namespace varausjarjestelma;
@@ -77,11 +78,38 @@ public partial class BookingView : ContentPage
         }
         else
         {
-            var filteredCustomers = allCustomers;
+            var filteredCustomers = allCustomers.Where(reservation => reservation.customerName.ToLower().Contains(keyword.ToLower()));
             BookingListView.ItemsSource = filteredCustomers;
         }
-
     }
+
+    private async void ReservationIdSearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var keyword = SearchReservationIdEntry.Text;
+
+        var allCustomers = await ReservationController.GetAllReservationDataAsync();
+
+        if (string.IsNullOrEmpty(keyword))
+        {
+            BookingListView.ItemsSource = allCustomers;
+        }
+        else
+        {
+            if (int.TryParse(keyword, out int reservationNumber))
+            {
+                var filteredCustomers = allCustomers.Where(reservation => reservation.reservationId == reservationNumber);
+                BookingListView.ItemsSource = filteredCustomers;
+            }
+            else
+            {
+                // Jos syöte ei ole kelvollinen numero, voit esimerkiksi tyhjentää tulokset
+                BookingListView.ItemsSource = null;
+            }
+        }
+    }
+
+
+    //
 
     // OBS!! WORK IN PROGRESS
 
@@ -195,7 +223,7 @@ public partial class BookingView : ContentPage
     private async void AddBookingButtonClicked(object sender, EventArgs e)
     {
 
-        await Navigation.PushAsync(new Booking());
+        await Navigation.PushAsync(new Booking(true));
     }
 
 
