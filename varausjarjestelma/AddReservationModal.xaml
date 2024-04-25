@@ -4,8 +4,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="AddReservationModal"
+    BackgroundColor="Transparent"
     MaximumHeightRequest="600"
-    MaximumWidthRequest="500">
+    MaximumWidthRequest="500"
+    MinimumHeightRequest="200"
+    MinimumWidthRequest="300">
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="0,0,0,10" />
@@ -20,13 +23,6 @@
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout Margin="10,0,0,10">
-        <StackLayout>
-            <ActivityIndicator
-                x:Name="LoadingIndicator"
-                IsEnabled="False"
-                IsRunning="False" />
-        </StackLayout>
-
         <Frame
             BackgroundColor="#fafafa"
             HorizontalOptions="EndAndExpand"
