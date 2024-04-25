@@ -26,9 +26,7 @@ public partial class AddCabinModal : ContentPage
         cabinPostalCodeEntry.Text = cabin.PostalCode;
         cabinPriceEntry.Text = cabin.Price.ToString();
         AreaIdLabelHidden.Text = cabin.AreaId.ToString();
-
         AreaPicker.IsVisible = false;
-
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
 
@@ -93,7 +91,7 @@ public partial class AddCabinModal : ContentPage
     }
     private async void SaveCabin(object sender, EventArgs e)
     {
-
+        
         var cabinAreaId = AreaIdLabelHidden.Text;
         Debug.WriteLine("AreaIDLabelHGidden: " + cabinAreaId);
         var cabinName = cabinNameEntry.Text;
@@ -112,9 +110,10 @@ public partial class AddCabinModal : ContentPage
            $"Description: {cabinDescription}\nPrice: {cabinPrice}";
         var isAccepted = await DisplayAlert("Confirm cabin information", confirmationMessage, "Yes", "No");
         List<string> validationErrors = new List<string>();
+        if (string.IsNullOrEmpty(cabinAreaId)) validationErrors.Add("Cabin area must be selected.");
         if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long.");
         if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long.");
-        if (string.IsNullOrEmpty(cabinCity) || cabinCity.Length <= 25) validationErrors.Add("Cabin city cannot be empty.");
+        if (string.IsNullOrEmpty(cabinCity) || cabinCity.Length >= 25) validationErrors.Add("Cabin city cannot be empty.");
         if (string.IsNullOrEmpty(cabinPostalCode) || !cabinPostalCode.All(char.IsDigit) || cabinPostalCode.Length != 5)
             validationErrors.Add("Postal code must be numeric and 5 characters long.");
         if (string.IsNullOrEmpty(cabinBed) || !cabinBed.All(char.IsDigit) || cabinBed.Length > 3)
