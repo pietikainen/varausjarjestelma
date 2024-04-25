@@ -330,7 +330,7 @@ public partial class AddReservationModal : ContentPage
     {
         // Close the modal
 
-        await Navigation.PopModalAsync();
+        await Navigation.PopModalAsync(false);
     }
 
 

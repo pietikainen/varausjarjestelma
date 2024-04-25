@@ -64,8 +64,16 @@
 
 
                 <SearchBar
+                    x:Name="SearchReservationIdEntry"
+                    Margin="470,10,0,10"
+                    HorizontalOptions="End"
+                    MinimumWidthRequest="300"
+                    Placeholder="Search by reservation #..."
+                    TextChanged="ReservationIdSearchBar_TextChanged" />
+
+                <SearchBar
                     x:Name="SearchCustomerEntry"
-                    Margin="780,10,0,10"
+                    Margin="10,10,0,10"
                     HorizontalOptions="End"
                     MinimumWidthRequest="300"
                     Placeholder="Search by name..."
