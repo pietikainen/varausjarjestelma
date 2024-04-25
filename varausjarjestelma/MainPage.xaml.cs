@@ -21,14 +21,14 @@ namespace varausjarjestelma
         }
 
         private async void signInButton_Clicked(object sender, EventArgs e)
-        {  
+        {
             string username = usernameEntry.Text;
             string password = passwordEntry.Text;
             //if (username == "testuser" && password == "salasana")
             if (true)
             {
                 MessagingCenter.Send<MainPage>(this, "EnableMenu");
-              
+
                 usernameEntry.Text = "";
                 passwordEntry.Text = "";
                 usernameEntry.IsVisible = false;
@@ -43,7 +43,6 @@ namespace varausjarjestelma
                 await DisplayAlert("Login failed", "incorrect username or password.", "ok");
             }
         }
-
         private void logOutButton_Clicked(object sender, EventArgs e)
         {
             signInButton.IsVisible = false;
@@ -52,7 +51,7 @@ namespace varausjarjestelma
             signInButton.IsVisible = true;
             logOutButton.IsVisible = false;
             welcomeLabels.IsVisible = false;
-            logInLabel.IsVisible= true;
+            logInLabel.IsVisible = true;
             MessagingCenter.Send<MainPage>(this, "LockMenu");
         }
     }
