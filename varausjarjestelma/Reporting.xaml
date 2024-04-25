@@ -28,7 +28,7 @@
     <HorizontalStackLayout>
 
 
-        <VerticalStackLayout Margin="10,0,0,0">
+        <VerticalStackLayout Margin="10,0,0,0" WidthRequest="250">
             <Label
                 Margin="0,10,0,30"
                 FontAttributes="Bold"
@@ -36,12 +36,12 @@
                 HorizontalOptions="Start"
                 Text="Reporting" />
 
-
             <Label Text="Select start date" />
             <DatePicker
                 x:Name="StartDate"
                 Margin="0,10,0,30"
                 Date="{Binding StartDate}"
+                DateSelected="StartDateSelected"
                 Format="d"
                 HorizontalOptions="Start"
                 VerticalOptions="Center" />
@@ -63,24 +63,27 @@
                 VerticalOptions="Center"
                 WidthRequest="120" />
 
+            <HorizontalStackLayout>
+                <Button
+                    x:Name="GenerateReportButton"
+                    Margin="0,10,0,0"
+                    Clicked="GenerateReportButtonClicked"
+                    HeightRequest="40"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Generate report" />
 
-            <Button
-                x:Name="GenerateReportButton"
-                Margin="0,10,0,30"
-                Clicked="GenerateReportButtonClicked"
-                Style="{StaticResource buttonStyle}"
-                Text="Generate report" />
-
-            <Button
-                x:Name="ClearReportsButton"
-                Margin="0,0,0,0"
-                Clicked="ClearReportsButtonClicked"
-                Style="{StaticResource buttonStyle}"
-                Text="Clear Page" />
-
+                <Button
+                    x:Name="ClearReportsButton"
+                    Margin="10,10,0,0"
+                    Clicked="ClearReportsButtonClicked"
+                    HeightRequest="40"
+                    Style="{StaticResource buttonStyle}"
+                    Text="Clear Page"
+                    WidthRequest="100" />
+            </HorizontalStackLayout>
 
         </VerticalStackLayout>
-        <VerticalStackLayout Margin="150,80,0,0">
+        <VerticalStackLayout Margin="120,80,0,0">
             <HorizontalStackLayout>
                 <Label
                     Margin="10,0,0,10"
