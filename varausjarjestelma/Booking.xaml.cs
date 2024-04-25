@@ -56,6 +56,22 @@ public partial class Booking : ContentPage
 
         // set to End Date picker
         CheckOutDatePicker.MinimumDate = date;
+
+        // if area is selected, update cabin listview
+        if (AreaPicker.SelectedIndex != -1)
+        {
+            PopulateCabinListView(selectedAreaId);
+        }
+
+    }
+
+    private void CheckOutDatePickerDateSelected(object sender, EventArgs e)
+    {
+        // if area is selected, update cabin listview
+        if (AreaPicker.SelectedIndex != -1)
+        {
+            PopulateCabinListView(selectedAreaId);
+        }
     }
 
     private async void AreaPicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -66,7 +82,7 @@ public partial class Booking : ContentPage
             if (AreaPicker.SelectedIndex != -1)
             {
                 string selectedArea = AreaPicker.SelectedItem.ToString();
-                int selectedAreaId = 0;
+                selectedAreaId = 0;
 
                 foreach (AreaData area in areas)
                 {
@@ -77,28 +93,14 @@ public partial class Booking : ContentPage
                     }
                 }
 
-                var cabinController = new CabinController();
-                //List<CabinData> cabins = await cabinController.GetCabinsByAreaIdAsync(selectedAreaId);
-                List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(selectedAreaId, CheckInDatePicker.Date, CheckOutDatePicker.Date);
+                // Populate cabin listview
+                PopulateCabinListView(selectedAreaId);
+
+                //var cabinController = new CabinController();
+                //List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(selectedAreaId, CheckInDatePicker.Date, CheckOutDatePicker.Date);
 
 
-                // If no cabins found, show a message in listview
-                CabinData emptyCabinData = new CabinData();
-                emptyCabinData.CabinName = "No cabins found";
-
-                List<CabinData> nullCabins = new List<CabinData>();
-                nullCabins.Add(emptyCabinData);
-
-                if (cabins.Count != 0)
-                {
-                    Debug.WriteLine("Cabin count: " + cabins.Count);
-                    listViewCabinMain.ItemsSource = cabins;
-                }
-                else
-                {
-                    listViewCabinMain.ItemsSource = nullCabins;
-                    Debug.WriteLine("Cabin count: " + cabins.Count);
-                }
+                
                 //Get all services for the selected area and add them to the frame
 
                ServicesDataList(selectedAreaId);
@@ -109,6 +111,27 @@ public partial class Booking : ContentPage
             Debug.WriteLine(ex.Message);
         }
     }
+
+    private async void PopulateCabinListView(int id)
+    {
+        List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(id, CheckInDatePicker.Date, CheckOutDatePicker.Date);
+        
+        // If no cabins found, show a message in listview
+        CabinData emptyCabinData = new CabinData();
+        emptyCabinData.CabinName = "No cabins found on given dates";
+
+        List<CabinData> nullCabins = new List<CabinData>();
+        nullCabins.Add(emptyCabinData);
+
+        if (cabins.Count != 0)
+        {
+            listViewCabinMain.ItemsSource = cabins;
+        }
+        else
+        {
+            listViewCabinMain.ItemsSource = nullCabins;
+        }
+    } 
 
     private async void GetAllCustomersData()
     {
@@ -165,10 +188,6 @@ public partial class Booking : ContentPage
         }
 
     }
-
-
-
-
     private async void ServicesDataList(int selectedAreaId)
     {
         try
@@ -229,8 +248,6 @@ public partial class Booking : ContentPage
                 };
 
                 ServicesPicker.Children.Add(stepperLayout);
-
-                
             }
         }
         catch (AggregateException ae)
