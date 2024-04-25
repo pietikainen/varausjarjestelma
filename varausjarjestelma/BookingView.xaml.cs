@@ -1,7 +1,6 @@
 using varausjarjestelma.Controller;
 using varausjarjestelma.Database;
 using System.Diagnostics;
-using Microsoft.Maui;
 
 
 namespace varausjarjestelma;
@@ -28,7 +27,17 @@ public partial class BookingView : ContentPage
             BookingListActivityIndicator.IsVisible = true;
 
             var customers = await ReservationController.GetAllReservationDataAsync();
+
+            DateTime nullDate = new DateTime(1900, 1, 1);
+            foreach (ReservationListViewItems r in customers)
+            {
+                if (r.confirmationDate == nullDate)
+                {
+                    r.confirmationDate = null;
+                }
+            }
             BookingListView.ItemsSource = customers;
+
 
             BookingListActivityIndicator.IsRunning = false;
             BookingListActivityIndicator.IsVisible = false;
@@ -230,7 +239,14 @@ public partial class BookingView : ContentPage
 
     private async Task RefreshListView()
     {
-        BookingListView.ItemsSource = await ReservationController.GetAllReservationDataAsync();
+        try
+        {
+            GetAllBookingData();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+        }
     }
 
 

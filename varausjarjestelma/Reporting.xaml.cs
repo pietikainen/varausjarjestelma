@@ -12,6 +12,9 @@ public partial class Reporting : ContentPage
         ClearPage();
         InitializeAreaPicker();
 
+        // on initializing: end date minimum date is Today
+        EndDate.MinimumDate = DateTime.Now;
+
     }
 
 
@@ -36,6 +39,16 @@ public partial class Reporting : ContentPage
             Debug.WriteLine(ex.Message);
         }
     }
+
+    private async void StartDateSelected(object sender, DateChangedEventArgs e)
+    {
+        // when start date is selected, end date minimum date is start date
+        EndDate.MinimumDate = StartDate.Date;
+        
+
+
+    }
+
 
     private async void GenerateReportButtonClicked(object sender, EventArgs eventArgs)
     {

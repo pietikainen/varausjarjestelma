@@ -18,8 +18,6 @@ public partial class AddReservationModal : ContentPage
 
     private async void PopulateDetails(ReservationInfo reservationInfo)
     {
-        LoadingIndicator.IsRunning = true;
-        LoadingIndicator.IsVisible = true;
 
         // store the grand total
         double grandTotal = 0;
@@ -247,9 +245,6 @@ public partial class AddReservationModal : ContentPage
         };
 
         GrandTotalCell.Children.Add(grandTotalStackLayout);
-
-        LoadingIndicator.IsRunning = false;
-        LoadingIndicator.IsVisible = false;
     }
 
     private async void SaveButtonClicked(object sender, EventArgs e)
