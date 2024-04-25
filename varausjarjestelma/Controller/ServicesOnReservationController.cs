@@ -1,6 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
+using varausjarjestelma.Database;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,44 @@ namespace varausjarjestelma.Controller
 {
     public class ServicesOnReservationController
     {
+
+        // get services on reservation by reservation id
+
+        public static async Task<List<ServiceOnReservation>> GetServicesOnReservationAsync(int reservationId)
+        {
+            List<ServiceOnReservation> servicesOnReservations = new List<ServiceOnReservation>();
+            try
+            {
+                MySqlConnection connection = MySqlController.GetConnection();
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT * FROM varauksen_palvelut WHERE varaus_id = @reservationId;", connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            servicesOnReservations.Add(new ServiceOnReservation()
+                            {
+                                varaus_id = reader.GetInt32("varaus_id"),
+                                palvelu_id = reader.GetInt32("palvelu_id"),
+                                lkm = reader.GetInt32("lkm")
+                            });
+                        }
+                    }
+                }
+                await connection.CloseAsync();
+                return servicesOnReservations;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+
 
         // Add one service on Reservation
 

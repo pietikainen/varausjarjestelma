@@ -115,7 +115,7 @@ namespace varausjarjestelma.Controller
 
 
 
-        public async Task<List<CabinData>> GetCabinsByAreaIdAsync(int id)
+        public static async Task<List<CabinData>> GetCabinsByAreaIdAsync(int id)
         {
             MySqlConnection connection = MySqlController.GetConnection();
             await connection.OpenAsync();

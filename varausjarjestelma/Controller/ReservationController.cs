@@ -13,21 +13,6 @@ namespace varausjarjestelma.Controller
 {
     public class ReservationController
     {
-
-        public static async Task<int> GetAmountOfReservations()
-        {
-            MySqlConnection connection = MySqlController.GetConnection();
-
-            await connection.OpenAsync();
-
-            using (var command = new MySqlCommand("SELECT COUNT(*) FROM varaus;", connection))
-            {
-                int amount = Convert.ToInt32(await command.ExecuteScalarAsync());
-                await connection.CloseAsync();
-                return amount;
-            }
-        }
-
         // get all reservation data
         public static async Task<List<ReservationListViewItems>> GetAllReservationDataAsync()
         {
@@ -36,7 +21,6 @@ namespace varausjarjestelma.Controller
             try
             {
                 await connection.OpenAsync();
-
                 using (var command = new MySqlCommand(@"
                     SELECT v.*, concat(m.mokkinimi, ', ', al.nimi) AS cabinName, concat(a.sukunimi, ' ', a.etunimi) AS customerName
                         FROM varaus v
@@ -67,8 +51,45 @@ namespace varausjarjestelma.Controller
 
                             reservations.Add(reservation);
                         }
-
                         return reservations;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SUUR PROBLEEM! MYSQL KYSELY" + e.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        // get reservation data by id
+        public static async Task<ReservationInfo> GetReservationInfoByIdAsync(int id)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(@"SELECT * FROM varaus WHERE asiakas_id = @id;", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        ReservationInfo reservationInfo = new ReservationInfo()
+                        {
+                            CustomerId = reader.GetInt32("asiakas_id"),
+                            ReservationId = reader.GetInt32("varaus_id"),
+                            CabinId = reader.GetInt32("mokki_mokki_id"),
+                            StartDate = reader.GetDateTime("varattu_alkupvm"),
+                            EndDate = reader.GetDateTime("varattu_loppupvm")
+                        };
+                        return reservationInfo;
                     }
                 }
             }
@@ -84,7 +105,6 @@ namespace varausjarjestelma.Controller
         }
 
         // Delete reservation
-
         public static async Task<bool> DeleteReservationAsync(int reservationId)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -120,7 +140,7 @@ namespace varausjarjestelma.Controller
             }
         }
 
-        // insert new reservation to database
+        // Insert new reservation to database
         public static async Task<int> InsertReservationAsync(Reservation reservation)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -174,7 +194,6 @@ namespace varausjarjestelma.Controller
         }
 
         // Find all available cabins on given dates
-
         public static async Task<List<CabinData>> GetAllAvailableCabinsOnDatesAsync(int id, DateTime start, DateTime end)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -252,10 +271,7 @@ namespace varausjarjestelma.Controller
         }
 
 
-
-
         // set reservation as confirmed
-
         public static async Task<bool> SetReservationConfirmedAsync(int id)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -281,11 +297,7 @@ namespace varausjarjestelma.Controller
             {
                 await connection.CloseAsync();
             }
-
-
         }
-
-
     }
 
     public class ReservationListViewItems
@@ -297,7 +309,8 @@ namespace varausjarjestelma.Controller
         public string AreaName { get; set; }
         public string cabinName { get; set; }
         public DateTime reservedDate { get; set; }
-        public DateTime? confirmationDate { get; set; }
+        public DateTime confirmationDate { get; set; }
+        public string confirmationDateString { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 
@@ -306,6 +319,7 @@ namespace varausjarjestelma.Controller
     public class ReservationInfo
     {
         public int CustomerId { get; set; }
+        public int? ReservationId { get; set; }
         public int CabinId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

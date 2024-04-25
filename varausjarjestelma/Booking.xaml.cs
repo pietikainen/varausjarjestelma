@@ -1,7 +1,6 @@
 using varausjarjestelma.Controller;
 using varausjarjestelma.Database;
 using System.Diagnostics;
-using System.Drawing.Text;
 namespace varausjarjestelma;
 
 public partial class Booking : ContentPage
@@ -30,8 +29,16 @@ public partial class Booking : ContentPage
 
         // Populate all customers
         GetAllCustomersData();
+    }
 
+    // Constructor for editing a booking
+    public Booking(ReservationListViewItems reservation)
+    {
+        InitializeComponent();
+        InitializeAreaPicker();
+        GetAllCustomersData();
 
+        PopulateFormWithReservationData(reservation);
     }
 
     private async void InitializeAreaPicker()
@@ -49,6 +56,111 @@ public partial class Booking : ContentPage
             Debug.WriteLine(ex.Message);
         }
     }
+
+
+    private async void PopulateFormWithReservationData(ReservationListViewItems reservation)
+    {
+        try
+        {
+            List<ServiceOnReservation> services = await ServicesOnReservationController.GetServicesOnReservationAsync(reservation.reservationId);
+
+            if (reservation != null)
+            {
+                // Find areaId:
+
+                selectedAreaId = 0;
+
+                foreach (AreaData area in areas)
+                {
+                    if (area.Name == reservation.AreaName)
+                    {
+                        selectedAreaId = area.AreaId;
+                        break;
+                    }
+                }
+
+
+
+                // Populate form with reservation data
+                CheckInDatePicker.Date = reservation.startDate;
+                CheckOutDatePicker.Date = reservation.endDate;
+                AreaPicker.SelectedIndex = AreaPicker.Items.IndexOf(reservation.AreaName);
+                Debug.WriteLine("Areapicker.indexof: " + AreaPicker.Items.IndexOf(reservation.AreaName));
+
+
+
+
+                // Populate cabin listview
+                List<CabinData> allCabins = await CabinController.GetCabinsByAreaIdAsync(AreaPicker.SelectedIndex);
+
+                // Populate services
+                foreach (ServiceOnReservation service in services)
+                {
+                    var serviceData = await ServiceController.GetServiceDataById(service.palvelu_id);
+
+
+                    Stepper serviceStepper = new Stepper
+                    {
+                        Minimum = 0,
+                        Maximum = 10,
+                        Increment = 1,
+                        HorizontalOptions = LayoutOptions.Center,
+                        Value = service.lkm
+                    };
+
+                    Label quantityLabel = new Label
+                    {
+                        Text = service.lkm.ToString(),
+                        HorizontalOptions = LayoutOptions.Center
+                    };
+
+                    Label serviceNameLabel = new Label
+                    {
+                        Text = serviceData.Name.ToString(),
+                        HorizontalOptions = LayoutOptions.Center
+                    };
+
+                    serviceNameLabel.ClassId = serviceData.ServiceId.ToString();
+
+                    serviceStepper.ValueChanged += (s, e) =>
+                    {
+                        quantityLabel.Text = e.NewValue.ToString();
+                        int quantity = (int)e.NewValue;
+                    };
+
+                    StackLayout stepperLayout = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Children = { quantityLabel, serviceStepper, serviceNameLabel }
+                    };
+
+                    ServicesPicker.Children.Add(stepperLayout);
+                }
+
+                CustomerListView.SelectedItem = reservation.customerId;
+
+            }
+            else
+            {
+                Debug.WriteLine("ERROR: Reservation not found");
+            }
+        } 
+        catch (Exception ex)
+        {
+            Debug.WriteLine("");
+        }
+
+
+
+
+
+
+
+        // Add services to reservation
+
+    }
+
+
     private void CheckInDatePickerDateSelected(object sender, EventArgs e)
     {
         var date = CheckInDatePicker.Date;
@@ -94,6 +206,8 @@ public partial class Booking : ContentPage
                 }
 
                 // Populate cabin listview
+                Debug.WriteLine("SELECTED AREA ID:: " + selectedAreaId);
+                Debug.WriteLine("Selected areapicker index: " + AreaPicker.SelectedIndex);
                 PopulateCabinListView(selectedAreaId);
 
                 //var cabinController = new CabinController();
@@ -271,34 +385,20 @@ public partial class Booking : ContentPage
         {
             CustomerData selectedCustomer = e.SelectedItem as CustomerData;
 
-            firstNameEntry.Text = selectedCustomer.FirstName;
-            lastNameEntry.Text = selectedCustomer.LastName;
-            addressEntry.Text = selectedCustomer.Address;
-            postalCodeEntry.Text = selectedCustomer.PostalCode;
-            cityEntry.Text = selectedCustomer.City;
-            emailEntry.Text = selectedCustomer.Email;
-            phoneNumberEntry.Text = selectedCustomer.Phone;
+            if (selectedCustomer != null)
+            {
+                firstNameEntry.Text = selectedCustomer.FirstName;
+                lastNameEntry.Text = selectedCustomer.LastName;
+                addressEntry.Text = selectedCustomer.Address;
+                postalCodeEntry.Text = selectedCustomer.PostalCode;
+                cityEntry.Text = selectedCustomer.City;
+                emailEntry.Text = selectedCustomer.Email;
+                phoneNumberEntry.Text = selectedCustomer.Phone;
+            }
+            else { return; }
         }
 
     }
-
-
-
-                            //<Entry x:Name="firstNameEntry" />
-
-                            //<Entry x:Name="lastNameEntry" />
-
-                            //<Entry x:Name="addressEntry" />
-
-                            //<Entry x:Name="postalCodeEntry" />
-
-                            //<Entry x:Name="cityEntry" />
-
-                            //<Entry x:Name="emailEntry" />
-
-                            //<Entry x:Name="phoneNumberEntry" />
-
-
 
     // method to gather info from page entries and selections and to send to modal:
 

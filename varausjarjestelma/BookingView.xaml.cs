@@ -1,6 +1,7 @@
 using varausjarjestelma.Controller;
 using varausjarjestelma.Database;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 
 namespace varausjarjestelma;
@@ -11,21 +12,22 @@ public partial class BookingView : ContentPage
     public BookingView()
     {
         InitializeComponent();
+        //GetAllBookingData();
     }
 
-    protected override void OnAppearing()
+    protected async override void OnAppearing()
     {
         base.OnAppearing();
-        GetAllBookingData();
+        BookingListView.ItemsSource = await GetAllBookingData();
+
     }
 
-    private async void GetAllBookingData()
+    private async Task<List<ReservationListViewItems>> GetAllBookingData()
     {
         try
         {
             BookingListActivityIndicator.IsRunning = true;
             BookingListActivityIndicator.IsVisible = true;
-
             var customers = await ReservationController.GetAllReservationDataAsync();
 
             DateTime nullDate = new DateTime(1900, 1, 1);
@@ -33,26 +35,41 @@ public partial class BookingView : ContentPage
             {
                 if (r.confirmationDate == nullDate)
                 {
-                    r.confirmationDate = null;
+                    r.confirmationDateString = "";
                 }
-            }
-            BookingListView.ItemsSource = customers;
+                else
+                {
+                    r.confirmationDateString = r.confirmationDate.ToString("dd.MM.yyyy");
+                }
 
+            }
 
             BookingListActivityIndicator.IsRunning = false;
             BookingListActivityIndicator.IsVisible = false;
+            return customers;
+            //BookingListView.ItemsSource = customers;
+
         }
+
         catch (AggregateException ae)
         {
             foreach (var innerException in ae.InnerExceptions)
             {
                 Debug.WriteLine($"Inner Exception: {innerException.Message}");
             }
+            return null;
+        }
+        catch (COMException ce)
+        {
+            Debug.WriteLine("ERROR: " + ce.Message);
+            return null;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"An error occurred: {ex.Message}");
+            Debug.WriteLine($"An error occurred in GetAllBookingData(): {ex.Message}");
+            return null;
         }
+
     }
 
 
@@ -65,7 +82,7 @@ public partial class BookingView : ContentPage
         if (isDeleted)
         {
             await DisplayAlert("Success", "Reservation deleted successfully", "OK");
-            
+
         }
         else
         {
@@ -133,7 +150,7 @@ public partial class BookingView : ContentPage
     //}
 
 
-    private async void SetConfirmedButtonClicked(object sender, EventArgs e) 
+    private async void SetConfirmedButtonClicked(object sender, EventArgs e)
     {
 
         var button = sender as ImageButton;
@@ -163,9 +180,35 @@ public partial class BookingView : ContentPage
     }
 
 
-    private async void ModifyReservationButtonClicked(object sender, EventArgs e) { }
+    private async void ModifyReservationButtonClicked(object sender, EventArgs e)
+    {
 
-    private async void CreateInvoiceButtonClicked(object sender, EventArgs e) {
+        try
+        {
+            var button = sender as ImageButton;
+            if (button == null)
+            {
+                Debug.WriteLine("Button is null");
+                return;
+            }
+
+            var reservation = button.BindingContext as ReservationListViewItems;
+            if (reservation == null)
+            {
+                Debug.WriteLine("Reservation is null");
+                return;
+            }
+            Debug.WriteLine("Modify reservation button clicked + sent id: " + reservation.reservationId);
+            await Navigation.PushAsync(new Booking(reservation));
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private async void CreateInvoiceButtonClicked(object sender, EventArgs e)
+    {
 
         var button = sender as ImageButton;
         if (button == null)
@@ -184,7 +227,8 @@ public partial class BookingView : ContentPage
         //TÄMÄ ON KESKEN
 
         var isCreated = await InvoiceController.CreateInvoiceAsync(reservation.reservationId);
-        if (!isCreated) {
+        if (!isCreated)
+        {
             await DisplayAlert("Error", "An error occurred while creating invoice", "OK");
         }
         else
@@ -245,7 +289,7 @@ public partial class BookingView : ContentPage
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"An error occurred: {ex.Message}");
+            Debug.WriteLine($"An error occurred in RefreshListView(): {ex.Message}");
         }
     }
 

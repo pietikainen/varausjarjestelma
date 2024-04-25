@@ -189,7 +189,7 @@
                                                 VerticalOptions="Center" />
                                             <Label
                                                 Grid.Column="4"
-                                                Text="{Binding confirmationDate, StringFormat='{0:d}'}"
+                                                Text="{Binding confirmationDateString, StringFormat='{0:d}'}"
                                                 VerticalOptions="Center" />
                                             <Label
                                                 Grid.Column="5"
