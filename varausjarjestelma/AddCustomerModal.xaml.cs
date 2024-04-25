@@ -228,7 +228,7 @@ public partial class AddCustomerModal : ContentPage
     {
         var postalCode = postalCodeEntry.Text;
 
-        if (postalCode.Length == 5)
+        if (postalCode != null && postalCode.Length == 5)
         {
             var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
             if (city != null)
