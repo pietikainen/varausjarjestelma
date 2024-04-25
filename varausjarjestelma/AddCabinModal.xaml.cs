@@ -118,8 +118,10 @@ public partial class AddCabinModal : ContentPage
             validationErrors.Add("Postal code must be numeric and 5 characters long.");
         if (string.IsNullOrEmpty(cabinBed) || !cabinBed.All(char.IsDigit) || cabinBed.Length > 3)
             validationErrors.Add("Beds must be numeric.");
+        if (string.IsNullOrEmpty(cabinFeatures) || cabinFeatures.Length > 200) validationErrors.Add("Cabin features cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinDescription) || cabinDescription.Length > 200) validationErrors.Add("Cabin description cannot be empty or too long (200 characters).");
         if (string.IsNullOrEmpty(cabinPrice) || !cabinPrice.All(char.IsDigit) || cabinPrice.Length > 10)
-            validationErrors.Add("Price must be numeric.");
+            validationErrors.Add("Price cannot be empty or too long (10 characters) and need to be numeric");
         if (validationErrors.Count > 0)
         {
             await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
@@ -201,16 +203,17 @@ public partial class AddCabinModal : ContentPage
         var confirmationMessage = $"Cabin Id: {cabinId}\nCabin name: {cabinName}\nAddress {cabinAddress}\nPostal Code: {cabinpostalCode}\n" +
             $"City: {cabinCity}\nBeds: {cabinBeds}\nFeatures: {cabinFeatures}\nDescription: {cabinDescription}\nPrice: {cabinPrice}";
         var isAccepted = await DisplayAlert("Confirm modification", confirmationMessage, "Yes", "No");
-
         List<string> validationErrors = new List<string>();
-        if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long.");
-        if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long.");
+        if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long (25 characters).");
+        if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long (25 characters).");
         if (string.IsNullOrEmpty(cabinpostalCode) || !cabinpostalCode.All(char.IsDigit) || cabinpostalCode.Length != 5)
             validationErrors.Add("Postal code must be numeric and 5 characters long.");
         if (string.IsNullOrEmpty(cabinBeds) || !cabinBeds.All(char.IsDigit) || cabinBeds.Length > 3)
             validationErrors.Add("Beds must be numeric.");
+        if (string.IsNullOrEmpty(cabinFeatures) || cabinFeatures.Length > 200) validationErrors.Add("Cabin features cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinDescription) || cabinDescription.Length > 200) validationErrors.Add("Cabin description cannot be empty or too long (200 characters).");
         if (string.IsNullOrEmpty(cabinPrice) || !cabinPrice.All(char.IsDigit) || cabinPrice.Length > 10)
-            validationErrors.Add("Price must be numeric.");
+            validationErrors.Add("Price cannot be empty or too long (10 characters) and need to be numeric");
         if (validationErrors.Count > 0)
         {
             await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
