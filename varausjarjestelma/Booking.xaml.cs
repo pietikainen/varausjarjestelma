@@ -78,7 +78,8 @@ public partial class Booking : ContentPage
                 }
 
                 var cabinController = new CabinController();
-                List<CabinData> cabins = await cabinController.GetCabinsByAreaIdAsync(selectedAreaId);
+                //List<CabinData> cabins = await cabinController.GetCabinsByAreaIdAsync(selectedAreaId);
+                List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(selectedAreaId, CheckInDatePicker.Date, CheckOutDatePicker.Date);
 
 
                 // If no cabins found, show a message in listview

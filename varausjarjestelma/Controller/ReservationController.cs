@@ -65,7 +65,7 @@ namespace varausjarjestelma.Controller
                                 //areaName = readerGetString("areaName")
                             };
 
-                            reservations.Add(reservation);  
+                            reservations.Add(reservation);
                         }
 
                         return reservations;
@@ -92,6 +92,15 @@ namespace varausjarjestelma.Controller
             try
             {
                 await connection.OpenAsync();
+
+                // insert check to see if reservation has services in "varauksen_palvelut" table
+                // if it does, delete them first
+
+                using (var command = new MySqlCommand("DELETE FROM varauksen_palvelut WHERE varaus_id = @reservationId;", connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    await command.ExecuteNonQueryAsync();
+                }
 
                 using (var command = new MySqlCommand("DELETE FROM varaus WHERE varaus_id = @reservationId;", connection))
                 {
@@ -164,6 +173,87 @@ namespace varausjarjestelma.Controller
             }
         }
 
+        // Find all available cabins on given dates
+
+        public static async Task<List<CabinData>> GetAllAvailableCabinsOnDatesAsync(int id, DateTime start, DateTime end)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                Debug.WriteLine("Connection opened");
+                Debug.WriteLine("area: " + id + " start: " + start + " end: " + end);
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(@"
+                 SELECT
+                    m.mokki_id,
+                    m.alue_id,
+                    m.hinta,
+                    m.mokkinimi,
+                    m.katuosoite,
+                    m.postinro,
+                    p.toimipaikka,
+                    m.henkilomaara,
+                    m.kuvaus,
+                    m.varustelu
+                 FROM 
+                    mokki m
+                 JOIN 
+                    posti p on m.postinro = p.postinro
+                 WHERE 
+                    m.alue_id = @id
+                 AND 
+                    m.mokki_id NOT IN (
+                        SELECT DISTINCT v.mokki_mokki_id
+                        FROM varaus v
+                        WHERE (v.varattu_alkupvm BETWEEN @start AND @end)
+                               OR(v.varattu_loppupvm BETWEEN @start AND @end)
+                        )", connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@start", start);
+                    command.Parameters.AddWithValue("@end", end);
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        List<CabinData> cabinDataList = new List<CabinData>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            CabinData cabinData = new CabinData
+                            {
+                                CabinId = reader.GetInt32("mokki_id"),
+                                AreaId = reader.GetInt32("alue_id"),
+                                PostalCode = reader.GetString("postinro"),
+                                CabinName = reader.GetString("mokkinimi"),
+                                Address = reader.GetString("katuosoite"),
+                                Price = reader.GetDouble("hinta"),
+                                Description = reader.GetString("kuvaus"),
+                                Beds = reader.GetInt32("henkilomaara"),
+                                Features = reader.GetString("varustelu")
+                            };
+                            cabinDataList.Add(cabinData);
+                        }
+                        return cabinDataList;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ERROR: " + e.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+
+        }
+
+
+
+
         // set reservation as confirmed
 
         public static async Task<bool> SetReservationConfirmedAsync(int id)
@@ -191,8 +281,8 @@ namespace varausjarjestelma.Controller
             {
                 await connection.CloseAsync();
             }
-            
-                    
+
+
         }
 
 
