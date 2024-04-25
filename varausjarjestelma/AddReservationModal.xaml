@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="AddReservationModal"
     MaximumHeightRequest="600"
-    MaximumWidthRequest="400">
+    MaximumWidthRequest="500">
     <ContentPage.Resources>
         <Style TargetType="Entry">
             <Setter Property="Margin" Value="0,0,0,10" />
@@ -31,7 +31,7 @@
             BackgroundColor="#fafafa"
             HorizontalOptions="EndAndExpand"
             IsVisible="True"
-            WidthRequest="390">
+            WidthRequest="490">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -57,8 +57,8 @@
 
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -172,8 +172,7 @@
                 <StackLayout
                     x:Name="ServicesOnReservationList2"
                     Grid.Row="16"
-                    Grid.Column="1"
-                    />
+                    Grid.Column="1" />
 
                 <Label
                     Grid.Row="20"
@@ -207,8 +206,8 @@
                 <StackLayout
                     x:Name="ServicesOnReservationList3"
                     Grid.Row="16"
-                    HorizontalOptions="End"
-                    Grid.Column="2" />
+                    Grid.Column="2"
+                    HorizontalOptions="End" />
 
                 <BoxView
                     Grid.Row="13"
@@ -253,9 +252,10 @@
                 <!--  Buttons for form  -->
 
 
+
                 <Button
                     x:Name="BookingConfirmationButton"
-                    Grid.Row="25"
+                    Grid.Row="21"
                     Grid.Column="0"
                     Margin="0,40,0,0"
                     Clicked="SaveButtonClicked"
@@ -265,16 +265,15 @@
                     Text="Book now" />
 
                 <Button
-                    Grid.Row="25"
+                    Grid.Row="21"
                     Grid.Column="2"
-                    Margin="0,40,0,0"
+                    Margin="-40,40,0,0"
                     Clicked="CancelButtonClicked"
-                    HorizontalOptions="End"
+                    HorizontalOptions="Start"
                     Style="{StaticResource buttonStyle}"
                     Text="Go back" />
 
             </Grid>
-
         </Frame>
     </VerticalStackLayout>
 </ContentPage>
