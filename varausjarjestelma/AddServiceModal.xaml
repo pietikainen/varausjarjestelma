@@ -27,7 +27,7 @@
                 FontAttributes="Bold"
                 FontSize="25"
                 HorizontalOptions="Center"
-                Text="Add new service"
+                Text="Service information"
                 VerticalOptions="Center" />
 
             <Label x:Name="areaLabel" Text="Area:" />
