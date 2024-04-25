@@ -28,7 +28,7 @@ namespace varausjarjestelma
             if (true)
             {
                 MessagingCenter.Send<MainPage>(this, "EnableMenu");
-                await DisplayAlert("Login successful", "Welcome to Mökkimaster!", "ok");
+              
                 usernameEntry.Text = "";
                 passwordEntry.Text = "";
                 usernameEntry.IsVisible = false;
