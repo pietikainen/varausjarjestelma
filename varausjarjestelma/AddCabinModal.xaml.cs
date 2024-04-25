@@ -26,7 +26,7 @@ public partial class AddCabinModal : ContentPage
         cabinPostalCodeEntry.Text = cabin.PostalCode;
         cabinPriceEntry.Text = cabin.Price.ToString();
         AreaIdLabelHidden.Text = cabin.AreaId.ToString();
-        
+
         AreaPicker.IsVisible = false;
 
         cabinIdEntry.IsVisible = true;
@@ -110,7 +110,7 @@ public partial class AddCabinModal : ContentPage
 
                 Debug.WriteLine("Inside if isAccepted: Trying to insert cabin to database");
                 var cabin = new varausjarjestelma.Database.Cabin
-                {                  
+                {
 
                     alue_id = int.Parse(cabinAreaId),
                     mokkinimi = cabinName,
@@ -166,7 +166,7 @@ public partial class AddCabinModal : ContentPage
         var cabinAreaId = AreaIdLabelHidden.Text;
         var cabinId = cabinIdEntry.Text;
         var cabinName = cabinNameEntry.Text;
-        var cabinBeds  = cabinBedsEntry.Text;
+        var cabinBeds = cabinBedsEntry.Text;
         var cabinAddress = cabinAddressEntry.Text;
         var cabinpostalCode = cabinPostalCodeEntry.Text;
         var cabinFeatures = cabinFeaturesEntry.Text;
@@ -192,7 +192,7 @@ public partial class AddCabinModal : ContentPage
                 varustelu = cabinFeaturesEntry.Text,
                 kuvaus = cabinDescriptionEntry.Text,
                 hinta = int.Parse(cabinPriceEntry.Text),
-                
+
             };
             Debug.WriteLine("await CabinController.InsertAndModifyCabinAsync(cabin, modify)");
             await CabinController.InsertAndModifyCabinAsync(cabin, "modify");
@@ -276,17 +276,26 @@ public partial class AddCabinModal : ContentPage
     private async void cabinPostalCodeEntryUnfocused(object sender, FocusEventArgs e)
     {
         var postalCode = cabinPostalCodeEntry.Text;
-
-        if (postalCode.Length == 5)
+        try
         {
-            var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
-            if (city != null)
+            if (postalCode != null && postalCode.Length == 5)
             {
-                cabinCityEntry.IsReadOnly = true;
-                cabinCityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
-                cabinCityEntry.Text = city;
+                var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
+                if (city != null)
+                {
+                    cabinCityEntry.IsReadOnly = true;
+                    cabinCityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
+                    cabinCityEntry.Text = city;
 
+                }
+                else
+                {
+                    cabinCityEntry.IsReadOnly = false;
+                    cabinCityEntry.BackgroundColor = Color.FromArgb("#ffffff");
+                    cabinCityEntry.Text = "";
+                }
             }
+
             else
             {
                 cabinCityEntry.IsReadOnly = false;
@@ -294,11 +303,9 @@ public partial class AddCabinModal : ContentPage
                 cabinCityEntry.Text = "";
             }
         }
-        else
+        catch (Exception ex)
         {
-            cabinCityEntry.IsReadOnly = false;
-            cabinCityEntry.BackgroundColor = Color.FromArgb("#ffffff");
-            cabinCityEntry.Text = "";
+            Debug.WriteLine(ex.Message);
         }
     }
     private void ResetCabinForm()
