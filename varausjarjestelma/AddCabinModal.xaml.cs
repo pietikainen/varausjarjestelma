@@ -278,24 +278,35 @@ public partial class AddCabinModal : ContentPage
         var postalCode = cabinPostalCodeEntry.Text;
         try
         {
+
             if (postalCode != null && postalCode.Length == 5)
             {
-                var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
-                if (city != null)
-                {
-                    cabinCityEntry.IsReadOnly = true;
-                    cabinCityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
-                    cabinCityEntry.Text = city;
+                var databaseCity = await PostalCodeController.GetCityNameAsync(postalCode);
 
+                if (databaseCity == null)
+                {
+                    var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
+                    if (city != null)
+                    {
+                        cabinCityEntry.IsReadOnly = true;
+                        cabinCityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
+                        cabinCityEntry.Text = city.ToUpper();
+
+                    }
+                    else
+                    {
+                        cabinCityEntry.IsReadOnly = false;
+                        cabinCityEntry.BackgroundColor = Color.FromArgb("#ffffff");
+                        cabinCityEntry.Text = "";
+                    }
                 }
                 else
                 {
-                    cabinCityEntry.IsReadOnly = false;
-                    cabinCityEntry.BackgroundColor = Color.FromArgb("#ffffff");
-                    cabinCityEntry.Text = "";
+                    cabinCityEntry.IsReadOnly = true;
+                    cabinCityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
+                    cabinCityEntry.Text = databaseCity.ToUpper();
                 }
             }
-
             else
             {
                 cabinCityEntry.IsReadOnly = false;

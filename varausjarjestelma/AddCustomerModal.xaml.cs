@@ -227,16 +227,36 @@ public partial class AddCustomerModal : ContentPage
     private async void PostalCodeEntryUnfocused(object sender, FocusEventArgs e)
     {
         var postalCode = postalCodeEntry.Text;
-
-        if (postalCode != null && postalCode.Length == 5)
+        try
         {
-            var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
-            if (city != null)
-            {
-                cityEntry.IsReadOnly = true;
-                cityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
-                cityEntry.Text = city;
 
+            if (postalCode != null && postalCode.Length == 5)
+            {
+                var databaseCity = await PostalCodeController.GetCityNameAsync(postalCode);
+
+                if (databaseCity == null)
+                {
+                    var city = await PostalCodeController.FetchPostalCodeFromApi(postalCode);
+                    if (city != null)
+                    {
+                        cityEntry.IsReadOnly = true;
+                        cityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
+                        cityEntry.Text = city.ToUpper();
+
+                    }
+                    else
+                    {
+                        cityEntry.IsReadOnly = false;
+                        cityEntry.BackgroundColor = Color.FromArgb("#ffffff");
+                        cityEntry.Text = "";
+                    }
+                }
+                else
+                {
+                    cityEntry.IsReadOnly = true;
+                    cityEntry.BackgroundColor = Color.FromArgb("#f7f7f7");
+                    cityEntry.Text = databaseCity.ToUpper();
+                }
             }
             else
             {
@@ -245,11 +265,9 @@ public partial class AddCustomerModal : ContentPage
                 cityEntry.Text = "";
             }
         }
-        else
+        catch (Exception ex)
         {
-            cityEntry.IsReadOnly = false;
-            cityEntry.BackgroundColor = Color.FromArgb("#ffffff");
-            cityEntry.Text = "";
+            Debug.WriteLine(ex.Message);
         }
     }
 

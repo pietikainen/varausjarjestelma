@@ -42,15 +42,13 @@ namespace varausjarjestelma.Controller
                     }
                 }
 
-
                 // Insert postal code to database
-
                 using (var command = new MySqlCommand(
                     @"INSERT INTO posti (postinro, toimipaikka)
                     VALUES (@postinro, @toimipaikka)", connection))
                 {
                     command.Parameters.AddWithValue("@postinro", postalCode.postinro);
-                    command.Parameters.AddWithValue("@toimipaikka", postalCode.toimipaikka);
+                    command.Parameters.AddWithValue("@toimipaikka", postalCode.toimipaikka.ToUpper());
 
                     await command.ExecuteNonQueryAsync();
 
@@ -67,7 +65,6 @@ namespace varausjarjestelma.Controller
         }
 
         // Get postal code from MYSQL:
-
         public static async Task<string> GetCityNameAsync(string postalcode)
         {
             MySqlConnection connection = MySqlController.GetConnection();
@@ -146,10 +143,6 @@ namespace varausjarjestelma.Controller
                         cityName = (string)jsonObject["servicePoints"][0]["addresses"][0]["city"];
                         return cityName;
                     }
-
-
-
-                    
                 }
                 catch (Exception e)
                 {
@@ -158,7 +151,6 @@ namespace varausjarjestelma.Controller
                     return null;
                 }
             }
-
         }
 
         internal class PostalCodeApiResponse
