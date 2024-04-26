@@ -8,11 +8,24 @@ namespace varausjarjestelma;
 public partial class AddReservationModal : ContentPage
 {
     private ReservationInfo reservationInfo;
+    private bool isEditing = false;
+    private int existingReservationId;
 
     public AddReservationModal(ReservationInfo reservationInfo)
     {
         InitializeComponent();
         this.reservationInfo = reservationInfo;
+
+        PopulateDetails(reservationInfo);
+    }
+
+    public AddReservationModal(ReservationInfo reservationInfo, bool isEditing, int existingReservationId)
+    {
+        InitializeComponent();
+        this.reservationInfo = reservationInfo;
+        this.existingReservationId = existingReservationId;
+        this.isEditing = isEditing;
+
         PopulateDetails(reservationInfo);
     }
 
@@ -37,7 +50,7 @@ public partial class AddReservationModal : ContentPage
             PhoneLabel.Text = "Loading...";
             AddressLabel.Text = "Loading...";
             PostalCodeLabel.Text = "Loading...";
-            CityLabel.Text = "Loading..."; 
+            CityLabel.Text = "Loading...";
             CabinLabel.Text = "Loading...";
             PriceLabel.Text = "Loading...";
             StartDateLabel.Text = "Loading...";
@@ -261,6 +274,8 @@ public partial class AddReservationModal : ContentPage
         }
     }
 
+
+
     private async Task SaveReservation(ReservationInfo reservationInfo)
     {
         // get the reservation info from the modal
@@ -290,6 +305,62 @@ public partial class AddReservationModal : ContentPage
                 amounts.Add(service.Value);
             }
         }
+        Debug.WriteLine("Service ids: " + string.Join(", ", serviceIds));
+        Debug.WriteLine("Amounts: " + string.Join(", ", amounts));
+
+
+        // Check if the reservation is being edited
+
+        if (isEditing)
+        {
+        Debug.WriteLine("AddReservationModal) Editing reservation. Reservation id: " + existingReservationId);
+            if (existingReservationId != 0)
+            {
+                // Update ServicesOnReservation
+                Debug.WriteLine("AddReservationModal) Updating services on reservation.");
+                Debug.WriteLine("Services: " + string.Join(", ", serviceIds));
+                Debug.WriteLine("Amounts: " + string.Join(", ", amounts));
+                bool servicesUpdated = await ServicesOnReservationController.UpdateServicesOnReservation(existingReservationId, serviceIds, amounts);
+
+                if (servicesUpdated)
+                {
+                    // Update the reservation
+
+                    Reservation updateReservation = new Reservation
+                    {
+                        asiakas_id = reservationInfo.CustomerId,
+                        mokki_mokki_id = reservationInfo.CabinId,
+                        varattu_pvm = DateTime.Now,
+                        vahvistus_pvm = new DateTime(1900, 1, 1),
+                        varattu_alkupvm = reservationInfo.StartDate,
+                        varattu_loppupvm = reservationInfo.EndDate,
+                        varaus_id = existingReservationId
+                    };
+
+                    bool reservationUpdated = await ReservationController.UpdateReservationAsync(updateReservation);
+
+                    if (reservationUpdated)
+                    {
+                        Debug.WriteLine("AddReservationModal) Reservation updated successfully.");
+                        await DisplayAlert("Success", $"Reservation #{existingReservationId} updated successfully", "OK");
+                        await Navigation.PopModalAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Failed to update reservation", "OK");
+                        return;
+                    }
+                } else
+                {
+                    Debug.WriteLine("AddReservationModal) Failed to update services on reservation");
+                }
+
+
+            }
+
+
+
+        }
 
         // call the reservation and services database insert methods
 
@@ -314,7 +385,7 @@ public partial class AddReservationModal : ContentPage
         }
         else
         {
-            
+
             await DisplayAlert("Error", "Failed to add reservation", "OK");
             return;
         }

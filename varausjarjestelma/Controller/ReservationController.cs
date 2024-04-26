@@ -8,11 +8,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Data;
+using System.Runtime.InteropServices;
 
 namespace varausjarjestelma.Controller
 {
     public class ReservationController
     {
+
+        // get next free reservationnumber
+
+        public static async Task<int> GetNextReservationNumberAsync()
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT MAX(varaus_id) FROM varaus;", connection))
+                {
+                    int nextReservationNumber = Convert.ToInt32(await command.ExecuteScalarAsync());
+                    return nextReservationNumber + 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return 0;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+
         // get all reservation data
         public static async Task<List<ReservationListViewItems>> GetAllReservationDataAsync()
         {
@@ -22,11 +52,21 @@ namespace varausjarjestelma.Controller
             {
                 await connection.OpenAsync();
                 using (var command = new MySqlCommand(@"
-                    SELECT v.*, concat(m.mokkinimi, ', ', al.nimi) AS cabinName, concat(a.sukunimi, ' ', a.etunimi) AS customerName
-                        FROM varaus v
-                        INNER JOIN asiakas a ON v.asiakas_id = a.asiakas_id
-                        INNER JOIN mokki m ON v.mokki_mokki_id = m.mokki_id
-                        INNER JOIN alue al ON m.alue_id = al.alue_id;
+                    SELECT 
+                        v.varaus_id, 
+                        v.asiakas_id, 
+                        v.varattu_pvm, 
+                        v.vahvistus_pvm, 
+                        v.varattu_alkupvm, 
+                        v.varattu_loppupvm,
+                        al.nimi, 
+                        m.mokkinimi, 
+                        v.mokki_mokki_id, 
+                        concat(a.sukunimi, ' ', a.etunimi) AS customerName
+                    FROM varaus v
+                    INNER JOIN asiakas a ON v.asiakas_id = a.asiakas_id
+                    INNER JOIN mokki m ON v.mokki_mokki_id = m.mokki_id
+                    INNER JOIN alue al ON m.alue_id = al.alue_id;
                         ", connection))
                 {
                     using (var reader = await command.ExecuteReaderAsync())
@@ -45,8 +85,8 @@ namespace varausjarjestelma.Controller
                                 startDate = reader.GetDateTime("varattu_alkupvm"),
                                 endDate = reader.GetDateTime("varattu_loppupvm"),
                                 customerName = reader.GetString("customerName"),
-                                cabinName = reader.GetString("cabinName")
-                                //areaName = readerGetString("areaName")
+                                cabinName = reader.GetString("mokkinimi"),
+                                AreaName = reader.GetString("nimi")
                             };
 
                             reservations.Add(reservation);
@@ -54,6 +94,19 @@ namespace varausjarjestelma.Controller
                         return reservations;
                     }
                 }
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.InnerExceptions)
+                {
+                    Debug.WriteLine($"Inner Exception: {innerException.Message}");
+                }
+                return null;
+            }
+            catch (COMException ce)
+            {
+                Debug.WriteLine("ERROR in MYSQL: " + ce.Message);
+                return null;
             }
             catch (Exception e)
             {
@@ -192,6 +245,62 @@ namespace varausjarjestelma.Controller
                 await connection.CloseAsync();
             }
         }
+
+        // update reservation
+
+        public static async Task<bool> UpdateReservationAsync(Reservation reservation)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+            Debug.WriteLine("Inside Update reservation MYSQL");
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand(@"
+                    UPDATE varaus SET 
+                        asiakas_id = @customerId, 
+                        mokki_mokki_id = @cabinId, 
+                        varattu_pvm = @reservedDate, 
+                        vahvistus_pvm = @confirmationDate, 
+                        varattu_alkupvm = @startDate, 
+                        varattu_loppupvm = @endDate 
+                        WHERE varaus_id = @reservationId;", connection))
+                {
+                    command.Parameters.AddWithValue("@customerId", reservation.asiakas_id);
+                    command.Parameters.AddWithValue("@cabinId", reservation.mokki_mokki_id);
+                    command.Parameters.AddWithValue("@reservedDate", reservation.varattu_pvm);
+                    command.Parameters.AddWithValue("@confirmationDate", reservation.vahvistus_pvm);
+                    command.Parameters.AddWithValue("@startDate", reservation.varattu_alkupvm);
+                    command.Parameters.AddWithValue("@endDate", reservation.varattu_loppupvm);
+                    command.Parameters.AddWithValue("@reservationId", reservation.varaus_id);
+
+                    Debug.WriteLine("Updating reservation with info: ");
+                    Debug.WriteLine("Customer ID: " + reservation.asiakas_id);
+                    Debug.WriteLine("Cabin ID: " + reservation.mokki_mokki_id);
+                    Debug.WriteLine("Reserved date: " + reservation.varattu_pvm);
+                    Debug.WriteLine("Confirmation date: " + reservation.vahvistus_pvm);
+                    Debug.WriteLine("Start date: " + reservation.varattu_alkupvm);
+                    Debug.WriteLine("End date: " + reservation.varattu_loppupvm);
+                    Debug.WriteLine("Reservation ID: " + reservation.varaus_id);
+
+                    await command.ExecuteNonQueryAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+
+
+
 
         // Find all available cabins on given dates
         public static async Task<List<CabinData>> GetAllAvailableCabinsOnDatesAsync(int id, DateTime start, DateTime end)

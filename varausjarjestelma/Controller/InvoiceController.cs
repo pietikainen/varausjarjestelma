@@ -454,7 +454,7 @@ namespace varausjarjestelma.Controller
 
     public class InvoiceDetails
     {
-
+        // drawtext(invoicedetails.customerFullName, 24,,124,24)
         // Customer
         public int CustomerId { get; set; }
         public required string FullName { get; set; }

@@ -48,7 +48,37 @@ namespace varausjarjestelma.Controller
             }
         }
 
+        // get amount of services on reservation id
 
+        public static async Task<int> GetAmountOfServiceOnReservation(int reservationId, int serviceId)
+        {
+            MySqlConnection connection = MySqlController.GetConnection();
+
+            try
+            {
+                await connection.OpenAsync();
+
+                using (var command = new MySqlCommand("SELECT lkm FROM varauksen_palvelut WHERE varaus_id = @reservationId AND palvelu_id = @serviceId;", connection))
+                {
+                    command.Parameters.AddWithValue("@reservationId", reservationId);
+                    command.Parameters.AddWithValue("@serviceId", serviceId);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return reader.GetInt32("lkm");
+                        }
+                    }
+                }
+                await connection.CloseAsync();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 0;
+            }
+        }
 
         // Add one service on Reservation
 
@@ -155,6 +185,35 @@ namespace varausjarjestelma.Controller
             }
         }
 
+
+        // update services on reservation
+
+        public static async Task<bool> UpdateServicesOnReservation(int reservationId, List<int> serviceIds, List<int> amounts)
+        {
+            try
+            {
+                MySqlConnection connection = MySqlController.GetConnection();
+                await connection.OpenAsync();
+
+                for (int i = 0; i < serviceIds.Count; i++)
+                {
+                    using (var command = new MySqlCommand("UPDATE varauksen_palvelut SET varaus_id = @reservationId, palvelu_id = @service_id, lkm = @amount;", connection))
+                    {
+                        command.Parameters.AddWithValue("@reservationId", reservationId);
+                        command.Parameters.AddWithValue("@serviceId", serviceIds[i]);
+                        command.Parameters.AddWithValue("@amount", amounts[i]);
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+                await connection.CloseAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
 
 
 

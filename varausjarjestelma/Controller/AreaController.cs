@@ -149,6 +149,26 @@ namespace varausjarjestelma.Controller
     }
 
 
+    // Workaround method for getting area name from cabin id
+
+    //public static async Task<string> GetAreaNameFromCabinId(int cabinId)
+    //{
+    //    MySqlConnection connection = MySqlController.GetConnection();
+    //    await connection.OpenAsync();
+
+    //    using (var command = new MySqlCommand("SELECT alue.nimi FROM alue INNER JOIN mokki ON alue.alue_id = mokki.alue_id WHERE mokki.mokki_id = @cabinId", connection))
+    //    {
+    //        command.Parameters.AddWithValue("@cabinId", cabinId);
+    //        using (var reader = await command.ExecuteReaderAsync())
+    //        {
+    //            await reader.ReadAsync();
+    //            string areaName = reader.GetString("nimi");
+    //            await connection.CloseAsync();
+    //            return areaName;
+    //        }
+    //    }
+    //}
+
 
 
     public class AreaData

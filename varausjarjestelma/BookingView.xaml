@@ -93,11 +93,11 @@
                             <ColumnDefinition Width="70" />
                             <ColumnDefinition Width="200" />
                             <ColumnDefinition Width="200" />
-                            <ColumnDefinition Width="110" />
-                            <ColumnDefinition Width="110" />
-                            <ColumnDefinition Width="110" />
-                            <ColumnDefinition Width="110" />
-                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="170" />
+
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -129,12 +129,6 @@
                             Grid.Column="6"
                             FontAttributes="Bold"
                             Text="End Date" />
-                        <Label
-                            Grid.Column="7"
-                            Grid.ColumnSpan="2"
-                            FontAttributes="Bold"
-                            HorizontalOptions="Center"
-                            Text="Actions" />
 
 
                     </Grid>
@@ -150,7 +144,7 @@
                             x:Name="BookingListActivityIndicator"
                             IsRunning="False"
                             IsVisible="False" />
-                        <ListView x:Name="BookingListView">
+                        <ListView x:Name="BookingListView" ItemTapped="BookingListViewItemTapped">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -159,14 +153,10 @@
                                                 <ColumnDefinition Width="70" />
                                                 <ColumnDefinition Width="200" />
                                                 <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="110" />
-                                                <ColumnDefinition Width="110" />
-                                                <ColumnDefinition Width="110" />
-                                                <ColumnDefinition Width="110" />
-                                                <ColumnDefinition Width="45" />
-                                                <ColumnDefinition Width="45" />
-                                                <ColumnDefinition Width="45" />
-                                                <ColumnDefinition Width="45" />
+                                                <ColumnDefinition Width="170" />
+                                                <ColumnDefinition Width="170" />
+                                                <ColumnDefinition Width="170" />
+                                                <ColumnDefinition Width="170" />
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -189,7 +179,7 @@
                                                 VerticalOptions="Center" />
                                             <Label
                                                 Grid.Column="4"
-                                                Text="{Binding confirmationDateString, StringFormat='{0:d}'}"
+                                                Text="{Binding confirmationDate, StringFormat='{0:d}'}"
                                                 VerticalOptions="Center" />
                                             <Label
                                                 Grid.Column="5"
@@ -199,43 +189,6 @@
                                                 Grid.Column="6"
                                                 Text="{Binding endDate, StringFormat='{0:d}'}"
                                                 VerticalOptions="Center" />
-
-                                            <ImageButton
-                                                x:Name="SetConfirmedButton"
-                                                Grid.Column="7"
-                                                Padding="0,0,0,0"
-                                                BackgroundColor="Transparent"
-                                                Clicked="SetConfirmedButtonClicked"
-                                                Scale="0.6"
-                                                Source="checkmark.png" />
-
-                                            <ImageButton
-                                                x:Name="ModifyReservationButton"
-                                                Grid.Column="8"
-                                                Padding="0,0,0,0"
-                                                BackgroundColor="Transparent"
-                                                Clicked="ModifyReservationButtonClicked"
-                                                Scale="0.5"
-                                                Source="modify.png" />
-
-                                            <ImageButton
-                                                x:Name="OpenInvoiceButton"
-                                                Grid.Column="9"
-                                                Padding="0,0,0,0"
-                                                BackgroundColor="Transparent"
-                                                Clicked="CreateInvoiceButtonClicked"
-                                                Scale="0.5"
-                                                Source="invoice.png" />
-
-                                            <ImageButton
-                                                x:Name="RemoveReservationButton"
-                                                Grid.Column="10"
-                                                Padding="0,0,0,0"
-                                                BackgroundColor="Transparent"
-                                                Clicked="RemoveReservationButtonClicked"
-                                                Scale="0.5"
-                                                Source="remove.png" />
-
                                         </Grid>
                                     </ViewCell>
                                 </DataTemplate>

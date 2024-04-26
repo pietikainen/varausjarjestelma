@@ -10,22 +10,18 @@ public partial class Booking : ContentPage
     AreaController areaController = new AreaController();
     List<AreaData>? areas;
     private int selectedAreaId;
+    private bool isEditing = false;
+    private int existingReservationId = 0;
 
-    // Init search bar
-
-
-    public Booking(bool? clearPage)
+    public Booking()
     {
+        // Initialize
+        InitializeComponent();
+        InitializeAreaPicker();
         // Clear forms
-        if (clearPage == true)
-        {
-            InitializeComponent();
-            // Initialize
-            InitializeAreaPicker();
-            ResetAllFields();
-            // Set date pickers minimum date to today
-            CheckInDatePicker.MinimumDate = DateTime.Today;
-        }
+        ResetAllFields();
+        // Set date pickers minimum date to today
+        CheckInDatePicker.MinimumDate = DateTime.Today;
 
         // Populate all customers
         GetAllCustomersData();
@@ -37,7 +33,7 @@ public partial class Booking : ContentPage
         InitializeComponent();
         InitializeAreaPicker();
         GetAllCustomersData();
-
+        isEditing = true;
         PopulateFormWithReservationData(reservation);
     }
 
@@ -60,6 +56,7 @@ public partial class Booking : ContentPage
 
     private async void PopulateFormWithReservationData(ReservationListViewItems reservation)
     {
+        existingReservationId = reservation.reservationId;
         try
         {
             List<ServiceOnReservation> services = await ServicesOnReservationController.GetServicesOnReservationAsync(reservation.reservationId);
@@ -70,6 +67,8 @@ public partial class Booking : ContentPage
 
                 selectedAreaId = 0;
 
+
+                areas = await AreaController.GetAllAreaDataAsync();
                 foreach (AreaData area in areas)
                 {
                     if (area.Name == reservation.AreaName)
@@ -78,86 +77,134 @@ public partial class Booking : ContentPage
                         break;
                     }
                 }
+                Debug.WriteLine("Selected Area ID: " + selectedAreaId);
+
+                Debug.WriteLine("Areapicker Index Of Reservation.AreaName: " + AreaPicker.Items.IndexOf(reservation.AreaName));
+
+                Debug.WriteLine("Reservation details from class");
+                Debug.WriteLine("Reservation ID: " + reservation.reservationId);
+                Debug.WriteLine("Customer ID: " + reservation.customerId);
+                Debug.WriteLine("Customer Name: " + reservation.customerName);
+                Debug.WriteLine("Cabin ID: " + reservation.cabinId);
+                Debug.WriteLine("Area Name: " + reservation.AreaName);
+                Debug.WriteLine("Cabin name" + reservation.cabinName);
+                Debug.WriteLine("Reserved date: " + reservation.reservedDate);
+                Debug.WriteLine("Confirmed date: " + reservation.confirmationDate);
+                Debug.WriteLine("Start date: " + reservation.startDate);
+                Debug.WriteLine("End date: " + reservation.endDate);
 
 
 
                 // Populate form with reservation data
                 CheckInDatePicker.Date = reservation.startDate;
                 CheckOutDatePicker.Date = reservation.endDate;
+                // set readonly datepickers to true
+                CheckInDatePicker.IsEnabled = false;
+                CheckOutDatePicker.IsEnabled = false;
+
                 AreaPicker.SelectedIndex = AreaPicker.Items.IndexOf(reservation.AreaName);
-                Debug.WriteLine("Areapicker.indexof: " + AreaPicker.Items.IndexOf(reservation.AreaName));
+                //CustomerListView.SelectedItem = reservation.customerName;
 
 
 
 
                 // Populate cabin listview
-                List<CabinData> allCabins = await CabinController.GetCabinsByAreaIdAsync(AreaPicker.SelectedIndex);
-
-                // Populate services
-                foreach (ServiceOnReservation service in services)
+                try
                 {
-                    var serviceData = await ServiceController.GetServiceDataById(service.palvelu_id);
+                    listViewCabinMain.ItemsSource = null;
+                    List<CabinData> allCabins = await CabinController.GetCabinsByAreaIdAsync(selectedAreaId);
+                    listViewCabinMain.ItemsSource = allCabins;
 
+                    // automatically select listview item by cabin ID  from reservation
 
-                    Stepper serviceStepper = new Stepper
+                    foreach (CabinData cabin in allCabins)
                     {
-                        Minimum = 0,
-                        Maximum = 10,
-                        Increment = 1,
-                        HorizontalOptions = LayoutOptions.Center,
-                        Value = service.lkm
-                    };
-
-                    Label quantityLabel = new Label
-                    {
-                        Text = service.lkm.ToString(),
-                        HorizontalOptions = LayoutOptions.Center
-                    };
-
-                    Label serviceNameLabel = new Label
-                    {
-                        Text = serviceData.Name.ToString(),
-                        HorizontalOptions = LayoutOptions.Center
-                    };
-
-                    serviceNameLabel.ClassId = serviceData.ServiceId.ToString();
-
-                    serviceStepper.ValueChanged += (s, e) =>
-                    {
-                        quantityLabel.Text = e.NewValue.ToString();
-                        int quantity = (int)e.NewValue;
-                    };
-
-                    StackLayout stepperLayout = new StackLayout
-                    {
-                        Orientation = StackOrientation.Horizontal,
-                        Children = { quantityLabel, serviceStepper, serviceNameLabel }
-                    };
-
-                    ServicesPicker.Children.Add(stepperLayout);
+                        if (cabin.CabinId == reservation.cabinId)
+                        {
+                            listViewCabinMain.SelectedItem = cabin;
+                            break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error: " + ex.Message);
                 }
 
-                CustomerListView.SelectedItem = reservation.customerId;
+
+
+                // automatically select listview item by customer ID from reservation
+                foreach (CustomerData customer in CustomerListView.ItemsSource)
+                {
+                    if (customer.CustomerId == reservation.customerId)
+                    {
+                        CustomerListView.SelectedItem = customer;
+                        break;
+                    }
+                }
+
+                // Populate services
+
+                ServicesDataList(selectedAreaId);
+
+
+
+                //foreach (ServiceOnReservation service in services)
+                //{
+                //    var serviceData = await ServiceController.GetServiceDataById(service.palvelu_id);
+
+
+                //    Stepper serviceStepper = new Stepper
+                //    {
+                //        Minimum = 0,
+                //        Maximum = 10,
+                //        Increment = 1,
+                //        HorizontalOptions = LayoutOptions.Center,
+                //        Value = service.lkm
+                //    };
+
+                //    Label quantityLabel = new Label
+                //    {
+                //        Text = service.lkm.ToString(),
+                //        HorizontalOptions = LayoutOptions.Center
+                //    };
+
+                //    Label serviceNameLabel = new Label
+                //    {
+                //        Text = serviceData.Name.ToString(),
+                //        HorizontalOptions = LayoutOptions.Center
+                //    };
+
+                //    serviceNameLabel.ClassId = service.palvelu_id.ToString();
+
+                //    serviceStepper.ValueChanged += (s, e) =>
+                //    {
+                //        quantityLabel.Text = e.NewValue.ToString();
+                //        int quantity = (int)e.NewValue;
+                //    };
+
+                //    StackLayout stepperLayout = new StackLayout
+                //    {
+                //        Orientation = StackOrientation.Horizontal,
+                //        Children = { quantityLabel, serviceStepper, serviceNameLabel }
+                //    };
+
+                //    ServicesPicker.Children.Add(stepperLayout);
+                //}
+
+
+
 
             }
             else
             {
                 Debug.WriteLine("ERROR: Reservation not found");
             }
-        } 
+        }
         catch (Exception ex)
         {
             Debug.WriteLine("");
         }
-
-
-
-
-
-
-
-        // Add services to reservation
-
     }
 
 
@@ -190,7 +237,6 @@ public partial class Booking : ContentPage
     {
         try
         {
-
             if (AreaPicker.SelectedIndex != -1)
             {
                 string selectedArea = AreaPicker.SelectedItem.ToString();
@@ -213,11 +259,9 @@ public partial class Booking : ContentPage
                 //var cabinController = new CabinController();
                 //List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(selectedAreaId, CheckInDatePicker.Date, CheckOutDatePicker.Date);
 
-
-                
                 //Get all services for the selected area and add them to the frame
 
-               ServicesDataList(selectedAreaId);
+                ServicesDataList(selectedAreaId);
             }
         }
         catch (Exception ex)
@@ -229,7 +273,7 @@ public partial class Booking : ContentPage
     private async void PopulateCabinListView(int id)
     {
         List<CabinData> cabins = await ReservationController.GetAllAvailableCabinsOnDatesAsync(id, CheckInDatePicker.Date, CheckOutDatePicker.Date);
-        
+
         // If no cabins found, show a message in listview
         CabinData emptyCabinData = new CabinData();
         emptyCabinData.CabinName = "No cabins found on given dates";
@@ -245,7 +289,7 @@ public partial class Booking : ContentPage
         {
             listViewCabinMain.ItemsSource = nullCabins;
         }
-    } 
+    }
 
     private async void GetAllCustomersData()
     {
@@ -284,7 +328,6 @@ public partial class Booking : ContentPage
 
 
     // Search for customers
-
     private async void CustomerSearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
         var keyword = CustomerSearchBar.Text;
@@ -302,16 +345,16 @@ public partial class Booking : ContentPage
         }
 
     }
+
+    // Services data stepper
+
     private async void ServicesDataList(int selectedAreaId)
     {
         try
         {
             var ctrl = new ServiceController();
             var services = await ctrl.GetServiceDataByAreaId(selectedAreaId);
-
             ServicesPicker.Children.Clear();
-
-            Debug.WriteLine("Services count: " + services.Count);
 
             if (services.Count == 0)
             {
@@ -322,46 +365,47 @@ public partial class Booking : ContentPage
                 };
                 ServicesPicker.Children.Add(noServicesLabel);
             }
-
-
-            foreach (ServiceData service in services)
+            else
             {
-                Stepper serviceStepper = new Stepper
+                foreach (ServiceData service in services)
                 {
-                    Minimum = 0,
-                    Maximum = 10,
-                    Increment = 1,
-                    HorizontalOptions = LayoutOptions.Center,
-                };
+                    Stepper serviceStepper = new Stepper
+                    {
+                        Minimum = 0,
+                        Maximum = 10,
+                        Increment = 1,
+                        HorizontalOptions = LayoutOptions.Center,
+                        Value = isEditing ? await GetServiceAmount(service.ServiceId) : 0 // Asetetaan Stepperin arvo oikein, jos isEditing on tosi
+                    };
 
-                Label quantityLabel = new Label
-                {
-                    Text = "0",
-                    HorizontalOptions = LayoutOptions.Center
-                };
+                    Label quantityLabel = new Label
+                    {
+                        Text = serviceStepper.Value.ToString(), // Asetetaan quantityLabelin teksti Stepperin arvon mukaan
+                        HorizontalOptions = LayoutOptions.Center
+                    };
 
-                Label serviceNameLabel = new Label
-                {
-                    Text = service.Name,
-                    HorizontalOptions = LayoutOptions.Center
-                };
+                    Label serviceNameLabel = new Label
+                    {
+                        Text = service.Name,
+                        HorizontalOptions = LayoutOptions.Center
+                    };
 
-                serviceNameLabel.ClassId = service.ServiceId.ToString();
+                    serviceNameLabel.ClassId = service.ServiceId.ToString();
 
-                serviceStepper.ValueChanged += (s, e) =>
-                {
-                    quantityLabel.Text = e.NewValue.ToString();
-                    int quantity = (int)e.NewValue;
+                    serviceStepper.ValueChanged += (s, e) =>
+                    {
+                        quantityLabel.Text = e.NewValue.ToString();
+                        int quantity = (int)e.NewValue;
+                    };
 
-                };
+                    StackLayout stepperLayout = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Children = { quantityLabel, serviceStepper, serviceNameLabel }
+                    };
 
-                StackLayout stepperLayout = new StackLayout
-                {
-                    Orientation = StackOrientation.Horizontal,
-                    Children = { quantityLabel, serviceStepper, serviceNameLabel }
-                };
-
-                ServicesPicker.Children.Add(stepperLayout);
+                    ServicesPicker.Children.Add(stepperLayout);
+                }
             }
         }
         catch (AggregateException ae)
@@ -376,6 +420,94 @@ public partial class Booking : ContentPage
             Debug.WriteLine($"An error occurred: {ex.Message}");
         }
     }
+
+    private async Task<int> GetServiceAmount(int serviceId)
+    {
+        if (isEditing)
+        {
+            return await ServicesOnReservationController.GetAmountOfServiceOnReservation(existingReservationId, serviceId);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+
+    //private async void ServicesDataList(int selectedAreaId)
+    //{
+    //    try
+    //    {
+    //        var ctrl = new ServiceController();
+    //        var services = await ctrl.GetServiceDataByAreaId(selectedAreaId);
+    //        ServicesPicker.Children.Clear();
+
+    //        if (services.Count == 0)
+    //        {
+    //            Label noServicesLabel = new Label
+    //            {
+    //                Text = "No services found",
+    //                HorizontalOptions = LayoutOptions.Center
+    //            };
+    //            ServicesPicker.Children.Add(noServicesLabel);
+    //        }
+
+
+    //        foreach (ServiceData service in services)
+    //        {
+    //            Stepper serviceStepper = new Stepper
+    //            {
+    //                Minimum = 0,
+    //                Maximum = 10,
+    //                Increment = 1,
+    //                HorizontalOptions = LayoutOptions.Center,
+    //            };
+
+    //            Label quantityLabel = new Label { Text = "0", HorizontalOptions = LayoutOptions.Center };
+
+    //            if (isEditing)
+    //            {
+    //                var servicesAmount = await ServicesOnReservationController.GetAmountOfServiceOnReservation(existingReservationId, service.ServiceId);
+    //                serviceStepper.Value = servicesAmount;
+
+    //                quantityLabel.Text = servicesAmount.ToString();
+
+    //            }
+
+
+    //            Label serviceNameLabel = new Label { Text = service.Name, HorizontalOptions = LayoutOptions.Center };
+
+    //            serviceNameLabel.ClassId = service.ServiceId.ToString();
+
+    //            serviceStepper.ValueChanged += (s, e) =>
+    //            {
+    //                quantityLabel.Text = e.NewValue.ToString();
+    //                int quantity = (int)e.NewValue;
+
+    //            };
+
+    //            StackLayout stepperLayout = new StackLayout
+    //            {
+    //                Orientation = StackOrientation.Horizontal,
+    //                Children = { quantityLabel, serviceStepper, serviceNameLabel }
+    //            };
+
+    //            ServicesPicker.Children.Add(stepperLayout);
+    //        }
+    //    }
+    //    catch (AggregateException ae)
+    //    {
+    //        foreach (var innerException in ae.InnerExceptions)
+    //        {
+    //            Debug.WriteLine($"Inner Exception: {innerException.Message}");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.WriteLine($"An error occurred: {ex.Message}");
+    //    }
+    //}
 
     private async void CustomerListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
@@ -401,8 +533,6 @@ public partial class Booking : ContentPage
     }
 
     // method to gather info from page entries and selections and to send to modal:
-
-
     private async void OnBookNowClicked(object sender, EventArgs e)
     {
         // Form ReservationInfo class from user input
@@ -472,6 +602,11 @@ public partial class Booking : ContentPage
 
         // Open a modal with details + confirmation button
         Debug.WriteLine("Reservation info: " + reservationInfo.CustomerId + " " + reservationInfo.CabinId + " " + reservationInfo.StartDate + " " + reservationInfo.EndDate);
+        if (isEditing)
+        {
+            Debug.WriteLine("IS editin? : " + isEditing + " existing reservation id: " + existingReservationId);
+            await Navigation.PushModalAsync(new AddReservationModal(reservationInfo, isEditing, existingReservationId));
+        }
         await Navigation.PushModalAsync(new AddReservationModal(reservationInfo));
         ResetAllFields();
     }
