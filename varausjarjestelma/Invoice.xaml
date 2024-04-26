@@ -81,60 +81,67 @@
                             Margin="10,0,5,0"
                             HorizontalOptions="Center"
                             WidthRequest="600">
-                            <ListView x:Name="InvoicesListView" ItemTapped="OnInvoiceTapped">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <Grid Margin="10,0,0,0" VerticalOptions="Center">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30" />
-                                                    <ColumnDefinition Width="200" />
-                                                    <ColumnDefinition Width="100" />
-                                                    <ColumnDefinition Width="100" />
-                                                    <ColumnDefinition Width="45" />
-                                                    <ColumnDefinition Width="45" />
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <Label Text="{Binding InvoiceNumber}" VerticalOptions="Center" />
+                            <StackLayout>
+                                <ActivityIndicator
+                                    x:Name="ActivityIndicator"
+                                    IsRunning="False"
+                                    IsVisible="False" />
 
-                                                <Label
-                                                    Grid.Column="1"
-                                                    Text="{Binding CustomerName}"
-                                                    VerticalOptions="Center" />
+                                <ListView x:Name="InvoicesListView" ItemTapped="OnInvoiceTapped">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Grid Margin="10,0,0,0" VerticalOptions="Center">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30" />
+                                                        <ColumnDefinition Width="200" />
+                                                        <ColumnDefinition Width="100" />
+                                                        <ColumnDefinition Width="100" />
+                                                        <ColumnDefinition Width="45" />
+                                                        <ColumnDefinition Width="45" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Label Text="{Binding InvoiceNumber}" VerticalOptions="Center" />
 
-                                                <Label
-                                                    Grid.Column="2"
-                                                    Text="{Binding InvoiceAmount, StringFormat='{0:C}'}"
-                                                    VerticalOptions="Center" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Text="{Binding CustomerName}"
+                                                        VerticalOptions="Center" />
 
-                                                <Label
-                                                    Grid.Column="3"
-                                                    Text="{Binding IsPaidString}"
-                                                    VerticalOptions="Center" />
+                                                    <Label
+                                                        Grid.Column="2"
+                                                        Text="{Binding InvoiceAmount, StringFormat='{0:C}'}"
+                                                        VerticalOptions="Center" />
 
-                                                <ImageButton
-                                                    x:Name="SetIsPaidButton"
-                                                    Grid.Column="4"
-                                                    BackgroundColor="Transparent"
-                                                    Clicked="SetIsPaidButtonClicked"
-                                                    CornerRadius="50"
-                                                    Scale="0.6"
-                                                    Source="checkmark.png" />
-                                                <ImageButton
-                                                    x:Name="RemoveInvoiceButton"
-                                                    Grid.Column="5"
-                                                    BackgroundColor="Transparent"
-                                                    Clicked="RemoveInvoiceButtonClicked"
-                                                    Scale="0.5"
-                                                    Source="remove.png" />
-                                            </Grid>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
+                                                    <Label
+                                                        Grid.Column="3"
+                                                        Text="{Binding IsPaidString}"
+                                                        VerticalOptions="Center" />
 
-                            </ListView>
+                                                    <ImageButton
+                                                        x:Name="SetIsPaidButton"
+                                                        Grid.Column="4"
+                                                        BackgroundColor="Transparent"
+                                                        Clicked="SetIsPaidButtonClicked"
+                                                        CornerRadius="50"
+                                                        Scale="0.6"
+                                                        Source="checkmark.png" />
+                                                    <ImageButton
+                                                        x:Name="RemoveInvoiceButton"
+                                                        Grid.Column="5"
+                                                        BackgroundColor="Transparent"
+                                                        Clicked="RemoveInvoiceButtonClicked"
+                                                        Scale="0.5"
+                                                        Source="remove.png" />
+                                                </Grid>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+
+                                </ListView>
+                            </StackLayout>
                         </Frame>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
@@ -202,8 +209,9 @@
                                         <Label
                                             Grid.Row="2"
                                             HorizontalOptions="Center"
+                                            IsVisible="false"
                                             Text="Village Newbies"
-                                            VerticalOptions="End" IsVisible="false" />
+                                            VerticalOptions="End" />
 
                                         <!--  Asiakkaan tiedot  -->
                                         <Label Grid.Row="4" Text="{Binding FullName}" />

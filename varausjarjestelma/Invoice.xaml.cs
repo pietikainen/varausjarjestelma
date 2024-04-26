@@ -12,11 +12,6 @@ public partial class Invoice : ContentPage
     public Invoice()
     {
         InitializeComponent();
-    }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
         GetInvoicesPreviewData();
     }
 
@@ -25,6 +20,10 @@ public partial class Invoice : ContentPage
     {
         try
         {
+            ActivityIndicator.IsRunning = true;
+            ActivityIndicator.IsVisible = true;
+
+            InvoicesListView.ItemsSource = null;
             invoices = await InvoiceController.GetAllInvoicesPreviewAsync();
 
             foreach (InvoiceData invoice in invoices)
@@ -39,6 +38,9 @@ public partial class Invoice : ContentPage
                 }
             }
             InvoicesListView.ItemsSource = invoices;
+
+            ActivityIndicator.IsRunning = false;
+            ActivityIndicator.IsVisible = false;
         }
         catch (AggregateException ae)
         {
@@ -198,29 +200,40 @@ public partial class Invoice : ContentPage
 
     private async void SetIsPaidButtonClicked(object sender, EventArgs e)
     {
-        var button = sender as ImageButton;
-        if (button == null)
+        try
         {
-            Debug.WriteLine("Button is null");
-            return;
+            var button = sender as ImageButton;
+            if (button == null)
+            {
+                Debug.WriteLine("Button is null");
+                return;
+            }
+            var invoice = button.BindingContext as InvoiceData;
+            if (invoice == null)
+            {
+                Debug.WriteLine("Invoice is null");
+                return;
+            }
+
+            var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to mark this invoice as paid?", "Yes", "No");
+
+            if (!isAccepted)
+            {
+                Debug.WriteLine("Confirmation cancelled");
+                return;
+            }
+
+            await InvoiceController.SetInvoicePaidAsync(invoice.InvoiceNumber);
+           
         }
-        var invoice = button.BindingContext as InvoiceData;
-        if (invoice == null)
+        catch (Exception ex)
         {
-            Debug.WriteLine("Invoice is null");
-            return;
+            Debug.WriteLine($"An error occurred: {ex.Message}");
         }
-
-        var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to mark this invoice as paid?", "Yes", "No");
-
-        if (!isAccepted)
+        finally
         {
-            Debug.WriteLine("Confirmation cancelled");
-            return;
+            await RefreshListView();
         }
-
-        await InvoiceController.SetInvoicePaidAsync(invoice.InvoiceNumber);
-        await RefreshListView();
     }
 
     private async void RemoveInvoiceButtonClicked(object sender, EventArgs e)
@@ -252,7 +265,9 @@ public partial class Invoice : ContentPage
 
     public async Task RefreshListView()
     {
-        InvoicesListView.ItemsSource = await InvoiceController.GetAllInvoicesPreviewAsync();
+        Debug.WriteLine("Inside Invoice.RefreshListView()");
+        GetInvoicesPreviewData();
+        Debug.WriteLine("InvoicesListView.ItemsSource refreshed");
     }
 
     async void MainMenuButtonClicked(object sender, EventArgs e)
