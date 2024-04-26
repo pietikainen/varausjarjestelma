@@ -192,7 +192,7 @@ public partial class AddCustomerModal : ContentPage
                 errorString.Add("Phone number must be in numeric form.");
             }
 
-            if (!IsEmailValid(emailEntry.Text) || emailEntry.Text > 50)
+            if (!IsEmailValid(emailEntry.Text) || emailEntry.Text.Length > 50)
             {
                 errorString.Add("Email is not valid.");
             }
