@@ -26,9 +26,7 @@ public partial class AddCabinModal : ContentPage
         cabinPostalCodeEntry.Text = cabin.PostalCode;
         cabinPriceEntry.Text = cabin.Price.ToString();
         AreaIdLabelHidden.Text = cabin.AreaId.ToString();
-
         AreaPicker.IsVisible = false;
-
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
 
@@ -79,10 +77,21 @@ public partial class AddCabinModal : ContentPage
 
 
     }
-
     private async void CabinSaveButton_Clicked(object sender, EventArgs e)
     {
-
+        if (cabinIdEntry.IsVisible != true)
+        {
+            SaveCabin(sender, e);
+            
+        }
+        else 
+        {
+            CabinModify(sender, e);
+        }
+    }
+    private async void SaveCabin(object sender, EventArgs e)
+    {
+        
         var cabinAreaId = AreaIdLabelHidden.Text;
         Debug.WriteLine("AreaIDLabelHGidden: " + cabinAreaId);
         var cabinName = cabinNameEntry.Text;
@@ -95,12 +104,29 @@ public partial class AddCabinModal : ContentPage
         var cabinPrice = cabinPriceEntry.Text;
         Debug.WriteLine("Populated vars in modal");
 
-
+       
         var confirmationMessage = $"Cabin name: {cabinName} {cabinAddress}\nAddress: {cabinAddress}\n" +
             $"Postal code: {cabinPostalCode}\nCity: {cabinCity}\nBeds: {cabinBed}\nFeatures: {cabinFeatures}\n" +
            $"Description: {cabinDescription}\nPrice: {cabinPrice}";
         var isAccepted = await DisplayAlert("Confirm cabin information", confirmationMessage, "Yes", "No");
-
+        List<string> validationErrors = new List<string>();
+        if (string.IsNullOrEmpty(cabinAreaId)) validationErrors.Add("Cabin area must be selected.");
+        if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long.");
+        if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long.");
+        if (string.IsNullOrEmpty(cabinCity) || cabinCity.Length >= 25) validationErrors.Add("Cabin city cannot be empty.");
+        if (string.IsNullOrEmpty(cabinPostalCode) || !cabinPostalCode.All(char.IsDigit) || cabinPostalCode.Length != 5)
+            validationErrors.Add("Postal code must be numeric and 5 characters long.");
+        if (string.IsNullOrEmpty(cabinBed) || !cabinBed.All(char.IsDigit) || cabinBed.Length > 3)
+            validationErrors.Add("Beds must be numeric.");
+        if (string.IsNullOrEmpty(cabinFeatures) || cabinFeatures.Length > 200) validationErrors.Add("Cabin features cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinDescription) || cabinDescription.Length > 200) validationErrors.Add("Cabin description cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinPrice) || !cabinPrice.All(char.IsDigit) || cabinPrice.Length > 10)
+            validationErrors.Add("Price cannot be empty or too long (10 characters) and need to be numeric");
+        if (validationErrors.Count > 0)
+        {
+            await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
+            return; // Stop execution if there are validation errors
+        }
         try
         {
             Debug.WriteLine("Inside try: Trying to insert cabin to database");
@@ -160,7 +186,7 @@ public partial class AddCabinModal : ContentPage
             Debug.WriteLine(ex.Message);
         }
     }
-    private async void CustomerModifyButtonClicked(object sender, EventArgs e)
+    private async void CabinModify(object sender, EventArgs e)
     {
         Debug.WriteLine("CustomerModifyButtonClicked");
         var cabinAreaId = AreaIdLabelHidden.Text;
@@ -177,6 +203,22 @@ public partial class AddCabinModal : ContentPage
         var confirmationMessage = $"Cabin Id: {cabinId}\nCabin name: {cabinName}\nAddress {cabinAddress}\nPostal Code: {cabinpostalCode}\n" +
             $"City: {cabinCity}\nBeds: {cabinBeds}\nFeatures: {cabinFeatures}\nDescription: {cabinDescription}\nPrice: {cabinPrice}";
         var isAccepted = await DisplayAlert("Confirm modification", confirmationMessage, "Yes", "No");
+        List<string> validationErrors = new List<string>();
+        if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long (25 characters).");
+        if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long (25 characters).");
+        if (string.IsNullOrEmpty(cabinpostalCode) || !cabinpostalCode.All(char.IsDigit) || cabinpostalCode.Length != 5)
+            validationErrors.Add("Postal code must be numeric and 5 characters long.");
+        if (string.IsNullOrEmpty(cabinBeds) || !cabinBeds.All(char.IsDigit) || cabinBeds.Length > 3)
+            validationErrors.Add("Beds must be numeric.");
+        if (string.IsNullOrEmpty(cabinFeatures) || cabinFeatures.Length > 200) validationErrors.Add("Cabin features cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinDescription) || cabinDescription.Length > 200) validationErrors.Add("Cabin description cannot be empty or too long (200 characters).");
+        if (string.IsNullOrEmpty(cabinPrice) || !cabinPrice.All(char.IsDigit) || cabinPrice.Length > 10)
+            validationErrors.Add("Price cannot be empty or too long (10 characters) and need to be numeric");
+        if (validationErrors.Count > 0)
+        {
+            await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
+            return; // Stop execution if there are validation errors
+        }
 
         if (isAccepted)
         {
@@ -200,79 +242,72 @@ public partial class AddCabinModal : ContentPage
             await Navigation.PopModalAsync();
         }
     }
-    private async Task<bool> ValidateFormData()
-    {
-        Debug.WriteLine("Validating form data");
-        List<string> errorString = new List<string>();
-        bool isValid = true;
+    //private async Task<bool> ValidateFormData()
+    //{
+    //    Debug.WriteLine("Validating form data");
+    //    List<string> errorString = new List<string>();
+    //    bool isValid = true;
 
-        foreach (var entry in this.FindByName<VerticalStackLayout>("AreaDetails").Children)
-        {
-            Debug.WriteLine("inside entry foreach");
-            if (entry is Entry)
-            {
-                var entryValue = (Entry)entry;
-                Debug.WriteLine("entryValue: " + entryValue.Text);
-                if (entryValue.Text == null || entryValue.Text.Length == 0)
-                {
-                    entryValue.Placeholder = "Field is required.";
-                    return false;
-                }
-            }
+    //    foreach (var entry in this.FindByName<VerticalStackLayout>("AreaDetails").Children)
+    //    {
+    //        Debug.WriteLine("inside entry foreach");
+    //        if (entry is Entry)
+    //        {
+    //            var entryValue = (Entry)entry;
+    //            Debug.WriteLine("entryValue: " + entryValue.Text);
+    //            if (entryValue.Text == null || entryValue.Text.Length == 0)
+    //            {
+    //                entryValue.Placeholder = "Field is required.";
+    //                return false;
+    //            }
+    //        }
 
-        }
+    //    }
+    //    try
+    //    {
+    //        if (cabinNameEntry.Text == null || cabinNameEntry.Text.Length == 0)
+    //        {
+    //            errorString.Add("cabin name cannot be empty.");
+    //        }
 
-        // Tried to do this with foreach loop but it didn't work if user
-        // previously modified customer data and then tried to add new customer
-        // Because of isvisible property of customerIdEntry
-        // Sorry.
+    //        if (cabinAddressEntry.Text == null || cabinAddressEntry.Text.Length == 0)
+    //        {
+    //            errorString.Add(" Address cannot be empty.");
+    //        }
 
-        // Try/catch for handling for null errors
-        try
-        {
-            if (cabinNameEntry.Text == null || cabinNameEntry.Text.Length == 0)
-            {
-                errorString.Add("cabin name cannot be empty.");
-            }
+    //        if (cabinDescriptionEntry.Text == null || cabinDescriptionEntry.Text.Length == 0)
+    //        {
+    //            errorString.Add("Description cannot be empty.");
+    //        }
 
-            if (cabinAddressEntry.Text == null || cabinAddressEntry.Text.Length == 0)
-            {
-                errorString.Add(" Address cannot be empty.");
-            }
+    //        if (!cabinPostalCodeEntry.Text.All(char.IsDigit) || cabinPostalCodeEntry.Text.Length != 5)
+    //        {
+    //            errorString.Add("Postal code must be numeric and 5 characters long.");
+    //        }
 
-            if (cabinDescriptionEntry.Text == null || cabinDescriptionEntry.Text.Length == 0)
-            {
-                errorString.Add("Description cannot be empty.");
-            }
+    //        if (!cabinBedsEntry.Text.All(char.IsDigit))
+    //        {
+    //            errorString.Add("Beds must be in numeric form.");
+    //        }
 
-            if (!cabinPostalCodeEntry.Text.All(char.IsDigit) || cabinPostalCodeEntry.Text.Length != 5)
-            {
-                errorString.Add("Postal code must be numeric and 5 characters long.");
-            }
+    //        if (!cabinPriceEntry.Text.All(char.IsDigit))
+    //        {
+    //            errorString.Add("Price must be in numeric form.");
+    //        }
 
-            if (!cabinBedsEntry.Text.All(char.IsDigit))
-            {
-                errorString.Add("Beds must be in numeric form.");
-            }
-
-            if (!cabinPriceEntry.Text.All(char.IsDigit))
-            {
-                errorString.Add("Price must be in numeric form.");
-            }
-
-            if (errorString.Count > 0)
-            {
-                isValid = false;
-                await DisplayAlert("Error", string.Join("\n", errorString), "OK");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-        Debug.WriteLine("isvalid?: " + isValid);
-        return isValid;
-    }
+    //        if (errorString.Count > 0)
+    //        {
+    //            isValid = false;
+    //            await DisplayAlert("Error", string.Join("\n", errorString), "OK");
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.WriteLine(ex.Message);
+    //    }
+    //    Debug.WriteLine("isvalid?: " + isValid);
+    //    return isValid;
+    //}
     private async void cabinPostalCodeEntryUnfocused(object sender, FocusEventArgs e)
     {
         var postalCode = cabinPostalCodeEntry.Text;

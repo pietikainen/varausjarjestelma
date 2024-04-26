@@ -27,21 +27,13 @@ public partial class AddServiceModal : ContentPage
         InitializeAreaPicker();
         AreaPicker.SelectedIndex = service.AreaId - 1;
         Debug.WriteLine("Areaidtexthidden: " + AreaIdLabelHidden.Text);
-
         areaLabel.IsVisible = true;
         AreaPicker.IsVisible = true;
         serviceIdEntry.IsVisible = true;
         AreaIdEntry.IsVisible = true;
         AreaIdLabel.IsVisible = true;
         serviceIdLabel.IsVisible = true;
-
-
-
-
-
-
     }
-
     private async void InitializeAreaPicker()
     {
         try
@@ -80,24 +72,21 @@ public partial class AddServiceModal : ContentPage
                 }
             }
         }
+
         catch (Exception ex)
         {
             Debug.WriteLine(ex.Message);
         }
-
-
     }
-
-
-
     private async void SaveServiceButton_Clicked(object sender, EventArgs e)
-    { 
-        if (await ValidateFormData())
+    {
+        if (serviceIdEntry.IsVisible != true)
         {
-            ServiceSubmitButtonClicked(sender, e);
+            SaveService(sender, e);
         }
         else
         {
+            ModifyService(sender, e);
             Debug.WriteLine("Form data is not valid.");
         }
     }
@@ -138,16 +127,37 @@ public partial class AddServiceModal : ContentPage
         return isValid;
     }
 
-    private async void ServiceSubmitButtonClicked(object sender, EventArgs e)
+    private async void SaveService(object sender, EventArgs e)
     {
         var areaId = AreaIdLabelHidden.Text;
+        Debug.WriteLine(areaId);
         var name = serviceNameEntry.Text;
         var type = serviceTypeEntry.Text;
         var price = servicePriceEntry.Text;
         var vat = serviceVatEntry.Text;
         var description = serviceDescriptionEntry.Text;
+        // Tarkistetaan onko alue-ID kelvollinen numero
+        if (!int.TryParse(areaId, out int parsedAreaId))
+        {
+            await DisplayAlert("Error", "Invalid area ID", "OK");
+            return; // Poistutaan metodista, jos alue-ID ei ole kelvollinen
+        }
         var confirmationMessage = $"Name: {name}\nType: {type}\nPrice: {price}\nDescription: {description}";
         var isAccepted = await DisplayAlert("Confirm service information", confirmationMessage, "Yes", "No");
+
+        List<string> validationErrors = new List<string>();
+        if (string.IsNullOrEmpty(areaId)) validationErrors.Add("Area ID cannot be empty.");
+        if (string.IsNullOrEmpty(name) || name.Length > 25) validationErrors.Add("Name cannot be empty or too long.");
+        if (string.IsNullOrEmpty(type) || !int.TryParse(type, out _)) validationErrors.Add("Type must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(price) || !int.TryParse(price, out _)) validationErrors.Add("Price must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(vat) || !int.TryParse(vat, out _)) validationErrors.Add("VAT must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(description) || description.Length > 100) validationErrors.Add("Description cannot be empty or too long.");
+
+        if (validationErrors.Count > 0)
+        {
+            await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
+            return; // Stop execution if there are validation errors
+        }
 
         try
         {
@@ -175,7 +185,7 @@ public partial class AddServiceModal : ContentPage
                     catch
                     {
 
-                    Debug.WriteLine("Service not modded to database. Closing modal.");
+                        Debug.WriteLine("Service not modded to database. Closing modal.");
                     }
                     finally
                     {
@@ -187,7 +197,7 @@ public partial class AddServiceModal : ContentPage
                     await ServiceController.InsertAndModifyServiceAsync(service, "add");
                     Debug.WriteLine("Service inserted to database. Closing modal.");
                 }
-                ResetServiceForm(); 
+                ResetServiceForm();
             }
         }
         catch (Exception ex)
@@ -195,6 +205,80 @@ public partial class AddServiceModal : ContentPage
             Debug.WriteLine(ex.Message);
             await DisplayAlert("Error", "Failed to save the service: " + ex.Message, "OK");
         }
+        await Navigation.PopModalAsync();
+    }
+    private async void ModifyService(object sender, EventArgs e)
+    {
+       
+        var areaId = AreaIdLabelHidden.Text;
+        var name = serviceNameEntry.Text;
+        var type = serviceTypeEntry.Text;
+        var price = servicePriceEntry.Text;
+        var vat = serviceVatEntry.Text;
+        var description = serviceDescriptionEntry.Text;
+        var confirmationMessage = $"Name: {name}\nType: {type}\nPrice: {price}\nDescription: {description}";
+        var isAccepted = await DisplayAlert("Confirm service information", confirmationMessage, "Yes", "No");
+        List<string> validationErrors = new List<string>();
+        if (string.IsNullOrEmpty(areaId)) validationErrors.Add("Area ID cannot be empty.");
+        if (string.IsNullOrEmpty(name) || name.Length > 25) validationErrors.Add("Name cannot be empty or too long.");
+        if (string.IsNullOrEmpty(type) || !int.TryParse(type, out int parsedType)) validationErrors.Add("Type must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(price) || !int.TryParse(price, out int parsedPrice)) validationErrors.Add("Price must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(vat) || !int.TryParse(vat, out int parsedVat)) validationErrors.Add("VAT must be numeric and cannot be empty.");
+        if (string.IsNullOrEmpty(description) || description.Length > 100) validationErrors.Add("Description cannot be empty or too long.");
+
+        if (validationErrors.Count > 0)
+        {
+            await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
+            return; // Stop execution if there are validation errors
+        }
+
+        try
+        {
+            Debug.WriteLine("Inside try: Trying to insert service to database");
+            if (isAccepted)
+            {
+                var service = new varausjarjestelma.Database.Service
+                {
+                    alue_id = int.Parse(areaId),
+                    nimi = name,
+                    tyyppi = int.Parse(type),
+                    hinta = int.Parse(price),
+                    alv = int.Parse(vat),
+                    kuvaus = description
+                };
+
+
+                if (serviceIdEntry.IsVisible)
+                {
+                    service.palvelu_id = int.Parse(serviceIdEntry.Text);
+                    try
+                    {
+                        await ServiceController.InsertAndModifyServiceAsync(service, "modify");
+                    }
+                    catch
+                    {
+
+                        Debug.WriteLine("Service not modded to database. Closing modal.");
+                    }
+                    finally
+                    {
+                        Debug.WriteLine("SErvice modded successfully. Closing modal.");
+                    }
+                }
+                else
+                {
+                    await ServiceController.InsertAndModifyServiceAsync(service, "add");
+                    Debug.WriteLine("Service inserted to database. Closing modal.");
+                }
+                ResetServiceForm();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            await DisplayAlert("Error", "Failed to save the service: " + ex.Message, "OK");
+        }
+       
         await Navigation.PopModalAsync();
     }
     private void ResetServiceForm()

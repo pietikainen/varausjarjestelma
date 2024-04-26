@@ -25,32 +25,34 @@ public partial class AddAreaModal : ContentPage
     {
         var areaName = areaNameEntry.Text;
         var confirmationMessage = $"Name: {areaName}";
-        try
         {
-            if(areaName == null || areaNameEntry.Text.Length == 0)
-            {
-                throw new ArgumentNullException("areaNameEntry.Text", "Area name cannot be null or empty.");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
-        await DisplayAlert("Confirm area information", confirmationMessage, "Yes", "No");
 
+            try
+            {
+                if (string.IsNullOrEmpty(areaName) || areaName.Length > 44)
+                {
+                    await DisplayAlert("Error", "Area name cannot be null, empty or longer than 50 characters.", "Close");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            await DisplayAlert("Confirm area information", confirmationMessage, "Yes", "No");
+        }     
         try 
         {
             var area = new varausjarjestelma.Database.Area
             {
                nimi = areaName
             };
-
-            if (areaIdEntry.IsVisible)
-            {
-                area.alue_id = int.Parse(areaIdEntry.Text);
-                await AreaController.InsertAndModifyAreaAsync(area, "modify");
-            }
-            else
+            if (areaId != null )
+                {
+                    area.alue_id = int.Parse(areaIdEntry.Text);
+                    await AreaController.InsertAndModifyAreaAsync(area, "modify");
+                }
+        else
             await AreaController.InsertAndModifyAreaAsync(area, "add");
         }
         catch (Exception ex) 
