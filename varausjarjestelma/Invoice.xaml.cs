@@ -87,7 +87,9 @@ public partial class Invoice : ContentPage
             }
 
             // Populate Invoice contents with selected invoice data
+            //cabinid, cabinname, cabinamount, cabinprice, cabinvat
             var cabins = await InvoiceController.GetCabinsOnReservationAsync(selectedInvoice.InvoiceNumber);
+
 
             foreach (var cabin in cabins)
             {
@@ -133,6 +135,8 @@ public partial class Invoice : ContentPage
             }
 
 
+            // Populate Invoice contents with selected invoice data
+            //servicename, serviceamount, serviceprice, servicevat
             var services = await InvoiceController.GetServicesOnReservationAsync(selectedInvoice.InvoiceNumber);
 
             foreach (var service in services)
@@ -173,6 +177,16 @@ public partial class Invoice : ContentPage
                 Grid.SetRow(serviceTotalLabel, InvoiceGrid_ContentPart.RowDefinitions.Count - 1);
                 Grid.SetColumn(serviceTotalLabel, 4);
             }
+
+            // if invoice is selected, show the sendinvoicebutton
+            //if (selectedInvoice.IsPaid == 0)
+            //{
+            //    SendInvoiceButton.IsVisible = true;
+            //}
+            //else
+            //{
+            //    SendInvoiceButton.IsVisible = false;
+            //}
         }
         catch (Exception ex)
         {
@@ -260,6 +274,36 @@ public partial class Invoice : ContentPage
         }
 
         await InvoiceController.DeleteInvoiceAsync(invoice.InvoiceNumber);
+        await RefreshListView();
+    }
+
+    private async void SendInvoiceButtonClicked(object sender, EventArgs e)
+    {
+        var button = sender as ImageButton;
+        if (button == null)
+        {
+            Debug.WriteLine("Button is null");
+            return;
+        }
+        var invoice = button.BindingContext as InvoiceData;
+        if (invoice == null)
+        {
+            Debug.WriteLine("Invoice is null");
+            return;
+        }
+
+        var isAccepted = await DisplayAlert("Confirm", "Are you sure you want to send this invoice to the customer?", "Yes", "No");
+
+        if (!isAccepted)
+        {
+            Debug.WriteLine("Sending cancelled");
+            return;
+        }
+        string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        string filePath = documentsFolder + "\\invoice_" + invoice.InvoiceNumber + ".pdf";
+        Debug.WriteLine("Documents: " + documentsFolder);
+        Debug.WriteLine("FilePath: " + filePath);
+        CreateInvoice.CreatePdfAsync(invoice, filePath);
         await RefreshListView();
     }
 

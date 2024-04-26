@@ -119,7 +119,7 @@ namespace varausjarjestelma.Controller
                             InvoiceDate = DateTime.Today.ToString("d"),
                             DueDate = DateTime.Today.AddDays(14).ToString("d"),
                             Total = reader.GetDouble("summa"),
-                            Tax = reader.GetInt32("laskualv"),
+                            Tax = reader.GetDouble("laskualv"),
 
                         };
 
@@ -480,7 +480,7 @@ namespace varausjarjestelma.Controller
         public required string InvoiceDate { get; set; }
         public required string DueDate { get; set; }
         public double Total { get; set; }
-        public int Tax { get; set; }
+        public double Tax { get; set; }
 
         // Services helper
 
