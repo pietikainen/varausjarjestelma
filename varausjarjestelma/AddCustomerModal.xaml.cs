@@ -167,17 +167,17 @@ public partial class AddCustomerModal : ContentPage
         try
         {
             Debug.WriteLine("Catching null errors!");
-            if (firstNameEntry.Text == null || firstNameEntry.Text.Length == 0)
+            if (firstNameEntry.Text == null || firstNameEntry.Text.Length == 0 || firstNameEntry.Text.Length > 35)
             {
                 errorString.Add("First name cannot be empty.");
             }
 
-            if (lastNameEntry.Text == null || lastNameEntry.Text.Length == 0)
+            if (lastNameEntry.Text == null || lastNameEntry.Text.Length == 0 ||lastNameEntry.Text.Length > 35)
             {
                 errorString.Add("Last name cannot be empty.");
             }
 
-            if (addressEntry.Text == null || addressEntry.Text.Length == 0)
+            if (addressEntry.Text == null || addressEntry.Text.Length == 0 || addressEntry.Text.Length > 35)
             {
                 errorString.Add("Address cannot be empty.");
             }
@@ -187,12 +187,12 @@ public partial class AddCustomerModal : ContentPage
                 errorString.Add("Postal code must be numeric and 5 characters long.");
             }
 
-            if (!phoneNumberEntry.Text.All(char.IsDigit))
+            if (!phoneNumberEntry.Text.All(char.IsDigit) || phoneNumberEntry.Text.Length > 15)
             {
                 errorString.Add("Phone number must be in numeric form.");
             }
 
-            if (!IsEmailValid(emailEntry.Text))
+            if (!IsEmailValid(emailEntry.Text) || emailEntry.Text > 50)
             {
                 errorString.Add("Email is not valid.");
             }
