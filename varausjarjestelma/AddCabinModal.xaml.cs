@@ -17,6 +17,8 @@ public partial class AddCabinModal : ContentPage
     public AddCabinModal(CabinData cabin)
     {
         InitializeComponent();
+
+
         cabinIdEntry.Text = cabin.CabinId.ToString();
         cabinNameEntry.Text = cabin.CabinName;
         cabinAddressEntry.Text = cabin.Address;
@@ -26,6 +28,7 @@ public partial class AddCabinModal : ContentPage
         cabinPostalCodeEntry.Text = cabin.PostalCode;
         cabinPriceEntry.Text = cabin.Price.ToString();
         AreaIdLabelHidden.Text = cabin.AreaId.ToString();
+        AreaPickerLabel.IsVisible = false;
         AreaPicker.IsVisible = false;
         cabinIdEntry.IsVisible = true;
         cabinIdLabel.IsVisible = true;
@@ -199,11 +202,16 @@ public partial class AddCabinModal : ContentPage
         var cabinDescription = cabinDescriptionEntry.Text;
         var cabinCity = cabinCityEntry.Text;
         var cabinPrice = cabinPriceEntry.Text;
+
         Debug.WriteLine("Populated vars in modal");
+
         var confirmationMessage = $"Cabin Id: {cabinId}\nCabin name: {cabinName}\nAddress {cabinAddress}\nPostal Code: {cabinpostalCode}\n" +
             $"City: {cabinCity}\nBeds: {cabinBeds}\nFeatures: {cabinFeatures}\nDescription: {cabinDescription}\nPrice: {cabinPrice}";
+
         var isAccepted = await DisplayAlert("Confirm modification", confirmationMessage, "Yes", "No");
+
         List<string> validationErrors = new List<string>();
+
         if (string.IsNullOrEmpty(cabinName) || cabinName.Length > 25) validationErrors.Add("Cabin name cannot be empty or too long (25 characters).");
         if (string.IsNullOrEmpty(cabinAddress) || cabinAddress.Length > 25) validationErrors.Add("Cabin address cannot be empty or too long (25 characters).");
         if (string.IsNullOrEmpty(cabinpostalCode) || !cabinpostalCode.All(char.IsDigit) || cabinpostalCode.Length != 5)
@@ -214,6 +222,7 @@ public partial class AddCabinModal : ContentPage
         if (string.IsNullOrEmpty(cabinDescription) || cabinDescription.Length > 200) validationErrors.Add("Cabin description cannot be empty or too long (200 characters).");
         if (string.IsNullOrEmpty(cabinPrice) || !cabinPrice.All(char.IsDigit) || cabinPrice.Length > 10)
             validationErrors.Add("Price cannot be empty or too long (10 characters) and need to be numeric");
+        
         if (validationErrors.Count > 0)
         {
             await DisplayAlert("Validation Error", string.Join("\n", validationErrors), "OK");
@@ -242,72 +251,7 @@ public partial class AddCabinModal : ContentPage
             await Navigation.PopModalAsync();
         }
     }
-    //private async Task<bool> ValidateFormData()
-    //{
-    //    Debug.WriteLine("Validating form data");
-    //    List<string> errorString = new List<string>();
-    //    bool isValid = true;
-
-    //    foreach (var entry in this.FindByName<VerticalStackLayout>("AreaDetails").Children)
-    //    {
-    //        Debug.WriteLine("inside entry foreach");
-    //        if (entry is Entry)
-    //        {
-    //            var entryValue = (Entry)entry;
-    //            Debug.WriteLine("entryValue: " + entryValue.Text);
-    //            if (entryValue.Text == null || entryValue.Text.Length == 0)
-    //            {
-    //                entryValue.Placeholder = "Field is required.";
-    //                return false;
-    //            }
-    //        }
-
-    //    }
-    //    try
-    //    {
-    //        if (cabinNameEntry.Text == null || cabinNameEntry.Text.Length == 0)
-    //        {
-    //            errorString.Add("cabin name cannot be empty.");
-    //        }
-
-    //        if (cabinAddressEntry.Text == null || cabinAddressEntry.Text.Length == 0)
-    //        {
-    //            errorString.Add(" Address cannot be empty.");
-    //        }
-
-    //        if (cabinDescriptionEntry.Text == null || cabinDescriptionEntry.Text.Length == 0)
-    //        {
-    //            errorString.Add("Description cannot be empty.");
-    //        }
-
-    //        if (!cabinPostalCodeEntry.Text.All(char.IsDigit) || cabinPostalCodeEntry.Text.Length != 5)
-    //        {
-    //            errorString.Add("Postal code must be numeric and 5 characters long.");
-    //        }
-
-    //        if (!cabinBedsEntry.Text.All(char.IsDigit))
-    //        {
-    //            errorString.Add("Beds must be in numeric form.");
-    //        }
-
-    //        if (!cabinPriceEntry.Text.All(char.IsDigit))
-    //        {
-    //            errorString.Add("Price must be in numeric form.");
-    //        }
-
-    //        if (errorString.Count > 0)
-    //        {
-    //            isValid = false;
-    //            await DisplayAlert("Error", string.Join("\n", errorString), "OK");
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.WriteLine(ex.Message);
-    //    }
-    //    Debug.WriteLine("isvalid?: " + isValid);
-    //    return isValid;
-    //}
+    
     private async void cabinPostalCodeEntryUnfocused(object sender, FocusEventArgs e)
     {
         var postalCode = cabinPostalCodeEntry.Text;
