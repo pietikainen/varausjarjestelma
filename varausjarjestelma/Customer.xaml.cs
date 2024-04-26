@@ -20,14 +20,16 @@ public partial class Customer : ContentPage
 
     private async void GetAllCustomersData()
     {
-
-
-
-
         try
         {
+            ActivityIndicator.IsRunning = true;
+            ActivityIndicator.IsVisible = true;
+            
             var customers = await CustomerController.GetAllCustomerDataAsync();
             CustomerListView.ItemsSource = customers;
+            
+            ActivityIndicator.IsRunning = false;
+            ActivityIndicator.IsVisible = false;
         }
         catch (AggregateException ae)
         {

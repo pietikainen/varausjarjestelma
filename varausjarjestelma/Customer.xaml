@@ -122,37 +122,42 @@
                     Margin="10,0,0,0"
                     HorizontalOptions="Center"
                     MinimumWidthRequest="1200">
+                    <StackLayout>
+                        <ActivityIndicator
+                            x:Name="ActivityIndicator"
+                            IsRunning="False"
+                            IsVisible="False" />
+                        <ListView x:Name="CustomerListView" ItemTapped="CustomerListViewItemTapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Grid Margin="10,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Text="{Binding CustomerId}" />
+                                            <Label Grid.Column="1" Text="{Binding FullName}" />
+                                            <Label Grid.Column="2" Text="{Binding Address}" />
+                                            <Label Grid.Column="3" Text="{Binding PostalCode}" />
+                                            <Label Grid.Column="4" Text="{Binding City}" />
+                                            <Label Grid.Column="5" Text="{Binding Phone}" />
+                                            <Label Grid.Column="6" Text="{Binding Email}" />
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-                    <ListView x:Name="CustomerListView" ItemTapped="CustomerListViewItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <Grid Margin="10,0,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="200" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="200" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Column="0" Text="{Binding CustomerId}" />
-                                        <Label Grid.Column="1" Text="{Binding FullName}" />
-                                        <Label Grid.Column="2" Text="{Binding Address}" />
-                                        <Label Grid.Column="3" Text="{Binding PostalCode}" />
-                                        <Label Grid.Column="4" Text="{Binding City}" />
-                                        <Label Grid.Column="5" Text="{Binding Phone}" />
-                                        <Label Grid.Column="6" Text="{Binding Email}" />
-                                    </Grid>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
+                        </ListView>
+                    </StackLayout>
                 </Frame>
             </HorizontalStackLayout>
         </VerticalStackLayout>
