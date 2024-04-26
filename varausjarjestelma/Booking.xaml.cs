@@ -217,19 +217,24 @@ public partial class Booking : ContentPage
                     Minimum = 0,
                     Maximum = 10,
                     Increment = 1,
+                    Margin = 5,
                     HorizontalOptions = LayoutOptions.Center,
                 };
 
                 Label quantityLabel = new Label
                 {
                     Text = "0",
-                    HorizontalOptions = LayoutOptions.Center
+                    Margin = new Thickness(0, 0, 20, 0),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
                 };
 
                 Label serviceNameLabel = new Label
                 {
                     Text = service.Name,
-                    HorizontalOptions = LayoutOptions.Center
+                    Margin = new Thickness(20, 0, 0, 0),
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
                 };
 
                 serviceNameLabel.ClassId = service.ServiceId.ToString();
@@ -262,6 +267,9 @@ public partial class Booking : ContentPage
             Debug.WriteLine($"An error occurred: {ex.Message}");
         }
     }
+
+
+
 
     private async void CustomerListViewItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
