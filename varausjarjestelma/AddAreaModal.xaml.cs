@@ -24,43 +24,44 @@ public partial class AddAreaModal : ContentPage
     private async void addAreaButton_Clicked(object sender, EventArgs e)
     {
         var areaName = areaNameEntry.Text;
-        var confirmationMessage = $"Name: {areaName}";
+        if (string.IsNullOrEmpty(areaName) || areaName.Length > 50) // Päivitetty ehto
         {
+            await DisplayAlert("Error", "Area name cannot be null, empty or longer than 50 characters.", "Close");
+            return;
+        }
 
-            try
-            {
-                if (string.IsNullOrEmpty(areaName) || areaName.Length > 44)
-                {
-                    await DisplayAlert("Error", "Area name cannot be null, empty or longer than 50 characters.", "Close");
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            await DisplayAlert("Confirm area information", confirmationMessage, "Yes", "No");
-        }     
-        try 
+        var confirmationResult = await DisplayAlert("Confirm area information", $"Name: {areaName}", "Yes", "No");
+        if (!confirmationResult) // Jos käyttäjä valitsee "No", ei jatketa eteenpäin.
+        {
+            return;
+        }
+
+        try
         {
             var area = new varausjarjestelma.Database.Area
             {
-               nimi = areaName
+                nimi = areaName
             };
-            if (areaId != null )
-                {
-                    area.alue_id = int.Parse(areaIdEntry.Text);
-                    await AreaController.InsertAndModifyAreaAsync(area, "modify");
-                }
-        else
-            await AreaController.InsertAndModifyAreaAsync(area, "add");
+
+            if (!string.IsNullOrEmpty(areaIdEntry.Text))
+            {
+                area.alue_id = int.Parse(areaIdEntry.Text); // Tarkista myös, että tämä muunnos onnistuu oikein
+                await AreaController.InsertAndModifyAreaAsync(area, "modify");
+            }
+            else
+            {
+                await AreaController.InsertAndModifyAreaAsync(area, "add");
+            }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Failed to save the service: " + ex.Message, "OK");
         }
-        ResetAreaForm();
-        await Navigation.PopModalAsync();
+        finally
+        {
+            ResetAreaForm();
+            await Navigation.PopModalAsync();
+        }
     }
 
     private async void cancelAreaButton_Clicked(object sender, EventArgs e)
