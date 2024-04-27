@@ -91,7 +91,7 @@
         <Label
             Margin="0,20,0,0"
             HorizontalOptions="Center"
-            Text="© MökkiMaster 2021"
+            Text="© MökkiMaster 2024-"
             VerticalOptions="Center" />
         <Image
             Margin="0,30,0,0"
