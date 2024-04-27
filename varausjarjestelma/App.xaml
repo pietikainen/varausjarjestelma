@@ -8,63 +8,96 @@
         <ResourceDictionary>
 
             <!--  Custom Button Style  -->
-            <Style x:Key="DarkBrownButtonStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="SaddleBrown" />
+            <Style x:Key="bs1" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#519EDA" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HeightRequest" Value="50" />
-                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="Gray" />
+                <Setter Property="MinimumWidthRequest" Value="120" />
+                <Setter Property="MaximumWidthRequest" Value="150" />
+                <Setter Property="Padding" Value="0,0,0,0" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
+                        <VisualStateGroup x:Name="CommonStates" >
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#3A7ABD" />
+                                    <Setter Property="Scale" Value="0.95" />
+                                </VisualState.Setters>
+                            </VisualState>
+
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="Button.Shadow">
-                                        <Setter.Value>
-                                            <Shadow
-                                                Brush="Black"
-                                                Opacity="0.8"
-                                                Radius="5"
-                                                Offset="4,4" />
-                                        </Setter.Value>
-                                    </Setter>
+                                    <Setter Property="Scale" Value="1"  />
+                                    <Setter Property="BackgroundColor" Value="#519EDA" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-            <Style x:Key="DarkBrownButtonStyle2" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="SaddleBrown" />
+            <Style x:Key="bs1MainPage" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#519EDA" />
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Margin" Value="5" />
-                <Setter Property="HeightRequest" Value="50" />
-                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="Gray" />
+                <Setter Property="MinimumWidthRequest" Value="120" />
+                <Setter Property="MaximumWidthRequest" Value="250" />
+                <Setter Property="Padding" Value="0,0,0,0" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
+                        <VisualStateGroup x:Name="CommonStates" >
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#3A7ABD" />
+                                    <Setter Property="Scale" Value="0.95" />
+                                </VisualState.Setters>
+                            </VisualState>
+
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="Button.Shadow">
-                                        <Setter.Value>
-                                            <Shadow
-                                                Brush="Black"
-                                                Opacity="0.8"
-                                                Radius="5"
-                                                Offset="4,4" />
-                                        </Setter.Value>
-                                    </Setter>
+                                    <Setter Property="Scale" Value="1"  />
+                                    <Setter Property="BackgroundColor" Value="#519EDA" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-            <!--  Custom ListView Style  -->
+            <Style x:Key="bs1Modal" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#519EDA" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="BorderColor" Value="Gray" />
+                <Setter Property="MaximumWidthRequest" Value="100" />
+                
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates" >
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#3A7ABD" />
+                                    <Setter Property="Scale" Value="0.95" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="1"  />
+                                    <Setter Property="BackgroundColor" Value="#519EDA" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
             <!--  Custom ListView Style määritelmä  -->
             <Style x:Key="CustomListViewStyle" TargetType="ListView">
                 <Setter Property="BackgroundColor" Value="Linen" />

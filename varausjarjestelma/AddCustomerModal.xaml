@@ -65,13 +65,13 @@
                 <Button
                     x:Name="AddCustomerButton"
                     Clicked="CustomerFormSubmitButton_Clicked"
-                    Text="Save" />
+                    Text="Save"  Style="{StaticResource bs1Modal}" />
 
                 <Button
                     x:Name="CancelCustomerButton"
                     Grid.Column="1"
                     Clicked="CloseModalButton_Clicked"
-                    Text="Cancel" />
+                    Text="Cancel"  Style="{StaticResource bs1Modal}" />
             </Grid>
         </VerticalStackLayout>
     </Frame>

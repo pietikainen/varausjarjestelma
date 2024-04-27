@@ -257,7 +257,7 @@
                     Clicked="SaveButtonClicked"
                     CommandParameter="{Binding Source={x:Reference Name=AddReservationModal}, Path=BindingContext.reservationInfo}"
                     HorizontalOptions="Start"
-                    Style="{StaticResource buttonStyle}"
+                    Style="{StaticResource bs1Modal}"
                     Text="Book now" />
 
                 <Button
@@ -266,7 +266,7 @@
                     Margin="-40,40,0,0"
                     Clicked="CancelButtonClicked"
                     HorizontalOptions="Start"
-                    Style="{StaticResource buttonStyle}"
+                    Style="{StaticResource bs1Modal}"
                     Text="Go back" />
 
             </Grid>

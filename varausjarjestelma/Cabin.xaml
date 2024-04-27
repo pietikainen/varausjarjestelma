@@ -5,18 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     BackgroundColor="#fafafa">
     <ContentPage.Resources>
-        <Style x:Key="buttonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#519EDA" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="MinimumWidthRequest" Value="120" />
-            <Setter Property="MaximumWidthRequest" Value="150" />
-
-            <Setter Property="BorderColor" Value="Gray" />
-            <Setter Property="BorderWidth" Value="1" />
-            <Setter Property="TextColor" Value="White" />
-            <Setter Property="CornerRadius" Value="3" />
-            <Setter Property="Padding" Value="0,0,0,0" />
-        </Style>
         <Style x:Key="listViewStyle" TargetType="ListView">
             <Setter Property="Margin" Value="5" />
 
@@ -57,7 +45,7 @@
                     x:Name="AddCabinButton"
                     Margin="10,10,0,10"
                     Clicked="AddCabinButton_Clicked"
-                    Style="{StaticResource buttonStyle}"
+                    Style="{StaticResource bs1}"
                     Text="+ Add Cabin" />
 
                 <SearchBar

@@ -72,7 +72,7 @@
                 <Button
                     x:Name="SaveServiceButton"
                     Clicked="SaveServiceButton_Clicked"
-                    Text="Save" />
+                    Text="Save" Style="{StaticResource bs1Modal}" />
                 <Button
                     x:Name="CancelServiceButton"
                     Grid.Column="1"

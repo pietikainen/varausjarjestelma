@@ -5,18 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     BackgroundColor="#fafafa">
     <ContentPage.Resources>
-        <Style x:Key="buttonStyle" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#519EDA" />
-            <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="MinimumWidthRequest" Value="120" />
-            <Setter Property="MaximumWidthRequest" Value="150" />
-
-            <Setter Property="BorderColor" Value="Gray" />
-            <Setter Property="BorderWidth" Value="1" />
-            <Setter Property="TextColor" Value="White" />
-            <Setter Property="CornerRadius" Value="3" />
-            <Setter Property="Padding" Value="0,0,0,0" />
-        </Style>
+       
         <Style x:Key="listViewStyle" TargetType="ListView">
             <Setter Property="Margin" Value="5" />
 
@@ -322,7 +311,7 @@
                                     Grid.Column="0"
                                     Margin="0,20,5,0"
                                     Clicked="OnBookNowClicked"
-                                    Style="{StaticResource buttonStyle}"
+                                    Style="{StaticResource bs1}"
                                     Text="Book Now" />
 
                                 <Button
@@ -330,7 +319,7 @@
                                     Grid.Column="2"
                                     Margin="0,20,5,0"
                                     Clicked="OnCancelClicked"
-                                    Style="{StaticResource buttonStyle}"
+                                    Style="{StaticResource bs1}"
                                     Text="Cancel" />
                             </Grid>
                         </VerticalStackLayout>

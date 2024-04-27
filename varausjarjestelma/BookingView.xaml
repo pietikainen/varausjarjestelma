@@ -59,7 +59,7 @@
                     x:Name="AddBookingButton"
                     Margin="10,10,0,10"
                     Clicked="AddBookingButtonClicked"
-                    Style="{StaticResource buttonStyle}"
+                    Style="{StaticResource bs1}"
                     Text="+ Add booking" />
 
 

@@ -26,8 +26,8 @@
                 </VerticalStackLayout>
                 <Entry x:Name="usernameEntry" Placeholder="Username" BackgroundColor="LightSlateGrey" Margin="0,60,0,12" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
                 <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="LightSlateGrey" HorizontalOptions="Center" TextColor="White" WidthRequest="250"></Entry>
-                <Button x:Name="signInButton" BackgroundColor="#519EDA" Clicked="signInButton_Clicked" Text="Sign In" WidthRequest="250" FontAttributes="Bold" Margin="0,12,0,12"></Button>
-                <Button x:Name="logOutButton" BackgroundColor="#519EDA" Clicked="logOutButton_Clicked" Text="Log out" FontAttributes="Bold" WidthRequest="250" Margin="0,100,0,12" IsVisible="False"></Button>
+                <Button x:Name="signInButton" Style="{StaticResource bs1MainPage}" Clicked="signInButton_Clicked" Text="Sign In" WidthRequest="250" FontAttributes="Bold" Margin="0,12,0,12"></Button>
+                <Button x:Name="logOutButton" Style="{StaticResource bs1MainPage}" Clicked="logOutButton_Clicked" Text="Log out" FontAttributes="Bold" WidthRequest="250" Margin="0,100,0,12" IsVisible="False"></Button>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

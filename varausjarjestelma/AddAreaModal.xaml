@@ -56,13 +56,13 @@
                     x:Name="addAreaButton"
                     Margin="0,0,10,0"
                     Clicked="addAreaButton_Clicked"
-                    Text="Save" />
+                    Text="Save" Style="{StaticResource bs1Modal}" />
                 <Button
                     x:Name="cancelAreaButton"
                     Grid.Column="1"
                     Margin="0,0,10,0"
                     Clicked="cancelAreaButton_Clicked"
-                    Text="Cancel" />
+                    Text="Cancel"  Style="{StaticResource bs1Modal}" />
             </Grid>
         </VerticalStackLayout>
     </Frame>

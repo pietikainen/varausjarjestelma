@@ -81,12 +81,12 @@
                     x:Name="cabinSaveButton"
                     Grid.Column="0"
                     Clicked="CabinSaveButton_Clicked"
-                    Text="Save" />
+                    Text="Save"  Style="{StaticResource bs1Modal}" />
                 <Button
                     x:Name="cabinCloseButton"
                     Grid.Column="1"
                     Clicked="cabinCloseButton_Clicked"
-                    Text="Close" />
+                    Text="Close"  Style="{StaticResource bs1Modal}" />
             </Grid>
         </VerticalStackLayout>
     </Frame>
